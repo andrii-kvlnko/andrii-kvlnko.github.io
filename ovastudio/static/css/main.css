@@ -2316,6 +2316,10 @@
         background-color: rgba(221, 234, 254, 0.82);
     }
 
+    .cards-c__cards {
+        padding-bottom: .2em;
+    }
+
     .body-c__faq-section {
         width: 100%;
         font-size: 1vw;
