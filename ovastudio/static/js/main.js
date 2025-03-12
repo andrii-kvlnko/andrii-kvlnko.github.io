@@ -199,12 +199,17 @@
             this.listeners = {
                 clickLeftArrow: [],
                 clickRightArrow: [],
-                clickSlide: []
+                clickSlide: [],
+                scroll: []
             };
             this.slides = slides;
             this.state = {
-                slide: 1
+                slide: 1,
+
+                scrollBlocked: false
             }
+            this.slidesOffsetLeft = new Map();
+            this.slideIdSlideNumber = new Map();
         }
 
         setMoveHandler(handler) {
@@ -224,7 +229,24 @@
                 this.listeners.clickRightArrow.forEach((listener) => listener());
             });
 
+            this.elements.box.addEventListener('scroll', (event) => {
+                if (this.state.scrollBlocked) {
+                    return;
+                }
+
+                this.state.scrollBlocked = true;
+                requestAnimationFrame(() => {
+                    this.listeners.scroll.forEach((listener) => {
+                        listener(this.elements.box.scrollLeft);
+                    })
+
+                    this.state.scrollBlocked = false;
+                });
+            });
+
             this.slides.forEach((elementId, key) => {
+                this.slideIdSlideNumber.set(elementId, key);
+
                 const element = document.getElementById(elementId);
                 element.addEventListener('click', (event) => {
                     event.preventDefault();
@@ -233,7 +255,9 @@
                     this.listeners.clickSlide.forEach((listener) => {
                         listener(href);
                     } )
-                } )
+                } );
+
+                this.slidesOffsetLeft.set(elementId, element.offsetLeft);
             });
         }
 
@@ -249,48 +273,43 @@
             this.moveHandler.moveToPrevSlide();
         }
 
-        moveToNextSlide1() {
-            const slideIndex = this.state.slide;
-            const nextSlideIndex = slideIndex + 1;
+        snap() {
+            const scrollLeft = this.elements.box.scrollLeft;
 
-            const toReturn = ! this.slides.has(nextSlideIndex);
-            if (toReturn) {
-                return;
+            let snapDescriptor = {
+                type: 'null'
+            };
+
+            for (const [elementId, elementOffsetLeft] of this.slidesOffsetLeft) {
+                const toSnap = elementOffsetLeft >= scrollLeft;
+                const toContinue = ! toSnap;
+
+                if (toContinue) {
+                    continue;
+                }
+
+                snapDescriptor = {
+                    type: 'slide',
+                    data: {
+                        id: elementId,
+                        offsetLeft: elementOffsetLeft
+                    }
+                }
+
+                break;
             }
 
-            this.state.slide = nextSlideIndex;
+            switch(snapDescriptor.type) {
+                case 'slide': {
+                    this.state.slide = this.slideIdSlideNumber.get(snapDescriptor.data.id);
+                    if (this.state.slide === 1) {
+                        this.elements.box.scrollLeft = 0;
+                    } else {
+                        this.elements.box.scrollLeft = snapDescriptor.data.offsetLeft;
+                    }
 
-            const nextSlideId = this.slides.get(nextSlideIndex);
-            const nextSlideElement = document.getElementById(nextSlideId);
-
-            const boxLeftPadding = window
-                .getComputedStyle(this.elements.box, null)
-                .getPropertyValue('padding-left');
-
-            const correction = parseFloat(boxLeftPadding);
-
-            this.elements.box.scrollLeft = nextSlideElement.offsetLeft - correction;
-        }
-
-        moveToPrevSlide1() {
-            const slideIndex = this.state.slide;
-            const nextSlideIndex = slideIndex - 1;
-
-            const toReturn = ! this.slides.has(nextSlideIndex);
-            if (toReturn) {
-                return;
-            }
-
-            this.state.slide = nextSlideIndex;
-
-            const nextSlideId = this.slides.get(nextSlideIndex);
-            const nextSlideElement = document.getElementById(nextSlideId);
-
-            const isFirst = nextSlideIndex === 1;
-            if (isFirst) {
-                this.elements.box.scrollLeft = 0;
-            } else {
-                this.elements.box.scrollLeft = nextSlideElement.offsetLeft;
+                    break;
+                }
             }
         }
     }
@@ -1349,6 +1368,12 @@
 
     class CardsComponentViewModel {
         constructor(state, navigatorView, deviceService) {
+            this.viewModelState = {
+                snap: {
+                    debounceTimeout: 0,
+                    delay: 200
+                }
+            }
             this.state = state;
             this.deviceService = deviceService;
             this.views = {
@@ -1392,6 +1417,7 @@
             this.views.cards.addEventListener('clickLeftArrow', this.onClickLeftArrow.bind(this));
             this.views.cards.addEventListener('clickRightArrow', this.onClickRightArrow.bind(this));
             this.views.cards.addEventListener('clickSlide', this.onClickSlide.bind(this));
+            this.views.cards.addEventListener('scroll', this.onScroll.bind(this));
 
             this.views.cards.mount();
         }
@@ -1442,6 +1468,13 @@
                     break;
                 }
             }
+        }
+
+        onScroll() {
+            clearTimeout(this.viewModelState.snap.debounceTimeout);
+            this.viewModelState.snap.debounceTimeout = setTimeout(() => {
+                this.views.cards.snap();
+            }, this.viewModelState.snap.delay);
         }
 
         onClickLeftArrow() {
