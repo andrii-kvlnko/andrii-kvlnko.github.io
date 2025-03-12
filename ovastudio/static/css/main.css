@@ -470,7 +470,8 @@
     font-size: 4.37vw;
     background-color: rgba(40, 108, 255, 1);
     border-radius: 50%;
-    width: 45vw;
+    min-width: 45vw;
+    width: max-content;
     aspect-ratio: 1;
     display: flex;
     justify-content: center;
@@ -2803,7 +2804,7 @@
         margin-top: 0;
         padding-top: 13.5em;
     }
-    
+
     .body-c__list-section-surface {
         display: none;
     }
@@ -3480,6 +3481,7 @@
         height: 3.6em;
     }
 }
+
 
 
 
