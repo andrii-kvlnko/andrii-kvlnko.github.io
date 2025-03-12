@@ -678,13 +678,14 @@
         constructor() {
             this.elements = {};
             this.listeners = {
-                scroll: []
+                scroll: new Map()
             }
+            this.lastListenerId = 1;
         }
 
         mount() {
             document.addEventListener('scroll', (event) => {
-                this.listeners.scroll.forEach((listener) => listener(event));
+                this.listeners.scroll.forEach((listener, id) => listener());
             }, {passive: true});
         }
 
@@ -693,7 +694,15 @@
         }
 
         addEventListener(event, listener) {
-            this.listeners[event].push(listener);
+            this.lastListenerId++;
+
+            this.listeners[event].set(this.lastListenerId, listener);
+
+            return this.lastListenerId;
+        }
+
+        removeEventListener(event, listenerId) {
+            this.listeners[event].delete(listenerId);
         }
     }
 
@@ -1371,6 +1380,9 @@
                 modalForm: {
                     submittingStatus: 'default'
                 },
+            };
+            this.listeners = {
+                scrollHandleStick: 0
             }
         }
 
@@ -1507,7 +1519,7 @@
             this.tryWatchUnstick();
 
             this.views.window.addEventListener('scroll', this.onWindowViewScrollHandleSolidHeader.bind(this));
-            this.views.window.addEventListener('scroll', this.onWindowViewScrollHandleStick.bind(this));
+            this.listeners.scrollHandleStick = this.views.window.addEventListener('scroll', this.onWindowViewScrollHandleStick.bind(this));
         }
 
         stick() {
@@ -1776,9 +1788,12 @@
 
         onHeaderViewMouseEnter() {
             this.stopToWatchUnstick();
+            this.views.window.removeEventListener('scroll', this.listeners.scrollHandleStick);
         }
 
         onHeaderViewMouseLeave() {
+            this.listeners.scrollHandleStick = this.views.window.addEventListener('scroll', this.onWindowViewScrollHandleStick.bind(this));
+
             this.tryWatchUnstick();
         }
 
