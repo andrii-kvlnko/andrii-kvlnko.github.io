@@ -1793,10 +1793,12 @@
         margin-left: 5vw;
         margin-right: 5vw;
     }
+}
 
+@-moz-document url-prefix() {
     .cards-c__box {
-        /*scrollbar-color: #008de4 rgba(221, 234, 254, 1);*/
-        /*scrollbar-track-color: rgba(221, 234, 254, 1);*/
+        scrollbar-color: #008de4 rgba(221, 234, 254, 1);
+        scrollbar-track-color: rgba(221, 234, 254, 1);
     }
 }
 
