@@ -59,6 +59,9 @@
 }
 
 /*site styles*/
+html {
+    scroll-behavior: smooth;
+}
 
 .html-c {
     height: 100%;
@@ -72,6 +75,8 @@
 .html-c__body {
     height: 100%;
 }
+
+
 
 
 

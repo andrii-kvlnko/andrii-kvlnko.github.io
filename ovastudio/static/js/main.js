@@ -1,4 +1,189 @@
 (function () {
+    class App {
+        async run() {
+            await new Promise((resolve) => {
+                document.addEventListener('DOMContentLoaded', function () {
+                    resolve();
+                }, false);
+            } );
+
+            const applicationRepository = new MockApplicationRepository();
+            const applicationService = new ApplicationService(applicationRepository);
+            const deviceService = new DeviceService();
+
+            const pageVM = new PageViewModel(applicationService, deviceService);
+            pageVM.model();
+        }
+    }
+
+    class CardsComponentViewFirefoxMoveHandler {
+        constructor(view) {
+            this.view = view;
+            this.animationTime = 250;
+        }
+
+        moveToNextSlide() {
+            const slideIndex = this.view.state.slide;
+            const nextSlideIndex = slideIndex + 1;
+
+            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            if (toReturn) {
+                return;
+            }
+
+            this.view.state.slide = nextSlideIndex;
+
+            const nextSlideId = this.view.slides.get(nextSlideIndex);
+            const nextSlideElement = document.getElementById(nextSlideId);
+
+            const boxLeftPadding = window
+                .getComputedStyle(this.view.elements.box, null)
+                .getPropertyValue('padding-left');
+
+            const correction = parseFloat(boxLeftPadding);
+
+            const startScrollLeft = this.view.elements.box.scrollLeft;
+            const endScrollLeft = nextSlideElement.offsetLeft - correction;
+            const delta = endScrollLeft - startScrollLeft;
+
+            let startTimestamp;
+            let progress;
+            let animationTime = this.animationTime;
+            let timePast;
+            let self = this;
+
+            function animate(timestamp) {
+                if (!startTimestamp){
+                    startTimestamp = timestamp;
+                }
+
+                timePast = timestamp - startTimestamp;
+
+                let progress = timePast / animationTime;
+                progress = Math.min(1, progress);
+
+                const nextScrollLeft = startScrollLeft + delta * progress;
+
+                self.view.elements.box.scrollLeft = nextScrollLeft;
+
+                const toAnimateNext = progress < 1;
+                if (toAnimateNext) {
+                    window.requestAnimationFrame(animate);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        moveToPrevSlide() {
+            const slideIndex = this.view.state.slide;
+            const nextSlideIndex = slideIndex - 1;
+
+            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            if (toReturn) {
+                return;
+            }
+
+            this.view.state.slide = nextSlideIndex;
+
+            const nextSlideId = this.view.slides.get(nextSlideIndex);
+            const nextSlideElement = document.getElementById(nextSlideId);
+
+            let endScrollLeft;
+
+            const isFirst = nextSlideIndex === 1;
+            if (isFirst) {
+                endScrollLeft = 0;
+            } else {
+                endScrollLeft = nextSlideElement.offsetLeft;
+            }
+
+            const startScrollLeft = this.view.elements.box.scrollLeft;
+            const delta = endScrollLeft - startScrollLeft;
+
+            let startTimestamp;
+            let progress;
+            let animationTime = this.animationTime;
+            let timePast;
+            let self = this;
+
+            function animate(timestamp) {
+                if (!startTimestamp){
+                    startTimestamp = timestamp;
+                }
+
+                timePast = timestamp - startTimestamp;
+
+                let progress = timePast / animationTime;
+                progress = Math.min(1, progress);
+
+                const nextScrollLeft = startScrollLeft + delta * progress;
+
+                self.view.elements.box.scrollLeft = nextScrollLeft;
+
+                const toAnimateNext = progress < 1;
+                if (toAnimateNext) {
+                    window.requestAnimationFrame(animate);
+                }
+            }
+
+            requestAnimationFrame(animate);
+
+
+        }
+    }
+
+    class CardsComponentViewDefaultMoveHandler {
+        constructor(view) {
+            this.view = view;
+        }
+
+        moveToNextSlide() {
+            const slideIndex = this.view.state.slide;
+            const nextSlideIndex = slideIndex + 1;
+
+            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            if (toReturn) {
+                return;
+            }
+
+            this.view.state.slide = nextSlideIndex;
+
+            const nextSlideId = this.view.slides.get(nextSlideIndex);
+            const nextSlideElement = document.getElementById(nextSlideId);
+
+            const boxLeftPadding = window
+                .getComputedStyle(this.view.elements.box, null)
+                .getPropertyValue('padding-left');
+
+            const correction = parseFloat(boxLeftPadding);
+
+            this.view.elements.box.scrollLeft = nextSlideElement.offsetLeft - correction;
+        }
+
+        moveToPrevSlide() {
+            const slideIndex = this.view.state.slide;
+            const nextSlideIndex = slideIndex - 1;
+
+            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            if (toReturn) {
+                return;
+            }
+
+            this.view.state.slide = nextSlideIndex;
+
+            const nextSlideId = this.view.slides.get(nextSlideIndex);
+            const nextSlideElement = document.getElementById(nextSlideId);
+
+            const isFirst = nextSlideIndex === 1;
+            if (isFirst) {
+                this.view.elements.box.scrollLeft = 0;
+            } else {
+                this.view.elements.box.scrollLeft = nextSlideElement.offsetLeft;
+            }
+        }
+    }
+
     class CardsComponentView {
         constructor(boxId, leftArrowId, rightArrowId, slides) {
             this.elements = {
@@ -22,13 +207,17 @@
             }
         }
 
+        setMoveHandler(handler) {
+            this.moveHandler = handler;
+        }
+
         mount() {
             this.elements.box = document.getElementById(this.ids.box);
 
             this.elements.leftArrow = document.getElementById(this.ids.leftArrow);
             this.elements.leftArrow.addEventListener('click', () => {
                 this.listeners.clickLeftArrow.forEach((listener) => listener());
-            })
+            });
 
             this.elements.rightArrow = document.getElementById(this.ids.rightArrow);
             this.elements.rightArrow.addEventListener('click', () => {
@@ -53,6 +242,14 @@
         }
 
         moveToNextSlide() {
+            this.moveHandler.moveToNextSlide();
+        }
+
+        moveToPrevSlide() {
+            this.moveHandler.moveToPrevSlide();
+        }
+
+        moveToNextSlide1() {
             const slideIndex = this.state.slide;
             const nextSlideIndex = slideIndex + 1;
 
@@ -75,7 +272,7 @@
             this.elements.box.scrollLeft = nextSlideElement.offsetLeft - correction;
         }
 
-        moveToPrevSlide() {
+        moveToPrevSlide1() {
             const slideIndex = this.state.slide;
             const nextSlideIndex = slideIndex - 1;
 
@@ -646,31 +843,121 @@
     }
 
     class NavigatorComponentView {
+        constructor(browser) {
+            this.browser = browser;
+        }
+
         mount() {
 
         }
 
         navigateHavingOffsetElement(id, offsetElementId) {
-            const offsetElement = document.getElementById(offsetElementId);
-            const element = document.getElementById(id);
+            switch (this.browser) {
+                case 'firefox': {
+                    const offsetElement = document.getElementById(offsetElementId);
+                    const element = document.getElementById(id);
 
-            const y = window.scrollY + element.getBoundingClientRect().top - offsetElement.offsetHeight;
+                    const endY = window.scrollY + element.getBoundingClientRect().top - offsetElement.offsetHeight;
+                    const startY = window.scrollY;
+                    const delta = endY - startY;
 
-            window.scroll({
-                top: y,
-                behavior: 'smooth'
-            });
+                    let start;
+                    let progress;
+                    let animationTime = 500;
+                    let timeSpent;
+
+                    function animate(timestamp) {
+                        if (!start){
+                            start = timestamp;
+                        }
+
+                        timeSpent = timestamp - start;
+
+                        let progress = timeSpent / animationTime;
+                        progress = Math.min(1, progress);
+
+                        const nextY = startY + delta * progress;
+
+                        window.scrollTo(0, nextY);
+
+                        const toAnimateNext = progress < 1;
+                        if (toAnimateNext) {
+                            window.requestAnimationFrame(animate);
+                        }
+                    }
+
+                    requestAnimationFrame(animate);
+
+                    break;
+                }
+                default: {
+                    const offsetElement = document.getElementById(offsetElementId);
+                    const element = document.getElementById(id);
+
+                    const y = window.scrollY + element.getBoundingClientRect().top - offsetElement.offsetHeight;
+
+                    window.scroll({
+                        top: y,
+                        behavior: 'smooth'
+                    });
+
+                    break;
+                }
+            }
+
         }
 
         navigate(id) {
-            const element = document.getElementById(id);
+            switch (this.browser) {
+                case 'firefox': {
+                    const element = document.getElementById(id);
 
-            const y = window.scrollY + element.getBoundingClientRect().top;
+                    const endY = window.scrollY + element.getBoundingClientRect().top;
+                    const startY = window.scrollY;
+                    const delta = endY - startY;
 
-            window.scroll({
-                top: y,
-                behavior: 'smooth'
-            });
+                    let start;
+                    let progress;
+                    let animationTime = 500;
+                    let timeSpent;
+
+                    function animate(timestamp) {
+                        if (!start){
+                            start = timestamp;
+                        }
+
+                        timeSpent = timestamp - start;
+
+                        let progress = timeSpent / animationTime;
+                        progress = Math.min(1, progress);
+
+                        const nextY = startY + delta * progress;
+
+                        window.scrollTo(0, nextY);
+
+                        const toAnimateNext = progress < 1;
+                        if (toAnimateNext) {
+                            window.requestAnimationFrame(animate);
+                        }
+                    }
+
+                    requestAnimationFrame(animate);
+
+                    break;
+                }
+                default: {
+                    const element = document.getElementById(id);
+
+                    const y = window.scrollY + element.getBoundingClientRect().top;
+
+                    window.scroll({
+                        top: y,
+                        behavior: 'smooth'
+                    });
+
+                    break;
+                }
+            }
         }
     }
 
@@ -1061,8 +1348,9 @@
     }
 
     class CardsComponentViewModel {
-        constructor(state, navigatorView) {
+        constructor(state, navigatorView, deviceService) {
             this.state = state;
+            this.deviceService = deviceService;
             this.views = {
                 cards: null,
                 navigator: navigatorView
@@ -1082,8 +1370,25 @@
                 'cards-box',
                 'cards-left-arrow',
                 'cards-right-arrow',
-                viewSlides
+                viewSlides,
             );
+
+            let viewMoveHandler;
+            const serviceBrowser = this.deviceService.detectBrowser();
+            switch (serviceBrowser) {
+                case 'firefox': {
+                    viewMoveHandler = new CardsComponentViewFirefoxMoveHandler(this.views.cards);
+
+                    break;
+                }
+                default: {
+                    viewMoveHandler = new CardsComponentViewDefaultMoveHandler(this.views.cards);
+
+                    break;
+                }
+            }
+            this.views.cards.setMoveHandler(viewMoveHandler);
+
             this.views.cards.addEventListener('clickLeftArrow', this.onClickLeftArrow.bind(this));
             this.views.cards.addEventListener('clickRightArrow', this.onClickRightArrow.bind(this));
             this.views.cards.addEventListener('clickSlide', this.onClickSlide.bind(this));
@@ -1334,6 +1639,24 @@
                 (navigator.maxTouchPoints > 0) ||
                 (navigator.msMaxTouchPoints > 0));
         }
+
+        detectBrowser(){
+            let browser = "";
+            let c = navigator.userAgent.search("Chrome");
+            let f = navigator.userAgent.search("Firefox");
+            let m8 = navigator.userAgent.search("MSIE 8.0");
+            let m9 = navigator.userAgent.search("MSIE 9.0");
+            if (c > -1) {
+                browser = "chrome";
+            } else if (f > -1) {
+                browser = "firefox";
+            } else if (m9 > -1) {
+                browser ="MSIE 9.0";
+            } else if (m8 > -1) {
+                browser ="MSIE 8.0";
+            }
+            return browser;
+        }
     }
 
     class PageViewModel {
@@ -1457,7 +1780,8 @@
             this.views.hamburgerButton = new HamburgerButtonView('hamburger-button');
             this.views.hamburgerButton.addEventListener('click', this.onHamburgerButtonViewClick.bind(this));
 
-            this.views.nagivator = new NavigatorComponentView();
+            const serviceBrowser = this.services.device.detectBrowser();
+            this.views.nagivator = new NavigatorComponentView(serviceBrowser);
 
             this.views.header = new HeaderComponentView('header');
             this.views.header.addEventListener('clickMenuItem', this.onHeaderViewClickMenuItem.bind(this));
@@ -1467,7 +1791,7 @@
             this.viewModels.faq = new FAQComponentViewModel();
             this.viewModels.faq.model();
 
-            this.viewModels.cards = new CardsComponentViewModel(this.state, this.views.nagivator);
+            this.viewModels.cards = new CardsComponentViewModel(this.state, this.views.nagivator, this.services.device);
             this.viewModels.cards.model();
 
             this.viewModels.infoList = new InfoListComponentViewModel();
@@ -1967,10 +2291,6 @@
         }
     }
 
-    const applicationRepository = new MockApplicationRepository();
-    const applicationService = new ApplicationService(applicationRepository);
-    const deviceService = new DeviceService();
-
-    const pageVM = new PageViewModel(applicationService, deviceService);
-    pageVM.model();
+    const app = new App();
+    app.run();
 })();
