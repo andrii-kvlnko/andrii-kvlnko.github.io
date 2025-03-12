@@ -2078,6 +2078,7 @@
     }
 
     .list-c__action {
+        min-width: initial;
         width: 24.6%;
         margin-top: 0;
         flex-shrink: 0;
