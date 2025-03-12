@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="uk" class="html-c">
+    <head>
+        <meta charset="UTF-8">
+        <title>OVA STUDIO</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="static/css/reset.css?v=2">
+        <link rel="stylesheet" href="static/css/fonts.css?v=2">
+        <link rel="stylesheet" href="static/css/main.css?v=2">
+        <meta name="robots" content="noindex">
+    </head>
+    <body class="html-c__body body-с">
+        <svg style="display: none">
+            <symbol viewBox="0 0 17 17"
+                    id="cross-2-sprite-icon"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L15.8492 15.8492" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 1L1.15076 15.8492" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </symbol>
+
+
+            <symbol viewBox="0 0 11 18"
+                    fill="none"
+                    id="chevron-right-sprite-icon"
+                    xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L9 9L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </symbol>
+
+            <symbol viewBox="0 0 15 15"
+                    id="cross-sprite-icon"
+                    fill="none">
+                <path d="M1.8291 1.82927L13.0566 13.0567" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M13.1707 1.82927L1.94318 13.0567" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </symbol>
+
+            <symbol viewBox="0 0 23 2"
+                    id="hamburger-button-sprite-icon"
+                    fill="none">
+                <path d="M1 1H22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </symbol>
+
+            <symbol viewBox="0 0 28 28"
+                    id="phone-sprite-icon"
+                    fill="none">
+                <path d="M21.4666 24.2082H21.1983C18.1749 23.8806 15.2702 22.8497 12.7166 21.1982C10.3443 19.6864 8.32983 17.6759 6.8133 15.3066C5.15836 12.7461 4.12739 9.83301 3.8033 6.80156C3.76615 6.44 3.80283 6.07467 3.91113 5.72772C4.01942 5.38077 4.19707 5.05944 4.4333 4.78322C4.66306 4.5033 4.94666 4.27234 5.2673 4.104C5.58793 3.93567 5.93909 3.83339 6.29997 3.80322H9.3333C9.99027 3.80389 10.6253 4.03943 11.1238 4.46733C11.6224 4.89523 11.9514 5.48728 12.0516 6.13656C12.1625 6.97056 12.37 7.78883 12.67 8.57489C12.8525 9.06883 12.8902 9.60463 12.7785 10.1192C12.6669 10.6339 12.4107 11.1059 12.04 11.4799L11.3283 12.1916C12.4488 13.9605 13.9518 15.4555 15.7266 16.5666L16.4383 15.8666C16.8123 15.4958 17.2843 15.2396 17.7989 15.128C18.3136 15.0164 18.8494 15.054 19.3433 15.2366C20.1303 15.5336 20.9482 15.741 21.7816 15.8549C22.442 15.9542 23.0434 16.291 23.473 16.8023C23.9027 17.3135 24.1309 17.964 24.115 18.6316V21.4316C24.115 22.1598 23.8265 22.8583 23.3127 23.3743C22.7988 23.8904 22.1015 24.1818 21.3733 24.1849L21.4666 24.2082ZM9.3333 5.54156H6.54497C6.40806 5.55061 6.27441 5.58732 6.15209 5.64949C6.02977 5.71165 5.92132 5.79797 5.8333 5.90322C5.74764 6.00182 5.6828 6.11673 5.6427 6.24104C5.6026 6.36535 5.58807 6.49648 5.59997 6.62656C5.88414 9.37584 6.80703 12.0206 8.29497 14.3499C9.66772 16.5044 11.4955 18.3321 13.65 19.7049C15.9801 21.2097 18.6281 22.1523 21.385 22.4582C21.5283 22.4656 21.6716 22.4435 21.806 22.3934C21.9405 22.3432 22.0632 22.266 22.1666 22.1666C22.3524 21.9761 22.457 21.7209 22.4583 21.4549V18.6666C22.4636 18.421 22.3786 18.1821 22.2195 17.995C22.0604 17.808 21.8382 17.6858 21.595 17.6516C20.6311 17.5221 19.6843 17.2874 18.7716 16.9516C18.5918 16.8843 18.3966 16.8695 18.2087 16.9087C18.0208 16.9479 17.8479 17.0397 17.71 17.1732L16.5433 18.3399C16.4067 18.4731 16.2307 18.5587 16.0415 18.5839C15.8523 18.6091 15.6601 18.5727 15.4933 18.4799C13.0038 17.0731 10.9433 15.0166 9.53164 12.5299C9.43501 12.3642 9.39632 12.171 9.42167 11.9809C9.44702 11.7908 9.53497 11.6145 9.67164 11.4799L10.8383 10.3132C10.9721 10.1779 11.0641 10.007 11.1034 9.8208C11.1427 9.63462 11.1277 9.44106 11.06 9.26322C10.7232 8.35081 10.4884 7.40394 10.36 6.43989C10.331 6.18937 10.2099 5.95859 10.0201 5.79252C9.83027 5.62646 9.58545 5.53699 9.3333 5.54156Z" fill="currentColor"/>
+            </symbol>
+
+            <symbol viewBox="0 0 28 28"
+                 id="location-sprite-icon"
+                 fill="none">
+                <path d="M14 19.8335L15.1666 17.5002V11.5012C17.1745 10.9797 18.6666 9.16783 18.6666 7.00016C18.6666 4.4265 16.5736 2.3335 14 2.3335C11.4263 2.3335 9.33331 4.4265 9.33331 7.00016C9.33331 9.16783 10.8255 10.9797 12.8333 11.5012V17.5002L14 19.8335ZM11.6666 7.00016C11.6666 5.71333 12.7131 4.66683 14 4.66683C15.2868 4.66683 16.3333 5.71333 16.3333 7.00016C16.3333 8.287 15.2868 9.3335 14 9.3335C12.7131 9.3335 11.6666 8.287 11.6666 7.00016Z" fill="currentColor"/>
+                <path d="M18.9781 12.3234L18.3563 14.5728C21.3791 15.4081 23.3333 17.0146 23.3333 18.6666C23.3333 20.8739 19.5008 23.3333 14 23.3333C8.49915 23.3333 4.66665 20.8739 4.66665 18.6666C4.66665 17.0146 6.62081 15.4081 9.64481 14.5716L9.02298 12.3223C4.89648 13.4633 2.33331 15.8934 2.33331 18.6666C2.33331 22.5913 7.45848 25.6666 14 25.6666C20.5415 25.6666 25.6666 22.5913 25.6666 18.6666C25.6666 15.8934 23.1035 13.4633 18.9781 12.3234Z" fill="currentColor"/>
+            </symbol>
+
+            <symbol viewBox="0 0 11 18"
+                    id="chevron-left-sprite-icon"
+                    fill="none">
+                <path d="M10 1L2 9L10 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </symbol>
+
+            <symbol viewBox="0 0 512 512"
+                    id="chevron-down-sprite-icon">
+                <path fill="currentColor"
+                      d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+            </symbol>
+
+
+            <symbol viewBox="0 0 127 16"
+                    fill="none"
+                    id="logo-sprite-icon"
+                    xmlns="http://www.w3.org/2000/svg">
+                <path d="M30.0229 1.19149V1.57447C29.5029 1.70213 29.0696 1.82979 28.7663 2.08511C28.3763 2.42553 27.9863 2.93617 27.6829 3.65957L22.3096 15.8298H21.8763L16.0696 3.48936C15.7663 2.85106 15.5496 2.46808 15.4196 2.34042C15.2463 2.12766 14.9863 1.95745 14.7263 1.82979C14.4663 1.70213 14.0763 1.61702 13.5996 1.61702V1.19149H19.9263V1.57447C19.1896 1.61702 18.7563 1.74468 18.5396 1.91489C18.3229 2.08511 18.2363 2.29787 18.2363 2.55319C18.2363 2.89362 18.4096 3.44681 18.7563 4.21276L22.6996 12.5957L26.3829 4.29787C26.7296 3.48936 26.9029 2.93617 26.9029 2.59574C26.9029 2.38298 26.7729 2.21276 26.5563 2C26.3396 1.82979 25.9496 1.70213 25.4296 1.61702C25.3863 1.61702 25.3429 1.61702 25.2563 1.57447V1.19149H30.0229Z" fill="#001A3F"/>
+                <path d="M35.2667 10.7234H29.2434L28.2034 12.9787C27.9434 13.5319 27.8134 13.9574 27.8134 14.2128C27.8134 14.4255 27.9434 14.6383 28.16 14.8085C28.3767 14.9787 28.8534 15.0638 29.6334 15.1489V15.5319H24.6934V15.1489C25.3434 15.0638 25.7767 14.8936 25.95 14.7234C26.34 14.383 26.7734 13.7021 27.25 12.6808L32.71 0.893616H33.1L38.5167 12.8085C38.95 13.7447 39.34 14.383 39.6867 14.6809C40.0334 14.9787 40.5534 15.1064 41.16 15.1489V15.5319H35.05V15.1489C35.6567 15.1064 36.09 15.0213 36.3067 14.8511C36.5234 14.6808 36.6534 14.5106 36.6534 14.2553C36.6534 13.9574 36.48 13.4468 36.1767 12.8085L35.2667 10.7234ZM34.92 9.95745L32.2767 4.17021L29.59 9.95745H34.92Z" fill="#001A3F"/>
+                <path d="M13.0365 2.97872C12.3432 2.29787 11.5632 1.78723 10.6965 1.44681C10.6965 1.82979 10.7832 2.76596 11.0432 3.06383C12.0832 4.25532 12.6032 6.0851 12.6032 8.55319C12.6032 10.8085 12.1265 12.4681 11.1732 13.5319C10.2198 14.5957 9.0065 15.1064 7.5765 15.1064C6.18983 15.1064 5.1065 14.6383 4.28316 13.6596C3.19983 12.383 2.6365 10.5957 2.6365 8.25532C2.6365 6.29787 3.0265 4.76596 3.8065 3.61702L3.76316 3.57447C3.6765 3.48936 3.58983 3.3617 3.5465 3.23404C3.50316 3.19149 3.45983 3.14894 3.37316 3.06383C3.32983 3.02128 3.2865 2.97872 3.19983 2.97872C3.11316 2.93617 3.0265 2.93617 2.93983 2.89362C2.80983 2.85106 2.67983 2.76596 2.54983 2.7234C2.54983 2.7234 2.54983 2.7234 2.5065 2.76596C0.816497 4.21276 -0.00683594 6.04255 -0.00683594 8.34042C-0.00683594 10.5532 0.729831 12.383 2.15983 13.7872C3.63316 15.1915 5.40983 15.8723 7.53316 15.8723C9.6565 15.8723 11.4332 15.1489 12.9498 13.7021C14.4232 12.2553 15.1598 10.4681 15.1598 8.29787C15.2465 6.17021 14.5098 4.42553 13.0365 2.97872Z" fill="#001A3F"/>
+                <path d="M53.7267 1.02128V5.91489H53.2934C53.1634 4.97872 52.9034 4.21277 52.5567 3.65957C52.21 3.10638 51.69 2.6383 51.04 2.34043C50.39 2 49.6967 1.82979 49.0034 1.82979C48.18 1.82979 47.53 2.04255 47.01 2.51064C46.49 2.93617 46.23 3.44681 46.23 4.04255C46.23 4.46809 46.4034 4.85106 46.7067 5.23404C47.1834 5.74468 48.31 6.46808 50.13 7.31915C51.6034 8.04255 52.6 8.59575 53.12 8.93617C53.64 9.31915 54.0734 9.74468 54.3767 10.2979C54.68 10.8085 54.81 11.3617 54.81 11.9149C54.81 12.9787 54.3334 13.9149 53.4234 14.6809C52.5134 15.4468 51.3 15.8298 49.87 15.8298C49.4367 15.8298 49.0034 15.7872 48.57 15.7447C48.31 15.7021 47.8334 15.5745 47.0967 15.3617C46.36 15.1489 45.8834 15.0213 45.6667 15.0213C45.4934 15.0213 45.32 15.0638 45.19 15.1915C45.06 15.3191 45.0167 15.5319 44.93 15.8298H44.4967V10.9787H44.93C45.1467 12 45.4067 12.766 45.7534 13.2766C46.1 13.7872 46.62 14.2128 47.3134 14.5532C48.0067 14.8936 48.7867 15.0638 49.61 15.0638C50.5634 15.0638 51.3434 14.8511 51.9067 14.383C52.47 13.9149 52.73 13.3617 52.73 12.766C52.73 12.4255 52.6434 12.0851 52.4267 11.7021C52.21 11.3617 51.8634 11.0213 51.43 10.7234C51.1267 10.5106 50.3034 10.0851 48.96 9.40425C47.6167 8.7234 46.6634 8.17021 46.1 7.78723C45.5367 7.3617 45.1034 6.93617 44.8 6.46808C44.4967 6 44.3667 5.44681 44.3667 4.85106C44.3667 3.82979 44.8 2.93617 45.6667 2.21277C46.5334 1.48936 47.6167 1.10638 48.96 1.10638C49.7834 1.10638 50.6934 1.2766 51.6034 1.65957C52.0367 1.82979 52.34 1.91489 52.5134 1.91489C52.73 1.91489 52.86 1.87234 52.99 1.74468C53.12 1.61702 53.2067 1.40426 53.2934 1.10638H53.7267V1.02128Z" fill="#001A3F"/>
+                <path d="M69.2835 1.31915L69.4568 4.6383H69.0234C68.9368 4.04255 68.8068 3.61702 68.6768 3.40426C68.4168 3.02128 68.1134 2.7234 67.7234 2.51064C67.3334 2.29787 66.8135 2.21277 66.1635 2.21277H63.9535V13.0638C63.9535 13.9149 64.0401 14.4681 64.2568 14.6809C64.5601 14.9787 64.9935 15.1064 65.6001 15.1064H66.1635V15.4894H59.5335V15.1064H60.0968C60.7468 15.1064 61.2235 14.9362 61.5268 14.5532C61.7001 14.3404 61.7868 13.8298 61.7868 13.0213V2.21277H59.9234C59.1868 2.21277 58.6668 2.25532 58.3635 2.34043C57.9735 2.46809 57.6268 2.7234 57.3234 3.10638C57.0201 3.48936 56.8901 4 56.8035 4.6383H56.3701L56.5435 1.31915H69.2835Z" fill="#001A3F"/>
+                <path d="M80.8532 1.70213V1.31915H86.3999V1.70213H85.7932C85.1866 1.70213 84.7099 1.91489 84.3632 2.38298C84.1899 2.59574 84.1032 3.10638 84.1032 3.87234V9.61702C84.1032 11.0213 83.9299 12.1277 83.6266 12.9362C83.3232 13.7021 82.7165 14.383 81.8065 14.9362C80.8965 15.4894 79.6399 15.7872 78.0799 15.7872C76.3899 15.7872 75.0899 15.5319 74.1799 14.9787C73.3132 14.4255 72.6632 13.7021 72.3165 12.8085C72.0565 12.1702 71.9266 11.0213 71.9266 9.31915V3.78723C71.9266 2.93617 71.7965 2.34043 71.5365 2.08511C71.2765 1.82979 70.8432 1.65957 70.2365 1.65957H69.6299V1.31915H76.4332V1.70213H75.8266C75.1766 1.70213 74.6999 1.87234 74.4399 2.25532C74.2665 2.51064 74.1365 3.02128 74.1365 3.82979V10C74.1365 10.5532 74.1799 11.1915 74.3099 11.8723C74.4399 12.5532 74.6132 13.1489 74.9165 13.5319C75.2199 13.9149 75.6532 14.2553 76.1732 14.5106C76.7365 14.766 77.3866 14.8936 78.2099 14.8936C79.2499 14.8936 80.1599 14.6808 80.9399 14.2979C81.7199 13.9149 82.2832 13.3617 82.5865 12.766C82.8899 12.1277 83.0199 11.0638 83.0199 9.57447V3.82979C83.0199 2.93617 82.9332 2.38298 82.7165 2.17021C82.4132 1.87234 81.9799 1.70213 81.3732 1.70213H80.8532Z" fill="#001A3F"/>
+                <path d="M86.5732 15.5319V15.1489H87.1799C87.8299 15.1489 88.3066 14.9362 88.6099 14.5532C88.7832 14.3404 88.8699 13.7872 88.8699 13.0213V3.82979C88.8699 2.93617 88.7399 2.38298 88.5666 2.17021C88.2632 1.87234 87.8299 1.70213 87.2232 1.70213H86.6166V1.31915H92.9866C95.3266 1.31915 97.1032 1.57447 98.3166 2.04255C99.5299 2.51064 100.527 3.31915 101.263 4.46809C102 5.57447 102.39 6.89362 102.39 8.34043C102.39 10.2979 101.74 11.9574 100.397 13.2766C98.9232 14.766 96.6266 15.4894 93.5932 15.4894H86.5732V15.5319ZM91.0366 14.5106C92.0332 14.7234 92.8566 14.8085 93.5066 14.8085C95.2832 14.8085 96.7999 14.2553 97.9699 13.1064C99.1399 11.9574 99.7466 10.4255 99.7466 8.46808C99.7466 6.51064 99.1399 4.97872 97.9699 3.82979C96.7999 2.68085 95.2832 2.12766 93.4199 2.12766C92.7266 2.12766 91.9466 2.21277 91.0366 2.42553V14.5106Z" fill="#001A3F"/>
+                <path d="M110.103 15.1489V15.5319H103.387V15.1489H103.95C104.6 15.1489 105.077 14.9787 105.38 14.6383C105.553 14.4255 105.64 13.8723 105.64 13.0213V3.82979C105.64 3.10638 105.597 2.6383 105.51 2.42553C105.423 2.25532 105.293 2.08511 105.033 1.95745C104.687 1.78723 104.34 1.70213 103.95 1.70213H103.387V1.31915H110.103V1.70213H109.54C108.89 1.70213 108.413 1.87234 108.153 2.21277C107.98 2.42553 107.85 2.97872 107.85 3.82979V12.9787C107.85 13.7021 107.893 14.1702 107.98 14.383C108.067 14.5532 108.24 14.7234 108.457 14.8511C108.803 15.0213 109.15 15.1064 109.497 15.1064H110.103V15.1489Z" fill="#001A3F"/>
+                <path d="M118.857 1.02128C120.893 1.02128 122.67 1.70213 124.143 3.10638C125.617 4.51064 126.397 6.25532 126.397 8.34043C126.397 10.5106 125.66 12.2979 124.143 13.7021C122.627 15.1064 120.807 15.8298 118.683 15.8298C116.517 15.8298 114.697 15.1489 113.223 13.7447C111.75 12.3404 111.013 10.5532 111.013 8.34043C111.013 6.08511 111.88 4.25532 113.57 2.80851C115.043 1.61702 116.82 1.02128 118.857 1.02128ZM118.64 1.78723C117.253 1.78723 116.127 2.25532 115.26 3.19149C114.22 4.38298 113.657 6.08511 113.657 8.34043C113.657 10.6383 114.22 12.4255 115.303 13.7021C116.127 14.6383 117.253 15.1064 118.64 15.1064C120.113 15.1064 121.327 14.5957 122.28 13.5319C123.233 12.5106 123.71 10.8511 123.71 8.6383C123.71 6.21277 123.19 4.38298 122.107 3.19149C121.327 2.25532 120.157 1.78723 118.64 1.78723Z" fill="#001A3F"/>
+                <path d="M10.6963 9.53191C10.6963 9.44681 10.6963 9.3617 10.653 9.2766C10.6096 9.19149 10.6096 9.06383 10.5663 8.97872C10.6096 8.93617 10.6096 8.89362 10.653 8.85106C10.653 8.76596 10.6096 8.7234 10.5663 8.6383C10.5663 8.6383 10.523 8.6383 10.523 8.59574C10.523 8.55319 10.133 7.23404 10.0896 6.55319C10.0896 6.42553 10.0896 6.29787 10.0896 6.17021C10.0896 5.95745 10.0896 5.74468 10.0896 5.61702C10.0463 5.48936 10.003 5.3617 9.9163 5.23404C9.82963 5.06383 9.74297 4.89362 9.74297 4.7234C9.74297 4.68085 9.69963 4.59574 9.69963 4.55319C9.6563 4.46808 9.6563 4.38298 9.6563 4.29787C9.6563 4.21277 9.69963 4.12766 9.69963 4.08511C9.74297 4 9.74297 3.95745 9.74297 3.87234C9.7863 3.82979 9.7863 3.74468 9.7863 3.70213V3.65957H9.74297C9.69963 3.44681 9.6563 3.23404 9.5263 3.10638C9.43963 3.02128 9.22297 2.76596 9.17963 2.7234C9.22297 2.68085 9.2663 2.59574 9.30963 2.55319C9.43963 2.29787 9.56963 2.04255 9.61297 1.78723C9.6563 1.74468 9.74297 1.57447 9.82963 1.27659C9.87297 1.14894 9.9163 1.02128 9.95963 0.978723L10.003 0.936169H9.95963C9.82963 0.936169 9.7863 0.936169 9.6563 0.978723C9.6563 0.936169 9.6563 0.893616 9.61297 0.851063V0.80851H9.56963C9.1363 0.851063 8.7463 1.10638 8.44297 1.40425C8.44297 1.23404 8.2263 1.14894 8.05297 1.10638C7.35963 1.02128 6.6663 1.31915 6.05963 1.61702C5.79963 1.74468 5.4963 1.87234 5.19297 1.95745C4.80297 2.08511 4.36963 2.17021 3.9363 2.25532C3.84963 2.25532 3.76297 2.29787 3.71963 2.29787C3.5463 2.34043 3.32963 2.38298 3.1563 2.42553C2.41963 2.93617 2.07297 3.53191 1.7263 4.25532C1.37963 5.02128 1.29297 5.87234 1.2063 6.7234C1.0763 7.74468 1.03297 8.80851 1.16297 9.82979C1.2063 10.2128 1.3363 10.5957 1.4663 10.9787C2.02963 10.2553 2.67963 9.65957 3.45963 9.14894C4.0663 8.7234 4.5863 8.59574 4.9763 8.7234C4.9763 8.76596 5.01963 8.76596 5.01963 8.80851C5.14963 9.02128 5.3663 9.19149 5.58297 9.3617C5.66963 9.40425 5.71297 9.48936 5.79963 9.53191C5.7563 9.57447 5.7563 9.65957 5.7563 9.74468C5.79963 9.78723 5.84297 9.82979 5.8863 9.87234C5.92963 9.91489 6.0163 9.95745 6.10297 10C6.10297 10 6.10297 10 6.1463 10C6.18963 10 6.5363 10.383 6.49297 10.4255V10.4681C6.44963 10.6383 6.62297 10.766 6.7963 10.8511C6.83963 10.8511 6.96963 10.8936 7.0563 10.9362C7.0563 10.9362 7.09963 10.9362 7.14297 10.9362C7.1863 10.9362 7.1863 10.9362 7.22963 10.9787C7.3163 11.0638 7.40297 11.1489 7.48963 11.234C7.61963 11.4043 7.79297 11.5319 7.87963 11.7021C8.00963 11.8723 8.00963 12 8.05297 12.2128C8.0963 12.4681 8.2263 12.8936 8.39963 13.1064C8.52963 13.234 8.78963 13.3617 9.0063 13.4043C9.09297 13.4043 9.17963 13.4043 9.2663 13.3617C9.69963 13.4043 10.0463 13.3617 10.4363 12.8936C10.4796 12.8511 10.5663 12.766 10.653 12.6809L10.6963 12.6383L10.7396 12.5957L10.783 12.5532C10.8263 12.5106 10.8696 12.4681 10.913 12.383C11.043 12.1702 11.043 11.9149 11.043 11.6596C11.043 11.617 11.043 11.5745 11.043 11.5319C10.913 10.7234 10.8263 10.1277 10.6963 9.53191Z" fill="#001A3F"/>
+            </symbol>
+
+            <symbol viewBox="0 0 14 9" id="chevron-up-sprite-icon">
+                <path d="M13 8L7 2L1 8"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"/>
+            </symbol>
+
+        </svg>
+
+        <header class="body-c__header header-c body-c__header_stick"
+                id="header">
+            <div class="header-c__content">
+                <div class="header-c__section header-c__section">
+                    <div class="header-c__logo">
+                        <svg class="header-c__logo-figure"
+                             viewBox="0 0 127 16">
+                            <use xlink:href="#logo-sprite-icon"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="header-c__section-2">
+                    <div class="header-c__logo-2">
+                        <svg class="header-c__logo-2-figure"
+                             viewBox="0 0 127 16">
+                            <use xlink:href="#logo-sprite-icon"></use>
+                        </svg>
+                    </div>
+                    <div class="header-c__menu header-c-menu">
+                        <a href="#about-section-head"
+                           data-related-component="header"
+                           onclick="(event) => event.preventDefault()"
+                           data-menu-item="about-section"
+                           class="header-c-menu__item">Про нас</a>
+                        <a href="#engine-section-head"
+                           onclick="(event) => event.preventDefault()"
+                           data-related-component="header"
+                           data-menu-item="engine-section"
+                           class="header-c-menu__item">Рушій</a>
+                        <a href="#services-section-head"
+                           onclick="(event) => event.preventDefault()"
+                           data-related-component="header"
+                           data-menu-item="services-section"
+                           class="header-c-menu__item">Послуги</a>
+                        <a href="#projects-section"
+                           onclick="(event) => event.preventDefault()"
+                           data-related-component="header"
+                           data-menu-item="projects-section"
+                           class="header-c-menu__item">Проєкти</a>
+                        <a href="#contacts-section-head"
+                           onclick="(event) => event.preventDefault()"
+                           data-related-component="header"
+                           data-menu-item="contacts-section"
+                           class="header-c-menu__item">Контакти</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="body-c__hamburger hamburger-button-c hamburger-button-c_stick"
+             id="hamburger-button">
+            <div class="hamburger-button-c__line hamburger-button-c__line_1"
+                 data-related-component="hamburger-button"
+                 data-line="line-1">
+                <svg viewBox="0 0 23 2"
+                     class="hamburger-button-c__line-figure">
+                    <use xlink:href="#hamburger-button-line-sprite-icon"></use>
+                </svg>
+            </div>
+            <div class="hamburger-button-c__line hamburger-button-c__line_2"
+                 data-related-component="hamburger-button"
+                 data-line="line-2">
+                <svg viewBox="0 0 23 2"
+                     class="hamburger-button-c__line-figure">
+                    <use xlink:href="#hamburger-button-line-sprite-icon"></use>
+                </svg>
+            </div>
+            <div class="hamburger-button-c__line hamburger-button-c__line_3"
+                 data-related-component="hamburger-button"
+                 data-line="line-3">
+                <svg viewBox="0 0 23 2"
+                     class="hamburger-button-c__line-figure">
+                    <use xlink:href="#hamburger-button-line-sprite-icon"></use>
+                </svg>
+            </div>
+            <div class="hamburger-button__cross"
+                 data-related-component="hamburger-button"
+                 data-cross="cross">
+                <svg viewbox="0 0 17 17" class="hamburger-button__cross-icon">
+                    <use xlink:href="#cross-2-sprite-icon"></use>
+                </svg>
+            </div>
+        </div>
+
+        <div class="body-c__hero hero-c" id="hero-section">
+            <div class="hero-c__canvas-container">
+                <canvas class="hero-c__canvas"
+                        id="hero-canvas"></canvas>
+                <div class="hero-c__canvas-surface"></div>
+            </div>
+
+            <div class="hero-c__content">
+                <div class="hero-c__section">
+                    <div class="hero-c__title">
+                        <span class="hero-c__title-text hero-c__title-text_accent">Програмне забезпечення та хостинг</span><br>
+                        <span class="hero-c__title-text">для вашого бізнесу</span>
+                    </div>
+                    <div class="hero-c__description">
+                        Забезпечуємо стабільність вашого проекту,<br>відповідаючи за всі технічні аспекти.
+                    </div>
+                    <button class="hero-c__action" id="hero-action">
+                        <span class="hero-c__action-text">Залишити заявку</span>
+                    </button>
+                </div>
+                <div class="hero-c__mobile-section">
+                    <div class="hero-c__mobile-title">
+                        <span class="hero-c__title-text hero-c__title-text_accent">Програмне забезпечення та хостингу</span> <span class="hero-c__title-text">для вашого бізнесу</span>
+                    </div>
+                    <div class="hero-c__mobile-description">
+                        Забезпечуємо стабільність вашого проекту,<br>відповідаючи за всі технічні аспекти.
+                    </div>
+                    <button class="hero-c__mobile-action" id="hero-action-2">
+                        Залишити заявку
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="body__tags-section"
+             id="about-section">
+            <div class="body-с__head head-c" id="about-section-head">
+                <div class="head-c__content">
+                    <div class="head-c__text">Про нас</div>
+                </div>
+            </div>
+            <div class="body-с__tags tags-c">
+                <div class="tags-c__content">
+                    <div class="tags-c__mobile-title">
+                        <span class="tags-c__text">Ми – професіонали, до яких звертаються</span>
+                        <span class="tags-c__text_accent">за вирішенням</span>
+                        <span class="tags-c__text">складних завдань.</span>
+                    </div>
+                    <div class="tags-c__tablet-title">
+                        <span class="tags-c__text">Ми – професіонали, до яких звертаються</span><br><span class="tags-c__text_accent">за вирішенням</span> <span class="tags-c__text">складних завдань.</span>
+                    </div>
+                    <div class="tags-c__desktop-title">
+                        <span class="tags-c__text">Ми – професіонали, до яких<br></span> <span class="tags-c__text">звертаються</span> <span class="tags-c__text tags-c__text_accent">за вирішенням</span><br><span class="tags-c__text">складних завдань</span>
+                    </div>
+
+                    <div class="tags-c__tags tags-c__tags_mobile">
+                        <div class="tags-c__tag">Рішення "під ключ"</div>
+                        <div class="tags-c__tag">Єдиний центр відповідальності</div>
+                        <div class="tags-c__tag">Швидкі сервери та канали зв’язку</div>
+                        <div class="tags-c__tag">Масштабованість</div>
+                        <div class="tags-c__tag">Надійна інфраструктура</div>
+                        <div class="tags-c__tag">Підтримка 24/7</div>
+                    </div>
+                    <div class="tags-c__tags tags-c__tags_non-mobile">
+                        <div class="tags-c__tag">Рішення "під ключ"</div>
+                        <div class="tags-c__tag">Єдиний центр відповідальності</div>
+                        <div class="tags-c__tag">Надійна інфраструктура</div>
+                        <div class="tags-c__tag">Швидкі сервери та канали зв’язку</div>
+                        <div class="tags-c__tag">Масштабованість</div>
+                        <div class="tags-c__tag">Підтримка 24/7</div>
+                    </div>
+                    <div class="tags-c__tags tags-c__tags_non-mobile-2">
+                        <div class="tags-c__tag">Рішення "під ключ"</div>
+                        <div class="tags-c__tag">Єдиний центр відповідальності</div>
+                        <div class="tags-c__tag">Швидкі сервери та канали зв’язку</div>
+                        <div class="tags-c__tag">Масштабованість</div>
+                        <div class="tags-c__tag">Надійна інфраструктура</div>
+                        <div class="tags-c__tag">Підтримка 24/7</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-c__list-section" id="engine-section">
+            <div class="body-с__head body-с__head_engine head-c" id="engine-section-head">
+                <div class="head-c__content">
+                    <div class="head-c__text">Рушій OVA Studio</div>
+                </div>
+            </div>
+            <div class="body-с__list list-c">
+                <div class="list-c__content">
+                    <div class="list-c__title">
+                        <span class="list-c__text">Чому обирають</span> <span class="list-c__text list-c__text_accent">OVA Engine?</span>
+                    </div>
+                    <div class="list-c__items-action-section">
+                        <div class="list-c__items">
+                            <a class="list-c__item"
+                               href="#hero-section"
+                               id="list-c-item-1">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">000</span>
+                                    <span class="list-c__label">Неперевершена швидкодія</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Оптимізована архітектура гарантує блискавичне завантаження контенту, стійкість до DDoS-атак та високу продуктивність навіть при пікових навантаженнях.
+                                </span>
+                            </a>
+                            <a class="list-c__item"
+                               href="#hero-section"
+                               id="list-c-item-2">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">010</span>
+                                    <span class="list-c__label">Гнучка робота з медіа</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Підтримка AV1, адаптивних зображень та відео без сторонніх обмежень. Чітке відтворення з мінімальним навантаженням на сервер та плавною інтеграцією у будь-який контент.
+                                </span>
+                            </a>
+                            <a class="list-c__item"
+                               href="#hero-section"
+                               id="list-c-item-3">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">011</span>
+                                    <span class="list-c__label">Розумне керування рекламою</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Динамічний рендер зберігає високу швидкість сайту. Система ротації реклами забезпечує видимість без перевантаження сторінки зайвим кодом.
+                                </span>
+                            </a>
+                            <a class="list-c__item"
+                               id="list-c-item-4"
+                               href="#hero-section">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">100</span>
+                                    <span class="list-c__label">Оптимізована пошукова видача</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Rich Results та AMP підвищують видимість у Google та покращують CTR. Рушій автоматично створює RSS для новинних агрегаторів.
+                                </span>
+                            </a>
+                            <a class="list-c__item"
+                               id="list-c-item-5"
+                               href="#hero-section">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">101</span>
+                                    <span class="list-c__label">Контент із соцмереж без втрат</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Збереження інформації навіть після видалення допису. Контент завантажується лише після кліку, забезпечуючи стабільні SEO-показники.
+                                </span>
+                            </a>
+                            <a class="list-c__item"
+                               id="list-c-item-6"
+                               href="#hero-section">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">110</span>
+                                    <span class="list-c__label">Розширена система коментарів</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Індексація коментарів у пошукових системах, вкладена структура для дискусій. Вхід
+                                    через соцмережі або анонімно для максимальної зручності.
+                                </span>
+                            </a>
+                            <a class="list-c__item"
+                               id="list-c-item-7"
+                               href="#hero-section">
+                                <span class="list-c__item-title">
+                                    <span class="list-c__hint">111</span>
+                                    <span class="list-c__label">Мультимедійна галерея</span>
+                                </span>
+                                <span class="list-c__item-content">
+                                    Автоматичне підлаштування, плавна анімація, пінч-зум і свайпи. Підтримка аудіо,
+                                    відео, PDF та можливість кількох галерей на одній сторінці.
+                                </span>
+                            </a>
+                        </div>
+                        <button id="list-component-action" class="list-c__action list-c__action_sticky-header">
+                            <span class="list-c__action-text">Спробувати демо</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="body-c__list-section-gradient-2">
+                <img class="body-c__list-section-gradient-2-image"
+                     alt="Gradient"
+                     src="static/images/list-section/ellipse.svg">
+            </div>
+            <img class="body-c__list-section-surface"
+                 alt="Pluck"
+                 src="static/images/list-section/surface.png">
+            <img class="body-c__list-section-desktop-surface"
+                 alt="Pluck"
+                 src="static/images/list-section/desktop-surface.png">
+        </div>
+
+        <div class="body-c__info-list-section" id="info-list">
+            <div class="body-с__head body-с__head_info-list head-c"
+                 id="services-section-head">
+                <div class="head-c__content">
+                    <div class="head-c__text">Послуги</div>
+                </div>
+            </div>
+            <div class="body-с__info-list info-list-c">
+                <div class="info-list-c__content">
+                    <div class="info-list-c__mobile-title">
+                        <span class="info-list-c__title-text">Пропонуємо</span> <span class="info-list-c__title-text info-list-c__title-text_accent">комплексні<br> рішення</span> <span class="info-list-c__text">вашої проблеми</span>
+                    </div>
+                    <div class="info-list-c__non-mobile-title">
+                        <span class="info-list-c__title-text">Пропонуємо</span> <span class="info-list-c__title-text info-list-c__title-text_accent">комплексні рішення</span> <span class="info-list-c__text">вашої проблеми</span>
+                    </div>
+                    <div class="info-list-c__items">
+                        <div class="info-list-c__divider"></div>
+                        <div class="info-list-c__item">
+                            <div class="info-list-c__tab-section">
+                                <div class="info-list-c__tab"
+                                     data-tab="item-1"
+                                     data-related-component="info-list">
+                                    <img src="static/images/info-list/software-development.png"
+                                         alt="Software development"
+                                         class="info-list-c__tab-image">
+                                    <div class="info-list-c__title-action">
+                                        <div class="info-list-c__title">Розробка ПЗ</div>
+                                        <div class="info-list-c__action">
+                                            <svg class="info-list-c__action-figure"
+                                                 viewbox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-list-c__tab-body"
+                                     data-body="item-1"
+                                     data-related-component="info-list">
+                                    <div class="info-list-c__tab-content"
+                                         data-related-component="info-list"
+                                         data-content="item-1">
+                                        <div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Створення програмних рішень для бізнесу</span> <span class="info-list-c__text">– автоматизація процесів, управління контентом, інтеграція зовнішніх систем.</span></div>
+                                        <div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Розробка білінгових систем для інтернет-провайдерів</span> <span class="info-list-c__text">– автоматизація обліку послуг, управління тарифами, інтеграція з системами зв’язку та платіжними системами.</span></div>
+                                        <div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Впровадження SIP-телефонії</span> <span class="info-list-c__text">– налаштування VoIP-систем, інтеграція з CRM, автоматизація дзвінків.</span></div>
+                                        <div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Розробка та підтримка корпоративних CRM/ERP-систем</span> <span class="info-list-c__text">– управління клієнтами, фінансовий облік, аналітика.</span></div>
+                                        <div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Міграція та адаптація застарілих проєктів</span> <span class="info-list-c__text">– оновлення технологій, модернізація архітектури, перенесення даних.</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-list-c__row-section">
+                                <img src="static/images/info-list/software-development.png"
+                                     alt="Software development"
+                                     class="info-list-c__row-image">
+                                <div class="info-list-c__row-data">
+                                    <div class="info-list-c__row-title">Розробка ПЗ</div>
+                                    <div class="info-list-c__row-content">
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Створення програмних рішень для бізнесу</span> <span class="info-list-c__row-text">– автоматизація процесів, управління контентом, інтеграція зовнішніх систем.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Розробка білінгових систем для інтернет-провайдерів</span> <span class="info-list-c__row-text">– автоматизація обліку послуг,  управління тарифами, інтеграція з системами зв’язку та платіжними системами.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Впровадження SIP-телефонії</span> <span class="info-list-c__row-text">– налаштування VoIP-систем, інтеграція з CRM, автоматизація дзвінків.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Розробка та підтримка корпоративних CRM/ERP-систем</span> <span class="info-list-c__row-text">– управління клієнтами, фінансовий облік, аналітика.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Міграція та адаптація застарілих проєктів</span> <span class="info-list-c__row-text">– оновлення технологій, модернізація архітектури, перенесення даних.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-list-c__divider"></div>
+                        <div class="info-list-c__item">
+                            <div class="info-list-c__tab-section">
+                                <div class="info-list-c__tab"
+                                     data-tab="item-2"
+                                     data-related-component="info-list">
+                                    <img src="static/images/info-list/projects-hosting.png"
+                                         alt="Projects hosting"
+                                         class="info-list-c__tab-image">
+                                    <div class="info-list-c__title-action">
+                                        <div class="info-list-c__title">Хостинг проєктів замовника</div>
+                                        <div class="info-list-c__action">
+                                            <svg class="info-list-c__action-figure"
+                                                 viewbox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-list-c__tab-body"
+                                     data-body="item-2"
+                                     data-related-component="info-list">
+                                    <div class="info-list-c__tab-content"
+                                         data-related-component="info-list"
+                                         data-content="item-2"
+                                    ><div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Віртуальний хостинг (Shared Hosting)</span> <span class="info-list-c__text">– оптимальне рішення для невеликих сайтів із загальними ресурсами.</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">VPS/VDS-хостинг</span> <span class="info-list-c__text">– виділені ресурси для стабільної роботи проєктів із підвищеним  навантаженням</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">Колокація серверів (Colocation Hosting)</span> <span class="info-list-c__text">– розміщення обладнання клієнта у нашому датацентрі з обслуговуванням.</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">нфраструктурні рішення на базі власного обладнання</span> <span class="info-list-c__text">– розгортання серверних потужностей  із високошвидкісними каналами зв’язку.</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="info-list-c__row-section">
+                                <img src="static/images/info-list/projects-hosting.png"
+                                     alt="Projects hosting"
+                                     class="info-list-c__row-image">
+                                <div class="info-list-c__row-data">
+                                    <div class="info-list-c__row-title">Хостинг проєктів замовника</div>
+                                    <div class="info-list-c__row-content">
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Віртуальний хостинг (Shared Hosting)</span> <span class="info-list-c__row-text">– оптимальне рішення для невеликих сайтів із  загальними ресурсами.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">VPS/VDS-хостинг</span> <span class="info-list-c__row-text">– виділені ресурси для стабільної роботи проєктів із підвищеним  навантаженням.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Колокація серверів (Colocation Hosting)</span> <span class="info-list-c__row-text">– розміщення обладнання клієнта у нашому датацентрі з обслуговуванням.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Інфраструктурні рішення на базі власного обладнання</span> <span class="info-list-c__row-text">– розгортання серверних потужностей  із високошвидкісними каналами зв’язку.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-list-c__divider"></div>
+                        <div class="info-list-c__item">
+                            <div class="info-list-c__tab-section">
+                                <div class="info-list-c__tab"
+                                     data-tab="item-3"
+                                     data-related-component="info-list">
+                                    <img src="static/images/info-list/other-services.png"
+                                         alt="Other services"
+                                         class="info-list-c__tab-image">
+                                    <div class="info-list-c__title-action">
+                                        <div class="info-list-c__title">Інші послуги</div>
+                                        <div class="info-list-c__action">
+                                            <svg class="info-list-c__action-figure"
+                                                 viewbox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-list-c__tab-body"
+                                     data-body="item-3"
+                                     data-related-component="info-list">
+                                    <div class="info-list-c__tab-content"
+                                         data-related-component="info-list"
+                                         data-content="item-3"><div class="info-list-c__content-block"><span class="info-list-c__text info-list-c__text_accent">Будівництво волоконно-оптичних ліній зв’язку (ВОЛЗ)</span> <span class="info-list-c__text">– прокладання кабелю, магістральних  трас, використання існуючих комунікацій.</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">Монтаж структурованих кабельних систем (СКС)</span> <span class="info-list-c__text">– корпоративні мережі, відеонагляд, WiFi.</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">Встановлення та обслуговування систем резервного живлення</span> <span class="info-list-c__text">– UPS, гібридні рішення, автоматизація.</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">Проєктування та монтаж серверних кімнат</span> <span class="info-list-c__text">– розрахунок інфраструктури, організація  охолодження, закупівля та встановлення обладнання.</span>
+                                    </div>
+                                    <div class="info-list-c__content-block">
+                                        <span class="info-list-c__text info-list-c__text_accent">Монтаж та обслуговування IP-відеоспостереження та СКД</span> <span class="info-list-c__text">– проєктування, монтаж, налаштування.</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="info-list-c__row-section">
+                                <img src="static/images/info-list/other-services.png"
+                                     alt="Other services"
+                                     class="info-list-c__row-image">
+                                <div class="info-list-c__row-data">
+                                    <div class="info-list-c__row-title">Інші послуги</div>
+                                    <div class="info-list-c__row-content">
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Будівництво волоконно-оптичних ліній зв’язку (ВОЛЗ)</span> <span class="info-list-c__row-text">– прокладання кабелю, магістральних  трас, використання існуючих комунікацій.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Монтаж структурованих кабельних систем (СКС)</span> <span class="info-list-c__row-text">– корпоративні мережі, відеонагляд, WiFi.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Встановлення та обслуговування систем резервного живлення</span> <span class="info-list-c__row-text">– UPS, гібридні рішення, автоматизація.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Проєктування та монтаж серверних кімнат</span> <span class="info-list-c__row-text">– розрахунок інфраструктури, організація  охолодження, закупівля та встановлення обладнання.</span>
+                                        </div>
+                                        <div class="info-list-c__row-block">
+                                            <span class="info-list-c__row-text info-list-c__row-text_accent">Монтаж та обслуговування IP-відеоспостереження та СКД</span> <span class="info-list-c__row-text">– проєктування, монтаж, налаштування.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-list-c__divider"></div>
+                    </div>
+                </div>
+            </div>
+            <img src="static/images/services/tablet-surface.png"
+                 alt="Surface"
+                 class="body-c__info-list-surface">
+            <img src="static/images/services/tablet-surface.png"
+                 alt="Surface"
+                 class="body-c__info-desktop-surface">
+        </div>
+
+        <div class="body__slider-section" id="projects-section">
+            <div class="body-с__head head-c">
+                <div class="head-c__content">
+                    <div class="head-c__text">Проєкти</div>
+                </div>
+            </div>
+            <div class="body-c__cards cards-c">
+                <div class="cards-c__content">
+                    <div class="cards-c__mobile-title">
+                        <span class="cards-c__title-text">Оцініть</span> <span class="cards-c__title-text cards-c__title-text_accent">якість наших рішень</span><br><span class="cards-c__title-text">в деталях</span>
+                    </div>
+                    <div class="cards-c__non-mobile-title">
+                        <span class="cards-c__title-text">Оцініть</span> <span class="cards-c__title-text cards-c__title-text_accent">якість наших рішень</span> <span class="cards-c__title-text">в деталях</span>
+                    </div>
+
+                    <div class="cards-c__box" id="cards-box">
+                        <div class="cards-c__cards">
+                            <a class="cards-c__card"
+                               href="#hero-section"
+                               id="cards-slide-1">
+                                <span class="cards-c__card-figure">
+                                    <img src="static/images/cards/card.png"
+                                         alt="Card"
+                                         class="cards-c__card-image">
+                                </span>
+                                <span class="cards-c__card-info">
+                                    <span class="cards-c__card-title">Varta1</span>
+                                    <span class="cards-c__card-description">Портал новин Львівщини Портал новин Львівщини</span>
+                                </span>
+                            </a>
+                            <a class="cards-c__card"
+                               href="#hero-section"
+                               id="cards-slide-2">
+                                <span class="cards-c__card-figure">
+                                    <img src="static/images/cards/card.png"
+                                         alt="Card"
+                                         class="cards-c__card-image">
+                                </span>
+                                <span class="cards-c__card-info">
+                                    <span class="cards-c__card-title">Varta1</span>
+                                    <span class="cards-c__card-description">Портал новин Львівщини Портал новин Львівщини</span>
+                                </span>
+                            </a>
+                            <a class="cards-c__card"
+                               href="#hero-section"
+                               id="cards-slide-3">
+                                <span class="cards-c__card-figure">
+                                    <img src="static/images/cards/card.png"
+                                         alt="Card"
+                                         class="cards-c__card-image">
+                                </span>
+                                <span class="cards-c__card-info">
+                                    <span class="cards-c__card-title">Varta1</span>
+                                    <span class="cards-c__card-description">Портал новин Львівщини Портал новин Львівщини</span>
+                                </span>
+                            </a>
+                            <a class="cards-c__card"
+                               href="#hero-section"
+                               id="cards-slide-4">
+                                <span class="cards-c__card-figure">
+                                    <img src="static/images/cards/card.png"
+                                         alt="Card"
+                                         class="cards-c__card-image">
+                                </span>
+                                <span class="cards-c__card-info">
+                                    <span class="cards-c__card-title">Varta1</span>
+                                    <span class="cards-c__card-description">Портал новин Львівщини Портал новин Львівщини</span>
+                                </span>
+                            </a>
+                            <a class="cards-c__card"
+                               href="#hero-section"
+                               id="cards-slide-5">
+                                <span class="cards-c__card-figure">
+                                    <img src="static/images/cards/card.png"
+                                         alt="Card"
+                                         class="cards-c__card-image">
+                                </span>
+                                <span class="cards-c__card-info">
+                                    <span class="cards-c__card-title">Varta1</span>
+                                    <span class="cards-c__card-description">Портал новин Львівщини Портал новин Львівщини</span>
+                                </span>
+                            </a>
+                            <a class="cards-c__card"
+                               href="#hero-section"
+                               id="cards-slide-6">
+                                <span class="cards-c__card-figure">
+                                    <img src="static/images/cards/card.png"
+                                         alt="Card"
+                                         class="cards-c__card-image">
+                                </span>
+                                <span class="cards-c__card-info">
+                                    <span class="cards-c__card-title">Varta1</span>
+                                    <span class="cards-c__card-description">Портал новин Львівщини Портал новин Львівщини</span>
+                                </span>
+                            </a>
+                            <div class="cards-c__divider"></div>
+                        </div>
+                    </div>
+
+                    <div class="cards-c__arrows">
+                        <div class="cards-c__arrows-block">
+                            <div class="cards-c__arrow cards-c__arrow_left"
+                                 id="cards-left-arrow">
+                                <svg class="cards-c__arrow-icon"
+                                     viewBox="0 0 11 18">
+                                    <use xlink:href="#chevron-left-sprite-icon"></use>
+                                </svg>
+                            </div>
+                            <div class="cards-c__arrow cards-c__arrow_right"
+                                 id="cards-right-arrow">
+                                <svg class="cards-c__arrow-icon"
+                                     viewBox="0 0 11 18">
+                                    <use xlink:href="#chevron-right-sprite-icon"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-c__faq-section">
+            <div class="body-c__faq faq-c" id="faq">
+                <div class="faq-c__content">
+                    <div class="faq-c__title">Часті питання</div>
+                    <div class="faq-c__items faq-c__items_mobile-hidden">
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-1">
+                                <div class="faq-c__label-text">Чим ваш рушій відрізняється від стандартних популярних CMS?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-1" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-1" data-related-component="faq">Наш рушій працює за принципом підготовки інформації: контент
+                                    формується заздалегідь, і тільки коли все готово, він публікується. Це забезпечує високу
+                                    швидкість завантаження та стабільність сайту, навіть при великій кількості матеріалів та
+                                    відвідувачів.
+
+                                    У свою чергу, WordPress, Joomla та інші CMS працюють із динамічно згенерованим контентом, що
+                                    потребує складних систем кешування. Такі підходи стають неефективними при великих обсягах
+                                    даних – наприклад, якщо ваш сайт має понад 100 000 статей і часті оновлення контенту,
+                                    традиційні CMS починають втрачати продуктивність.
+
+                                    Наш підхід гарантує, що сайт витримує великі навантаження без втрати швидкості та не
+                                    потребує складних оптимізацій.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-2">
+                                <div class="faq-c__label-text">Які технології використовуються у вашому рушії?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-2" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-2" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-3">
+                                <div class="faq-c__label-text">Чи оптимізований рушій для пошукових систем?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-3" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-3" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-4">
+                                <div class="faq-c__label-text">На які типи інтернет-проєктів націлений ваш рушій?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-4" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-4" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-5">
+                                <div class="faq-c__label-text">Чи можна отримати доступ до вихідного коду рушія або розгорнути
+                                    його на власному сервері?
+                                </div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-5" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-5" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-6">
+                                <div class="faq-c__label-text">Чи можна перенести старий сайт на ваш рушій?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-6" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-6" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-7">
+                                <div class="faq-c__label-text">Чи надаєте ви технічну підтримку після запуску сайту?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-7" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-7" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-8">
+                                <div class="faq-c__label-text">Мені потрібен мобільний додаток на iPhone/Android. Що для цього
+                                    потрібно?
+                                </div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-8" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-8" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-9">
+                                <div class="faq-c__label-text">Як часто виходять оновлення рушія?</div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-9" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-9" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-10">
+                                <div class="faq-c__label-text">У мене є сайт, який працює на такій-то CMS, але щось пішло не
+                                    так, і тепер він у жахливому стані. Чи зможете ви його доробити?
+                                </div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-10" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-10" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__item">
+                            <div class="faq-c__label" data-related-component="faq" data-label="item-11">
+                                <div class="faq-c__label-text">Мій сайт постійно атакують. Чи є у вас досвід боротьби з такими
+                                    загрозами?
+                                </div>
+                                <div class="faq-c__label-action">
+                                    <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                        <use xlink:href="#chevron-down-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="faq-c__item-box" data-item-box="item-11" data-related-component="faq">
+                                <div class="faq-c__item-content" data-item-content="item-11" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisi
+                                    mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum pulvinar; cubilia
+                                    posuere auctor quisque placerat eget. Conubia duis amet convallis auctor et viverra ac
+                                    efficitur. Curae sodales ligula augue erat; porta malesuada tristique iaculis. Etiam et
+                                    convallis ullamcorper commodo nibh erat conubia suscipit. Malesuada amet elementum dolor et
+                                    odio ipsum.
+
+                                    Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada eu
+                                    nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien pretium
+                                    vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum lectus
+                                    imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer facilisi
+                                    ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non urna
+                                    sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque viverra,
+                                    dapibus non rutrum.
+
+                                    Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus tortor
+                                    nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur porttitor. Potenti
+                                    suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae cras tortor eros.
+                                    Adipiscing volutpat faucibus fames netus; consequat torquent elementum. Elit nisl egestas in
+                                    massa tincidunt mi a morbi. Et sollicitudin fermentum mauris sem, penatibus efficitur. Amet
+                                    ultrices taciti convallis nunc; quis parturient. Maecenas accumsan ante libero cubilia est
+                                    curabitur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-c__mobile-block">
+                        <div class="faq-c__preview-items" id="faq-preview-items">
+                            <div class="faq-c__item">
+                                <div class="faq-c__label" data-related-component="faq" data-label="item-12">
+                                    <div class="faq-c__label-text">Чим ваш рушій відрізняється від стандартних популярних CMS?
+                                    </div>
+                                    <div class="faq-c__label-action">
+                                        <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                            <use xlink:href="#chevron-down-sprite-icon"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item-box" data-related-component="faq" data-item-box="item-12">
+                                    <div class="faq-c__item-content" data-item-content="item-12" data-related-component="faq">Наш рушій працює за принципом підготовки інформації:
+                                        контент формується заздалегідь, і тільки коли все готово, він публікується. Це
+                                        забезпечує високу швидкість завантаження та стабільність сайту, навіть при великій
+                                        кількості матеріалів та відвідувачів.
+
+                                        У свою чергу, WordPress, Joomla та інші CMS працюють із динамічно згенерованим
+                                        контентом, що потребує складних систем кешування. Такі підходи стають неефективними при
+                                        великих обсягах даних – наприклад, якщо ваш сайт має понад 100 000 статей і часті
+                                        оновлення контенту, традиційні CMS починають втрачати продуктивність.
+
+                                        Наш підхід гарантує, що сайт витримує великі навантаження без втрати швидкості та не
+                                        потребує складних оптимізацій.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="faq-c__item">
+                                <div class="faq-c__label" data-related-component="faq" data-label="item-13">
+                                    <div class="faq-c__label-text">Які технології використовуються у вашому рушії?</div>
+                                    <div class="faq-c__label-action">
+                                        <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                            <use xlink:href="#chevron-down-sprite-icon"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item-box" data-item-box="item-13" data-related-component="faq">
+                                    <div class="faq-c__item-content" data-item-content="item-13" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                        Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                        pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                        auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                        tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia suscipit.
+                                        Malesuada amet elementum dolor et odio ipsum.
+
+                                        Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada
+                                        eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien
+                                        pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum
+                                        lectus imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer
+                                        facilisi ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non
+                                        urna sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque
+                                        viverra, dapibus non rutrum.
+
+                                        Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                        tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                        porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                        cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                        elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin fermentum
+                                        mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis parturient.
+                                        Maecenas accumsan ante libero cubilia est curabitur.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="faq-c__item">
+                                <div class="faq-c__label" data-related-component="faq" data-label="item-14">
+                                    <div class="faq-c__label-text">Чи оптимізований рушій для пошукових систем?</div>
+                                    <div class="faq-c__label-action">
+                                        <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                            <use xlink:href="#chevron-down-sprite-icon"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item-box" data-item-box="item-14" data-related-component="faq">
+                                    <div class="faq-c__item-content" data-item-content="item-14" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                        Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                        pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                        auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                        tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia suscipit.
+                                        Malesuada amet elementum dolor et odio ipsum.
+
+                                        Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada
+                                        eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien
+                                        pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum
+                                        lectus imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer
+                                        facilisi ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non
+                                        urna sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque
+                                        viverra, dapibus non rutrum.
+
+                                        Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                        tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                        porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                        cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                        elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin fermentum
+                                        mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis parturient.
+                                        Maecenas accumsan ante libero cubilia est curabitur.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="faq-c__item">
+                                <div class="faq-c__label" data-related-component="faq" data-label="item-15">
+                                    <div class="faq-c__label-text">На які типи інтернет-проєктів націлений ваш рушій?</div>
+                                    <div class="faq-c__label-action">
+                                        <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                            <use xlink:href="#chevron-down-sprite-icon"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item-box" data-item-box="item-15" data-related-component="faq">
+                                    <div class="faq-c__item-content" data-item-content="item-15" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                        Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                        pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                        auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                        tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia suscipit.
+                                        Malesuada amet elementum dolor et odio ipsum.
+
+                                        Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada
+                                        eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien
+                                        pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum
+                                        lectus imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer
+                                        facilisi ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non
+                                        urna sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque
+                                        viverra, dapibus non rutrum.
+
+                                        Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                        tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                        porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                        cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                        elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin fermentum
+                                        mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis parturient.
+                                        Maecenas accumsan ante libero cubilia est curabitur.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="faq-c__item">
+                                <div class="faq-c__label" data-related-component="faq" data-label="item-16">
+                                    <div class="faq-c__label-text">Чи можна отримати доступ до вихідного коду рушія або
+                                        розгорнути його на власному сервері?
+                                    </div>
+                                    <div class="faq-c__label-action">
+                                        <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                            <use xlink:href="#chevron-down-sprite-icon"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item-box" data-item-box="item-16" data-related-component="faq">
+                                    <div class="faq-c__item-content" data-item-content="item-16" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                        Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                        pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                        auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                        tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia suscipit.
+                                        Malesuada amet elementum dolor et odio ipsum.
+
+                                        Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada
+                                        eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien
+                                        pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum
+                                        lectus imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer
+                                        facilisi ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non
+                                        urna sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque
+                                        viverra, dapibus non rutrum.
+
+                                        Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                        tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                        porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                        cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                        elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin fermentum
+                                        mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis parturient.
+                                        Maecenas accumsan ante libero cubilia est curabitur.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="faq-c__item">
+                                <div class="faq-c__label" data-related-component="faq" data-label="item-17">
+                                    <div class="faq-c__label-text">Чи можна перенести старий сайт на ваш рушій?</div>
+                                    <div class="faq-c__label-action">
+                                        <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                            <use xlink:href="#chevron-down-sprite-icon"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item-box" data-item-box="item-17" data-related-component="faq">
+                                    <div class="faq-c__item-content" data-item-content="item-17" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                        Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                        pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                        auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                        tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia suscipit.
+                                        Malesuada amet elementum dolor et odio ipsum.
+
+                                        Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet malesuada
+                                        eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales tincidunt sapien
+                                        pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat vivamus fermentum
+                                        lectus imperdiet. Ut tempor odio ullamcorper urna mus montes tincidunt integer. Integer
+                                        facilisi ligula sem curae ligula, elit inceptos feugiat. Arcu aenean adipiscing hac non
+                                        urna sollicitudin fusce habitasse dignissim. Elementum pellentesque potenti natoque
+                                        viverra, dapibus non rutrum.
+
+                                        Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                        tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                        porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                        cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                        elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin fermentum
+                                        mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis parturient.
+                                        Maecenas accumsan ante libero cubilia est curabitur.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-c__rest-items" id="faq-rest-items">
+                            <div class="faq-c__rest-items-content" id="faq-rest-items-content">
+                                <div class="faq-c__item">
+                                    <div class="faq-c__label" data-related-component="faq" data-label="item-18">
+                                        <div class="faq-c__label-text">Чи надаєте ви технічну підтримку після запуску сайту?
+                                        </div>
+                                        <div class="faq-c__label-action">
+                                            <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-c__item-box" data-item-box="item-18" data-related-component="faq">
+                                        <div class="faq-c__item-content" data-item-content="item-18" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                            Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                            pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                            auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                            tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia
+                                            suscipit. Malesuada amet elementum dolor et odio ipsum.
+
+                                            Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet
+                                            malesuada eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales
+                                            tincidunt sapien pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat
+                                            vivamus fermentum lectus imperdiet. Ut tempor odio ullamcorper urna mus montes
+                                            tincidunt integer. Integer facilisi ligula sem curae ligula, elit inceptos feugiat.
+                                            Arcu aenean adipiscing hac non urna sollicitudin fusce habitasse dignissim.
+                                            Elementum pellentesque potenti natoque viverra, dapibus non rutrum.
+
+                                            Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                            tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                            porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                            cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                            elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin
+                                            fermentum mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis
+                                            parturient. Maecenas accumsan ante libero cubilia est curabitur.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item">
+                                    <div class="faq-c__label" data-related-component="faq" data-label="item-19">
+                                        <div class="faq-c__label-text">Мені потрібен мобільний додаток на iPhone/Android. Що для
+                                            цього потрібно?
+                                        </div>
+                                        <div class="faq-c__label-action">
+                                            <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-c__item-box" data-item-box="item-19" data-related-component="faq">
+                                        <div class="faq-c__item-content" data-item-content="item-19" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                            Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                            pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                            auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                            tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia
+                                            suscipit. Malesuada amet elementum dolor et odio ipsum.
+
+                                            Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet
+                                            malesuada eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales
+                                            tincidunt sapien pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat
+                                            vivamus fermentum lectus imperdiet. Ut tempor odio ullamcorper urna mus montes
+                                            tincidunt integer. Integer facilisi ligula sem curae ligula, elit inceptos feugiat.
+                                            Arcu aenean adipiscing hac non urna sollicitudin fusce habitasse dignissim.
+                                            Elementum pellentesque potenti natoque viverra, dapibus non rutrum.
+
+                                            Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                            tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                            porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                            cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                            elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin
+                                            fermentum mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis
+                                            parturient. Maecenas accumsan ante libero cubilia est curabitur.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item">
+                                    <div class="faq-c__label" data-related-component="faq" data-label="item-20">
+                                        <div class="faq-c__label-text">Як часто виходять оновлення рушія?</div>
+                                        <div class="faq-c__label-action">
+                                            <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-c__item-box" data-item-box="item-20" data-related-component="faq">
+                                        <div class="faq-c__item-content" data-item-content="item-20" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                            Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                            pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                            auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                            tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia
+                                            suscipit. Malesuada amet elementum dolor et odio ipsum.
+
+                                            Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet
+                                            malesuada eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales
+                                            tincidunt sapien pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat
+                                            vivamus fermentum lectus imperdiet. Ut tempor odio ullamcorper urna mus montes
+                                            tincidunt integer. Integer facilisi ligula sem curae ligula, elit inceptos feugiat.
+                                            Arcu aenean adipiscing hac non urna sollicitudin fusce habitasse dignissim.
+                                            Elementum pellentesque potenti natoque viverra, dapibus non rutrum.
+
+                                            Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                            tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                            porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                            cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                            elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin
+                                            fermentum mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis
+                                            parturient. Maecenas accumsan ante libero cubilia est curabitur.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item">
+                                    <div class="faq-c__label" data-related-component="faq" data-label="item-21">
+                                        <div class="faq-c__label-text">У мене є сайт, який працює на такій-то CMS, але щось
+                                            пішло не так, і тепер він у жахливому стані. Чи зможете ви його доробити?
+                                        </div>
+                                        <div class="faq-c__label-action">
+                                            <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-c__item-box" data-item-box="item-21" data-related-component="faq">
+                                        <div class="faq-c__item-content" data-item-content="item-21" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                            Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                            pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                            auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                            tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia
+                                            suscipit. Malesuada amet elementum dolor et odio ipsum.
+
+                                            Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet
+                                            malesuada eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales
+                                            tincidunt sapien pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat
+                                            vivamus fermentum lectus imperdiet. Ut tempor odio ullamcorper urna mus montes
+                                            tincidunt integer. Integer facilisi ligula sem curae ligula, elit inceptos feugiat.
+                                            Arcu aenean adipiscing hac non urna sollicitudin fusce habitasse dignissim.
+                                            Elementum pellentesque potenti natoque viverra, dapibus non rutrum.
+
+                                            Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                            tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                            porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                            cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                            elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin
+                                            fermentum mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis
+                                            parturient. Maecenas accumsan ante libero cubilia est curabitur.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="faq-c__item">
+                                    <div class="faq-c__label" data-related-component="faq" data-label="item-22">
+                                        <div class="faq-c__label-text">Мій сайт постійно атакують. Чи є у вас досвід боротьби з
+                                            такими загрозами?
+                                        </div>
+                                        <div class="faq-c__label-action">
+                                            <svg class="faq-c__label-action-figure" viewBox="0 0 512 512">
+                                                <use xlink:href="#chevron-down-sprite-icon"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-c__item-box" data-item-box="item-22" data-related-component="faq">
+                                        <div class="faq-c__item-content" data-item-content="item-22" data-related-component="faq">Lorem ipsum odor amet, consectetuer adipiscing elit.
+                                            Facilisi mi eros finibus cursus laoreet sem nam nisi. Platea suspendisse elementum
+                                            pulvinar; cubilia posuere auctor quisque placerat eget. Conubia duis amet convallis
+                                            auctor et viverra ac efficitur. Curae sodales ligula augue erat; porta malesuada
+                                            tristique iaculis. Etiam et convallis ullamcorper commodo nibh erat conubia
+                                            suscipit. Malesuada amet elementum dolor et odio ipsum.
+
+                                            Mus quisque dictum purus nec velit tellus posuere. Purus fusce pretium laoreet
+                                            malesuada eu nostra litora. Montes eros curabitur quam tellus nisi. Sodales
+                                            tincidunt sapien pretium vulputate non; ut fusce nostra. Natoque rutrum metus erat
+                                            vivamus fermentum lectus imperdiet. Ut tempor odio ullamcorper urna mus montes
+                                            tincidunt integer. Integer facilisi ligula sem curae ligula, elit inceptos feugiat.
+                                            Arcu aenean adipiscing hac non urna sollicitudin fusce habitasse dignissim.
+                                            Elementum pellentesque potenti natoque viverra, dapibus non rutrum.
+
+                                            Sem elit donec odio netus praesent accumsan magna. Mus consectetur feugiat penatibus
+                                            tortor nascetur egestas. Volutpat lobortis massa a iaculis finibus consectetur
+                                            porttitor. Potenti suscipit tempus libero orci ante cras odio. Nibh pretium mi vitae
+                                            cras tortor eros. Adipiscing volutpat faucibus fames netus; consequat torquent
+                                            elementum. Elit nisl egestas in massa tincidunt mi a morbi. Et sollicitudin
+                                            fermentum mauris sem, penatibus efficitur. Amet ultrices taciti convallis nunc; quis
+                                            parturient. Maecenas accumsan ante libero cubilia est curabitur.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="faq-c__action" id="faq-action">Показати ще</button>
+                    </div>
+                </div>
+            </div>
+            <div class="body-c__faq-gradient"></div>
+        </div>
+
+        <div class="body-c__form-section" id="contacts-section">
+            <div class="body-с__head head-c head-c_type-2 body-с__form-head" id="contacts-section-head">
+                <div class="head-c__content head-c__content_type-2">
+                    <div class="head-c__text head-c__text_type-2">Контакти</div>
+                </div>
+            </div>
+            <form class="body-c__form form-c" id="form">
+                <div class="form-c__content">
+                    <div class="form-c__title">Обговоримо ваш проєкт?</div>
+                    <div class="form-c__title-2">
+                        <span class="form-c__text-2">Залиште заявку, і ми запропонуємо</span><br>
+                        <span class="form-c__text-2 form-c__text-2_accent">ефективне рішення</span> <span class="form-c__text-2">вашої проблеми</span>
+                    </div>
+                    <div class="form-c__form-info-section">
+                        <div class="form-c__form form-c-form">
+                            <div class="form-c-form__hint">
+                                <span class="form-c-form__hint-text">Залиште заявку, і ми запропонуємо</span>
+                                <span class="form-c-form__hint-text-divider"> </span>
+                                <span class="form-c-form__hint-text form-c-form__hint-text_accent">ефективне рішення</span>
+                                <span class="form-c-form__hint-text-divider"> </span>
+                                <span class="form-c-form__hint-text">вашої проблеми</span>
+                            </div>
+                            <div class="form-c-form__fields">
+                                <label class="form-c-form__text-field"
+                                       data-field-container="name-form-field-input"
+                                       for="name-form-field-input">
+                                    <span class="form-c-form__text-field-label">Ваше ім’я</span>
+                                    <input class="form-c-form__text-field-input"
+                                           name="name"
+                                           id="name-form-field-input"
+                                           placeholder="Іван">
+                                </label>
+                                <label class="form-c-form__phone-field"
+                                       data-field-container="phone-form-field-input"
+                                       for="phone-form-field-input">
+                                    <span class="form-c-form__phone-field-label">Номер телефону</span>
+                                    <input class="form-c-form__text-field-input"
+                                           name="phone"
+                                           id="phone-form-field-input"
+                                           placeholder="Введіть ваш номер">
+                                </label>
+                                <button class="form-c-form__submit-field"
+                                        type="submit"
+                                        name="submit">
+                                    Надіслати
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-c__info form-c-info form-c-info_type-1">
+                            <div class="form-c-info__item">
+                                <div class="form-c-info__item-icon">
+                                    <svg viewBox="0 0 28 28"
+                                         class="form-c-info__item-svg">
+                                        <use xlink:href="#location-sprite-icon"></use>
+                                    </svg>
+                                </div>
+                                <div class="form-c-info__item-text-content">вул. Виговського, 53
+                                    м.Львів, 79054
+                                    Україна
+                                </div>
+                            </div>
+                            <a class="form-c-info__anchor-item" href="tel:+380634242087">
+                                <span class="form-c-info__item-icon">
+                                    <svg viewBox="0 0 28 28"
+                                         class="form-c-info__item-svg">
+                                        <use xlink:href="#phone-sprite-icon"></use>
+                                    </svg>
+                                </span>
+                                <span class="form-c-info__item-text">+38(063) 424-20-87</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-c__info form-c-info form-c-info_type-2">
+                        <div class="form-c-info__item">
+                            <div class="form-c-info__item-icon">
+                                <svg viewBox="0 0 28 28"
+                                     class="form-c-info__item-svg">
+                                    <use xlink:href="#location-sprite-icon"></use>
+                                </svg>
+                            </div>
+                            <div class="form-c-info__item-text-content">вул. Виговського, 53
+                                м.Львів, 79054
+                                Україна
+                            </div>
+                        </div>
+                        <a class="form-c-info__anchor-item" href="tel:+380634242087">
+                                <span class="form-c-info__item-icon">
+                                    <svg viewBox="0 0 28 28"
+                                         class="form-c-info__item-svg">
+                                        <use xlink:href="#phone-sprite-icon"></use>
+                                    </svg>
+                                </span>
+                            <span class="form-c-info__item-text">+38(063) 424-20-87</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+            <div class="body-c__form-gradient"></div>
+        </div>
+
+        <footer class="body-c__footer footer-c">
+            <div class="footer-c__content">
+                <div class="footer-c__items">
+                    <a href="#" class="footer-c__anchor-item">Privacy policy</a>
+                    <a href="#" class="footer-c__anchor-item">Terms of use</a>
+                </div>
+                <div class="footer-c__note">©2025 OVA STUDIO. Усі права захищено.</div>
+            </div>
+        </footer>
+
+        <div class="menu-c body-c__menu" id="menu">
+            <div class="menu-c__content">
+                <div class="menu-c__items">
+                    <a class="menu-c__anchor-item"
+                       data-menu-item="item-1"
+                       data-related-component="menu"
+                       href="#about-section-head">Про нас</a>
+                    <a class="menu-c__anchor-item"
+                       data-menu-item="item-2"
+                       data-related-component="menu"
+                       href="#engine-section-head">Рушій</a>
+                    <a class="menu-c__anchor-item"
+                       data-menu-item="item-3"
+                       data-related-component="menu"
+                       href="#services-section-head">Послуги</a>
+                    <a class="menu-c__anchor-item"
+                       data-menu-item="item-4"
+                       data-related-component="menu"
+                       href="#projects-section">Проєкти</a>
+                    <a class="menu-c__anchor-item"
+                       data-menu-item="item-5"
+                       data-related-component="menu"
+                       href="#contacts-section-head">Контакти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-c__form-modal modal-c" id="form-modal">
+            <div class="modal-c__inner">
+                <div class="modal-c__action" id="form-modal-action">
+                    <svg viewBox="0 0 15 15" class="modal-c__action-icon">
+                        <use xlink:href="#cross-sprite-icon"></use>
+                    </svg>
+                </div>
+                <div class="modal-c__content">
+                    <form class="modal-c__form-2 form-2-c"
+                          id="modal-form">
+                        <div class="form-2-c__title">
+                            <span class="form-2-c__title_text">Залиште заявку, і ми запропонуємо</span>
+                            <span class="form-2-c__title_text form-2-c__title_text_accent">ефективне рішення</span>
+                            <span class="form-2-c__title_text">вашої проблеми</span>
+                        </div>
+                        <div class="form-2-c__content">
+                            <div class="form-2-c__fields-section">
+                                <label class="form-2-c__label"
+                                       data-field-container="form-2-name-input"
+                                       for="form-2-name-input">
+                                    <span class="form-2-c__label-text">Ваше ім'я</span>
+                                    <input name="name"
+                                           class="form-2-c__input"
+                                           id="form-2-name-input"
+                                           placeholder="Іван">
+                                </label>
+                                <label class="form-2-c__label"
+                                       data-field-container="form-2-phone-input"
+                                       for="form-2-phone-input">
+                                    <span class="form-2-c__label-text">Номер телефону</span>
+                                    <input name="phone"
+                                           class="form-2-c__input"
+                                           id="form-2-phone-input"
+                                           placeholder="Введіть ваш номер">
+                                </label>
+                            </div>
+                            <div class="form-2-c__submit-section">
+                                <button class="form-2-c__submit" name="submit" type="submit">Надіслати</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-c__thanks-modal modal-2-c" id="thanks-modal">
+            <div class="body-c__pluck body-c__pluck_thanks-pluck pluck-c" id="thanks-pluck"></div>
+            <div class="modal-2-c__content">
+                <div class="modal-2-c__text">
+                    Дякуємо! Ми з вами зв’яжемося протягом дня.
+                </div>
+            </div>
+        </div>
+
+        <div class="body-c__pluck pluck-c body-c__pluck_type-hamburger" id="hamburger-pluck"></div>
+        <div class="body-c__pluck pluck-c" id="form-pluck"></div>
+
+
+        <script src="static/js/main.js?v=3"></script>
+    </body>
+</html>
