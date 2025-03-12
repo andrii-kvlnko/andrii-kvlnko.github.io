@@ -1746,6 +1746,9 @@
             this.views.thanksPluck.deactivate();
             this.views.thanksModal.hide();
             this.views.html.unlockScrolling();
+
+            this.state.window.scrollY = window.scrollY;
+
             this.tryWatchUnstick();
         }
 
