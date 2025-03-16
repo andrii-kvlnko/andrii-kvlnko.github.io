@@ -54,11 +54,7 @@
     --container-width: 90%;
 }
 
-.--dev-hidden {
-    display: none !important;
-}
 
-/*site styles*/
 html {
     scroll-behavior: smooth;
 }
