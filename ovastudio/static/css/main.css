@@ -140,6 +140,8 @@ html {
 
 .header-c__logo {
     height: 5.2vw;
+    display: block;
+    text-decoration: none;
 }
 
 .header-c__section {
@@ -907,7 +909,7 @@ html {
 .faq-c__label {
     display: flex;
     align-items: center;
-    gap: 0;
+    gap: .4em;
 }
 
 .faq-c__label {
@@ -1844,10 +1846,13 @@ html {
     .header-c__section-2 {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .header-c__logo-2 {
         height: 3vw;
+        display: block;
+        text-decoration: none;
     }
 
     .header-c__logo-2-figure {
@@ -2227,6 +2232,7 @@ html {
         width: 96%;
         margin-left: auto;
         margin-right: auto;
+        font-size: 4.53vw;
     }
 
     .cards-c__title-text {
@@ -2357,6 +2363,7 @@ html {
     .faq-c__label {
         padding: 1.65em 1.5em 1.7em;
         font-size: 2.33vw;
+        gap: 1em;
     }
 
     .faq-c__label-text {
@@ -3003,8 +3010,14 @@ html {
         margin-top: 14.2em;
     }
 
+    .body-c__cards {
+        font-size: 1vw;
+        margin-top: 2.4em;
+    }
+
     .cards-c__non-mobile-title {
         width: 92.3%;
+        font-size: 2.92vw;
     }
 
     .cards-c__title-text {
@@ -3118,6 +3131,7 @@ html {
         padding-bottom: calc(1.7vw * 2.2);
         padding-left: calc(1.4vw * 2.2);
         padding-right: calc(1.4vw * 2.2);
+        gap: .5em;
     }
 
     .faq-c__label-text {
