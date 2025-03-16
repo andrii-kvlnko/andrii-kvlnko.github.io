@@ -16,6 +16,18 @@
         }
     }
 
+    class LoadingPluckView {
+        constructor(id) {
+            this.id = id;
+        }
+
+        remove() {
+            const element = document.getElementById(this.id);
+
+            element.parentNode.removeChild(element);
+        }
+    }
+
     class CardsComponentViewFirefoxMoveHandler {
         constructor(view) {
             this.view = view;
@@ -1743,6 +1755,12 @@
         }
 
         model() {
+            document.fonts.ready.then(() => {
+                const loadingPluckView = new LoadingPluckView('loading-pluck');
+
+                loadingPluckView.remove();
+            });
+
             this.state.device.isTouch = this.services.device.isTouchDevice();
 
             this.views.html = new HTMLComponentView();
