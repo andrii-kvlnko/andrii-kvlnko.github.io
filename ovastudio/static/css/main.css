@@ -492,11 +492,11 @@ html {
     border: none;
 }
 
-@media (pointer:coarse) {
-    .list-c__action:focus {
-        background-color: rgba(0, 26, 63, 1);
-    }
+.list-c__action:focus {
+    background-color: rgba(0, 26, 63, 1);
+}
 
+@media (pointer:coarse) {
     .hero-c__mobile-action:focus {
         background-color: rgba(0, 26, 63, 1);
     }
