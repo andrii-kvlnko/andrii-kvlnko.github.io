@@ -54,6 +54,10 @@
     --container-width: 90%;
 }
 
+.f-disable-double-tap-zoom {
+    touch-action: manipulation;
+}
+
 
 html {
     scroll-behavior: smooth;
