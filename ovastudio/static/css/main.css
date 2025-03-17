@@ -58,6 +58,14 @@
     touch-action: manipulation;
 }
 
+.f-is-hover {
+    display: none;
+}
+
+.f-is-touch {
+    display: none;
+}
+
 
 html {
     scroll-behavior: smooth;
@@ -466,6 +474,19 @@ html {
     gap: .57em;
 }
 
+.list-c__label:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: rgba(52, 129, 245, 1);
+    bottom: 0;
+    left: 0;
+    display: block;
+    transform-origin: left bottom;
+    transform: scaleX(0);
+    transition: transform 200ms ease;
+}
+
 .list-c__action-text {
     font-size: 4.37vw;
     color: white;
@@ -492,16 +513,8 @@ html {
     border: none;
 }
 
-@media (pointer:coarse) {
+@media screen and (pointer:coarse) {
     .list-c__action:focus {
-        background-color: rgba(0, 26, 63, 1);
-    }
-
-    .hero-c__mobile-action:focus {
-        background-color: rgba(0, 26, 63, 1);
-    }
-
-    .hero-c__action:focus {
         background-color: rgba(0, 26, 63, 1);
     }
 
@@ -514,21 +527,16 @@ html {
         color: white;
     }
 
-    .list-c__label:after {
-        content: '';
-        width: 100%;
-        height: 1px;
-        background-color: rgba(52, 129, 245, 1);
-        bottom: 0;
-        left: 0;
-        display: block;
-        transform-origin: left bottom;
-        transform: scaleX(0);
-        transition: transform 200ms ease;
-    }
-
     .list-c__item:focus .list-c__label:after {
         transform: scaleX(1);
+    }
+
+    .hero-c__mobile-action:focus {
+        background-color: rgba(0, 26, 63, 1);
+    }
+
+    .hero-c__action:focus {
+        background-color: rgba(0, 26, 63, 1);
     }
 
     .faq-c__action:focus {
@@ -920,11 +928,19 @@ html {
     cursor: pointer;
 
     padding: .8em .6em .86em;
+
+    border-radius: calc(1.46 * 4.68vw);
 }
 
 .faq-c__label_active .faq-c__label-action-figure {
     transform: rotate(180deg);
 }
+
+.faq-c__label_active {
+    box-shadow: 0 2px 3px 0 rgba(9, 25, 103, 0.05);
+    background-color: #f5f5f8;
+}
+
 
 .faq-c__label-text {
     font-size: 4.68vw;
@@ -1789,15 +1805,6 @@ html {
 .cards-c__arrow_right {
 }
 
-.cards-c__card:hover .cards-c__card-info{
-    background-color: rgba(227, 239, 255, 1);
-}
-
-.cards-c__card:hover {
-    box-shadow: 0px 2px 3px 0px rgba(9, 25, 103, 0.05);
-}
-
-
 @media screen and (max-width: 770px) {
     .cards-c__box::-webkit-scrollbar {
         -webkit-appearance: none;
@@ -1827,8 +1834,6 @@ html {
         scrollbar-track-color: rgba(221, 234, 254, 1);
     }
 }
-
-
 
 @media screen and (max-width: 770px) {
     .body-c__list-section-surface {
@@ -2341,10 +2346,6 @@ html {
         align-items: center;
     }
 
-    .cards-c__arrow:hover {
-        background-color: rgba(221, 234, 254, 0.82);
-    }
-
     .cards-c__cards {
         padding-bottom: .2em;
     }
@@ -2386,6 +2387,8 @@ html {
         padding: 1.65em 1.5em 1.7em;
         font-size: 2.33vw;
         gap: 1em;
+
+        border-radius: calc(1.22 * 2.33vw);
     }
 
     .faq-c__label-text {
@@ -2403,12 +2406,12 @@ html {
     }
 
     .faq-c__item-content {
+        padding-top: 1em;
         font-size: 2vw;
         letter-spacing: -0.01em;
         font-weight: 300;
         white-space: pre-line;
 
-        padding-top: 0;
         padding-left: calc(2.33vw * 1.5);
         padding-right: calc(2.33vw * 1.5);
         padding-bottom: calc(2.33vw * 1.7);
@@ -2894,9 +2897,6 @@ html {
         transition: transform 200ms ease;
     }
 
-    .list-c__item:hover .list-c__label:after {
-        transform: scaleX(1);
-    }
 
 
 
@@ -2915,15 +2915,6 @@ html {
 
     .list-c__item-content {
         font-size: 1.5vw;
-    }
-
-    .list-c__item:hover .list-c__label {
-        color: rgba(52, 129, 245, 1);
-    }
-
-    .list-c__item:hover .list-c__hint {
-        background-color: rgba(52, 129, 245, 1);
-        color: white;
     }
 
     .list-c__action-text {
@@ -2945,14 +2936,6 @@ html {
         top: calc(1.5vw * 1 + 7.75 * 1vw);
     }
 
-
-    .list-c__action_has-reverse-animation {
-        animation: spring-reverse 500ms linear forwards;
-    }
-
-    .list-c__action:hover {
-        animation: spring 500ms linear forwards;
-    }
 
 
 
@@ -3166,6 +3149,8 @@ html {
         padding-left: calc(1.4vw * 2.2);
         padding-right: calc(1.4vw * 2.2);
         gap: .5em;
+
+        border-radius: calc(1.7vw * 1.22);
     }
 
     .faq-c__label-text {
@@ -3179,23 +3164,15 @@ html {
 
     .faq-c__item-content {
         font-size: 1.5vw;
+        padding-top: 1em;
         padding-left: calc(1.4vw * 2.2);
         padding-right: calc(1.4vw * 2.2);
-        padding-top: 0;
         padding-bottom: calc(1.7vw * 2.2);
     }
 
     .faq-c__item {
 
     }
-
-    .faq-c__item:hover {
-        box-shadow: 0px 2px 3px 0px rgba(9, 25, 103, 0.05);
-        background-color: #f5f5f8;
-    }
-
-
-
 
 
 
@@ -3266,9 +3243,6 @@ html {
         height: 3.9em;
     }
 
-    .form-c-form__submit-field:hover {
-        background-color: rgba(0, 26, 63, 1);
-    }
 
     .form-c__form-info-section {
     }
@@ -3362,9 +3336,6 @@ html {
         position: relative;
     }
 
-    .header-c-menu__item:hover {
-        color: rgba(52, 129, 245, 1);
-    }
 
     .header-c-menu__item:after {
         position: absolute;
@@ -3380,9 +3351,6 @@ html {
         transition: transform 200ms ease;
     }
 
-    .header-c-menu__item:hover:after {
-        transform: scaleX(1);
-    }
 
     .hero-c__canvas-container {
         --blur: 50px;
@@ -3451,10 +3419,6 @@ html {
         padding: 0 3.7em;
     }
 
-    .hero-c__action:hover {
-        background-color: rgba(0, 26, 63, 1);
-    }
-
     .modal-2-c__text {
         font-size: 2.5vw;
         letter-spacing: -0.04em;
@@ -3504,10 +3468,6 @@ html {
         font-size: 1.5vw;
     }
 
-    .form-2-c__submit:hover {
-        background-color: rgba(0, 26, 63, 1);
-    }
-
     .modal-c__action {
         width: 2.58vw;
     }
@@ -3539,6 +3499,84 @@ html {
 }
 
 
+@media screen and (hover: hover) {
+    .cards-c__card:hover .cards-c__card-info {
+        background-color: rgba(227, 239, 255, 1);
+    }
+
+    .cards-c__card:hover {
+        box-shadow: 0 2px 3px 0px rgba(9, 25, 103, 0.05);
+    }
+
+    .cards-c__arrow:hover {
+        background-color: rgba(221, 234, 254, 0.82);
+    }
+
+    .list-c__item:hover .list-c__label:after {
+        transform: scaleX(1);
+    }
+
+    .list-c__item:hover .list-c__label {
+        color: rgba(52, 129, 245, 1);
+    }
+
+    .list-c__item:hover .list-c__hint {
+        background-color: rgba(52, 129, 245, 1);
+        color: white;
+    }
+
+    .list-c__action:hover {
+        animation: spring 500ms linear forwards;
+    }
+
+    .list-c__action_has-reverse-animation {
+        animation: spring-reverse 500ms linear forwards;
+    }
+
+    .form-c-form__submit-field:hover {
+        background-color: rgba(0, 26, 63, 1);
+    }
+
+    .faq-c__item:hover .faq-c__label {
+        box-shadow: 0 2px 3px 0 rgba(9, 25, 103, 0.05);
+        background-color: #f5f5f8;
+    }
+
+    .header-c-menu__item:hover {
+        color: rgba(52, 129, 245, 1);
+    }
+
+    .header-c-menu__item:hover:after {
+        transform: scaleX(1);
+    }
+
+    .hero-c__action:hover {
+        background-color: rgba(0, 26, 63, 1);
+    }
+
+    .form-2-c__submit:hover {
+        background-color: rgba(0, 26, 63, 1);
+    }
+}
 
 
 
+
+
+@media screen and (hover: hover) {
+    .f-is-hover {
+        display: block;
+        width: 100%;
+        color: white;
+        background-color: lightblue;
+    }
+}
+
+@media screen and (pointer:coarse) {
+    .f-is-touch {
+        display: block;
+        width: 100%;
+        color: white;
+        background-color: lightcoral;
+    }
+}
