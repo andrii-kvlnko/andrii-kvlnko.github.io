@@ -1605,7 +1605,8 @@
             }
             this.listeners = {
                 enterAction: [],
-                clickListItem: []
+                clickListItem: [],
+                clickAction: []
             };
             this.nodes = {
                 action: null
@@ -1634,6 +1635,13 @@
             this.nodes.action.addEventListener('mouseenter', (event) => {
                 this.listeners.enterAction.forEach((listener) => listener());
             });
+            this.nodes.action.addEventListener('click', (event) => {
+                this.listeners.clickAction.forEach((listener) => listener());
+            })
+        }
+
+        focusAction() {
+            this.nodes.action.focus();
         }
 
         addEventListener(event, listener) {
@@ -1917,6 +1925,7 @@
             ]
             this.views.list = new ListComponentView('list-component-action', listViewItemsIds);
             this.views.list.addEventListener('enterAction', this.onListViewEnterAction.bind(this));
+            this.views.list.addEventListener('clickAction', this.onListViewClickAction.bind(this));
             this.views.list.addEventListener('clickListItem', this.onListViewClickListItem.bind(this));
 
             this.views.hero.mount();
@@ -2438,6 +2447,10 @@
 
         onListViewEnterAction() {
             this.views.list.makeActionReversable();
+        }
+
+        onListViewClickAction() {
+            this.views.list.focusAction();
         }
 
         async onListViewClickListItem(event, href) {
