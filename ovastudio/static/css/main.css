@@ -1125,12 +1125,13 @@ html {
     display: flex;
     flex-direction: column;
     font-size: 4.37vw;
-    gap: .6em;
+    gap: 0;
 }
 
 .form-c-form__text-field-label {
     font-size: 3.75vw;
     letter-spacing: -.04em;
+    margin-bottom: calc(4.37vw * .6);
 }
 
 .form-c-form__phone-field {
@@ -1138,12 +1139,13 @@ html {
     flex-direction: column;
     width: 100%;
     font-size: 4.37vw;
-    gap: .6em;
+    gap: 0;
 }
 
 .form-c-form__phone-field-label {
     letter-spacing: -.04em;
     font-size: 3.75vw;
+    margin-bottom: calc(4.37vw * .6);
 }
 
 .form-c-form__text-field-input {
@@ -1153,17 +1155,26 @@ html {
     border-color: rgba(208, 229, 255, 1);
     border-radius: .43em;
     padding: .75em 1em;
+    font-weight: 300;
+    outline: none;
+}
+
+.form-c-form__text-field-input:focus {
+    border-color: rgba(40, 108, 255, 1);
 }
 
 .form-c-form__text-field-input_invalid {
     color: rgba(255, 79, 114, 1);
-    border-color: rgba(255, 79, 114, 1);
+    border-color: rgba(255, 79, 114, 1) !important;
 }
 
 .form-c-form__text-field-error {
     color: rgba(255, 79, 114, 1);
     font-size: 4vw;
     font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin-top: .4em;
 }
 
 .form-c-form__text-field-input::placeholder {
@@ -1586,11 +1597,12 @@ html {
     display: flex;
     font-size: 3.75vw;
     flex-direction: column;
-    gap: .7em;
+    gap: 0;
 }
 
 .form-2-c__label-text {
     font-size: 3.75vw;
+    margin-bottom: calc(3.75vw * 0.7);
 }
 
 .form-2-c__input {
@@ -1602,10 +1614,15 @@ html {
     box-sizing: border-box;
     padding: 0 1.2em;
     border-radius: .43em;
+    font-weight: 300;
+    outline: none;
+}
+.form-2-c__input:focus {
+    border-color: rgba(40, 108, 255, 1);
 }
 
 .form-2-c__input_invalid {
-    border-color: rgba(255, 79, 114, 1);
+    border-color: rgba(255, 79, 114, 1) !important;
 }
 
 .form-2-c__input::placeholder {
@@ -1621,6 +1638,7 @@ html {
     font-weight: 300;
     color: rgba(255, 79, 114, 1);
     line-height: 1;
+    margin-top: calc(4vw * 0.4);
 }
 
 
@@ -2484,13 +2502,19 @@ html {
     }
 
     .form-c-form__text-field-error {
-        font-size: 1.9vw;
+        font-size: 1.67vw;
+        margin-top: .4em;
     }
 
     .form-c-form__text-field {
         font-size: 1.81vw;
-        gap: .4em;
+        gap: 0;
     }
+
+    .form-c-form__text-field-label {
+        margin-bottom: calc(.4 * 1.81vw);
+    }
+
 
     .form-c__form-info-section {
         display: grid;
@@ -2505,7 +2529,11 @@ html {
 
     .form-c-form__phone-field {
         font-size: 1.81vw;
-        gap: .4em;
+        gap: 0;
+    }
+
+    .form-c-form__phone-field-label {
+        margin-bottom: calc(.4 * 1.81vw);
     }
 
     .form-c-form__submit-field {
@@ -2686,6 +2714,7 @@ html {
     .form-2-c__label-text {
         font-size: 2.33vw;
         font-weight: 300;
+        margin-bottom: calc(.4 * 1.81vw);
     }
 
     .form-2-c__input {
@@ -2699,7 +2728,8 @@ html {
     }
 
     .form-2-c__label-field-error {
-        font-size: 2vw;
+        font-size: 1.67vw;
+        margin-top: .4em;
     }
 
     .form-2-c__input_invalid::placeholder {
@@ -2723,7 +2753,7 @@ html {
 
     .form-2-c__label {
         font-size: 2.33vw;
-        gap: .5em;
+        gap: 0;
         width: 100%;
         min-width: 0;
     }
@@ -3221,7 +3251,8 @@ html {
     }
 
     .form-c-form__text-field-error {
-        font-size: 1.3vw;
+        font-size: 1.08vw;
+        margin-top: .3em;
     }
 
     .form-c-form__submit-field {
@@ -3457,7 +3488,8 @@ html {
     }
 
     .form-2-c__label-field-error {
-        font-size: 1.3vw;
+        font-size: 1.08vw;
+        margin-top: .3em;
     }
 
     .form-2-c__input {
@@ -3493,7 +3525,7 @@ html {
 
     .form-2-c__label {
         font-size: 1.5vw;
-        gap: .5em;
+        gap: 0;
     }
 
     .form-2-c__submit {

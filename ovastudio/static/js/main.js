@@ -338,7 +338,9 @@
             };
             this.listeners = {
                 submit: [],
-                focusInputField: []
+                focusInputField: [],
+                inputInputField: [],
+                blurInputField: []
             };
             this.classes = {
                 inputFieldError: classes.inputFieldError,
@@ -382,6 +384,26 @@
                                 listener(eventData)
                             })
                         });
+                        fieldElement.addEventListener('input', (event) => {
+                            const fieldElement = event.target;
+                            const eventData = {
+                                name: fieldElement.name
+                            }
+
+                            this.listeners.inputInputField.forEach((listener) => {
+                                listener(eventData)
+                            });
+                        });
+                        fieldElement.addEventListener('blur', (event) => {
+                            const fieldElement = event.target;
+                            const eventData = {
+                                name: fieldElement.name
+                            }
+
+                            this.listeners.blurInputField.forEach((listener) => {
+                                listener(eventData)
+                            });
+                        } )
 
                         break;
                     }
@@ -404,6 +426,12 @@
 
         disable() {
 
+        }
+
+        focusField(fieldName) {
+            const fieldElement = this.elements.form.elements[fieldName];
+
+            fieldElement.focus();
         }
 
         markFieldAsHavingError(fieldName, errorMessage) {
@@ -560,7 +588,6 @@
             this.blur = 30;
         }
 
-
         move() {
             this.x += this.speedX;
             this.y += this.speedY;
@@ -631,22 +658,35 @@
 
             this.updateShapesCount();
             this.updateAdditionalSize();
+            this.updateShapes();
 
-            canvasElement.width = window.innerWidth;
-            canvasElement.height = window.innerHeight;
-            canvasElement.opacity = 0.7;
 
+
+            this.animate();
+        }
+
+        fit() {
+            this.shapes = [];
+            this.updateShapesCount();
+            this.updateAdditionalSize();
+            this.updateShapes();
+        }
+
+        updateShapes() {
+            this.elements.canvas.width = window.innerWidth;
+            this.elements.canvas.height = window.innerHeight;
+            this.elements.canvas.opacity = 0.7;
 
             for (let i = 0; i < this.shapeCount; i++) {
                 const size = Math.random() * 100 + this.additionalSize;
                 const blur = 50;
-                const maxY = canvasElement.height - size - blur * 3;
-                const relatedY = Math.random() * canvasElement.height;
+                const maxY = this.elements.canvas.height - size - blur * 3;
+                const relatedY = Math.random() * this.elements.canvas.height;
                 const y = Math.min(maxY, relatedY);
 
                 this.shapes.push(
                     new HeroComponentViewShape(
-                        Math.random() * canvasElement.width,
+                        Math.random() * this.elements.canvas.width,
                         y,
                         size,
                         Math.random() * 2 - 1,
@@ -656,8 +696,6 @@
                     )
                 );
             }
-
-            this.animate();
         }
 
         animate() {
@@ -996,7 +1034,8 @@
         constructor() {
             this.elements = {};
             this.listeners = {
-                scroll: new Map()
+                scroll: new Map(),
+                resize: new Map()
             }
             this.lastListenerId = 1;
         }
@@ -1005,6 +1044,10 @@
             document.addEventListener('scroll', (event) => {
                 this.listeners.scroll.forEach((listener, id) => listener());
             }, {passive: true});
+
+            window.addEventListener('resize', (event) => {
+                this.listeners.resize.forEach((listener, id) => listener());
+            } )
         }
 
         getScrollY() {
@@ -1743,10 +1786,18 @@
                     visibilityStatus: 'hide'
                 },
                 form: {
-                    submittingStatus: 'default'
+                    submittingStatus: 'default',
+                    stopToClearErrorsOnInputFocus: {
+                        name: false,
+                        phone: false
+                    }
                 },
                 modalForm: {
-                    submittingStatus: 'default'
+                    submittingStatus: 'default',
+                    stopToClearErrorsOnInputFocus: {
+                        name: false,
+                        phone: false
+                    }
                 },
             };
             this.listeners = {
@@ -1767,8 +1818,8 @@
             this.views.hero = new HeroComponentView('hero-canvas', 'hero-action', 'hero-action-2');
             this.views.hero.addEventListener('clickAction', this.onHeroViewClickAction.bind(this));
 
-
             this.views.window = new WindowComponentView();
+            this.views.window.addEventListener('resize', this.onWindowViewResize.bind(this));
 
             const formViewFields = [
                 {
@@ -1791,6 +1842,9 @@
             this.views.form = new FormView('form', formViewFields, formViewClasses);
             this.views.form.addEventListener('submit', this.onFormViewSubmit.bind(this));
             this.views.form.addEventListener('focusInputField', this.onFormViewFocusInputField.bind(this));
+            this.views.form.addEventListener('blurInputField', this.onFormViewBlurInputField.bind(this));
+            this.views.form.addEventListener('inputInputField', this.onFormViewInputInputField.bind(this));
+
 
             let modalFormViewFields = [
                 {
@@ -1813,6 +1867,10 @@
             this.views.modalForm = new FormView('modal-form', modalFormViewFields, modalFormViewClasses);
             this.views.modalForm.addEventListener('submit', this.onModalFormViewSubmit.bind(this));
             this.views.modalForm.addEventListener('focusInputField', this.onModalFormViewFocusInputField.bind(this));
+            this.views.modalForm.addEventListener('blurInputField', this.onModalFormViewBlurInputField.bind(this));
+            this.views.modalForm.addEventListener('inputInputField', this.onModalFormViewInputInputField.bind(this));
+
+
 
             this.views.menu = new MenuComponentView('menu');
             this.views.menu.addEventListener('clickMenuItem', this.onMenuViewClickMenuItem.bind(this));
@@ -1876,6 +1934,10 @@
             this.views.window.mount();
 
             this.initStick();
+        }
+
+        onWindowViewResize() {
+            this.views.hero.fit();
         }
 
         initStick() {
@@ -1991,6 +2053,29 @@
         }
 
         onModalFormViewFocusInputField(eventData) {
+            const name = eventData.name;
+
+            let shouldClearErrors = true;
+
+            if (this.state.modalForm.stopToClearErrorsOnInputFocus[name]) {
+                shouldClearErrors = false;
+            }
+
+            if(shouldClearErrors) {
+                this.views.modalForm.clearFieldErrors(eventData.name);
+            }
+        }
+
+        onModalFormViewBlurInputField(eventData) {
+            const name = eventData.name;
+
+            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
+        }
+
+        onModalFormViewInputInputField(eventData) {
+            const name = eventData.name;
+
+            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
             this.views.modalForm.clearFieldErrors(eventData.name);
         }
 
@@ -2033,6 +2118,15 @@
                     case 'invalid-fields': {
                         const invalidFields = error.fields;
 
+                        const fieldToFocusPriority = {
+                            name: 1,
+                            phone: 2
+                        };
+
+                        let fieldToFocus = {
+                            type: 'null'
+                        };
+
                         invalidFields.forEach((invalidField) => {
                             const invalidFieldName = invalidField.name;
                             const reason = invalidField.reason;
@@ -2046,7 +2140,32 @@
                                     break;
                                 }
                             }
-                        })
+
+                            const fieldPriority = fieldToFocusPriority[invalidField.name];
+                            const toMakeFieldFocused =
+                                fieldToFocus['type'] === 'null' ||
+                                fieldPriority < fieldToFocus.priority;
+
+                            if (toMakeFieldFocused) {
+                                fieldToFocus = {
+                                    type: 'field',
+                                    name: invalidField.name,
+                                    priority: fieldPriority
+                                };
+                            }
+                        });
+
+                        switch (fieldToFocus.type) {
+                            case 'field': {
+                                this.state.modalForm.stopToClearErrorsOnInputFocus[fieldToFocus.name] = true;
+
+                                const viewFieldName = fieldToFocus.name;
+
+                                this.views.modalForm.focusField(viewFieldName);
+
+                                break;
+                            }
+                        }
 
                         break;
                     }
@@ -2054,8 +2173,31 @@
             }
         }
 
-        onFormViewFocusInputField(eventData) {
+        onFormViewInputInputField(eventData) {
+            const name = eventData.name;
+
+            this.state.form.stopToClearErrorsOnInputFocus[name] = false;
             this.views.form.clearFieldErrors(eventData.name);
+        }
+
+        onFormViewBlurInputField(eventData) {
+            const name = eventData.name;
+
+            this.state.form.stopToClearErrorsOnInputFocus[name] = false;
+        }
+
+        onFormViewFocusInputField(eventData) {
+            const name = eventData.name;
+
+            let shouldClearErrors = true;
+
+            if (this.state.form.stopToClearErrorsOnInputFocus[name]) {
+                shouldClearErrors = false;
+            }
+
+            if(shouldClearErrors) {
+                this.views.form.clearFieldErrors(eventData.name);
+            }
         }
 
         async onFormViewSubmit(eventData) {
@@ -2096,7 +2238,16 @@
                     case 'invalid-fields': {
                         const invalidFields = error.fields;
 
-                        invalidFields.forEach((invalidField) => {
+                        const fieldToFocusPriority = {
+                            name: 1,
+                            phone: 2
+                        };
+
+                        let fieldToFocus = {
+                            type: 'null'
+                        };
+
+                        invalidFields.forEach((invalidField, invalidFieldIndex) => {
                             const invalidFieldName = invalidField.name;
                             const reason = invalidField.reason;
 
@@ -2109,7 +2260,33 @@
                                     break;
                                 }
                             }
-                        })
+
+                            const fieldPriority = fieldToFocusPriority[invalidField.name];
+                            const toMakeFieldFocused =
+                                fieldToFocus['type'] === 'null' ||
+                                fieldPriority < fieldToFocus.priority;
+
+                            if (toMakeFieldFocused) {
+                                fieldToFocus = {
+                                    type: 'field',
+                                    name: invalidField.name,
+                                    priority: fieldPriority
+                                };
+                            }
+                        });
+
+                        switch (fieldToFocus.type) {
+                            case 'field': {
+                                this.state.form.stopToClearErrorsOnInputFocus[fieldToFocus.name] = true;
+
+                                const viewFieldName = fieldToFocus.name;
+
+                                this.views.form.focusField(viewFieldName);
+
+
+                                break;
+                            }
+                        }
 
                         break;
                     }
