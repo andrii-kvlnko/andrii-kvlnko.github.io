@@ -1622,11 +1622,15 @@
         mount() {
             this.ids.listItems.forEach((listItemId) => {
                 const node = document.getElementById(listItemId);
+
+                this.listItemsNodes.set(listItemId, node);
+
                 node.addEventListener('click', (event) => {
                     const url = event.currentTarget.getAttribute('href');
+                    const id = event.currentTarget.id;
 
                     this.listeners.clickListItem.forEach((listener) => {
-                        listener(event, url);
+                        listener(event, id, url);
                     })
                 } )
             });
@@ -1638,6 +1642,12 @@
             this.nodes.action.addEventListener('click', (event) => {
                 this.listeners.clickAction.forEach((listener) => listener());
             })
+        }
+
+        focusListItem(id) {
+            const element = this.listItemsNodes.get(id);
+
+            element.focus();
         }
 
         focusAction() {
@@ -2453,8 +2463,10 @@
             this.views.list.focusAction();
         }
 
-        async onListViewClickListItem(event, href) {
+        async onListViewClickListItem(event, listItemId, href) {
             event.preventDefault();
+
+            this.views.list.focusListItem(listItemId);
 
             let strategy = 'default';
 
@@ -2485,9 +2497,6 @@
 
             switch (navigationStrategy) {
                 case 'page-section': {
-                    const idToNavigate = href.slice(1);
-                    this.views.nagivator.navigate(idToNavigate);
-
                     break;
                 }
                 default: {
@@ -2496,7 +2505,6 @@
                     break;
                 }
             }
-
         }
 
         async closeMenu() {
