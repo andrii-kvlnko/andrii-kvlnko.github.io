@@ -16,6 +16,14 @@
         }
     }
 
+    class MetaView {
+        updateContent(id, content) {
+            const element = document.getElementById(id);
+
+            element.setAttribute('content', content);
+        }
+    }
+
     class LoadingPluckView {
         constructor(id) {
             this.id = id;
@@ -1853,6 +1861,9 @@
 
                 loadingPluckView.remove();
             });
+
+            this.views.meta = new MetaView();
+            this.views.meta.updateContent('viewport-meta-tag', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
 
             this.state.device.isTouch = this.services.device.isTouchDevice();
 
