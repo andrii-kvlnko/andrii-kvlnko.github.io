@@ -263,9 +263,10 @@
                 element.addEventListener('click', (event) => {
                     event.preventDefault();
                     const href = event.currentTarget.getAttribute('href');
+                    const id = event.currentTarget.id;
 
                     this.listeners.clickSlide.forEach((listener) => {
-                        listener(href);
+                        listener(id, href);
                     } )
                 } );
 
@@ -283,6 +284,12 @@
 
         moveToPrevSlide() {
             this.moveHandler.moveToPrevSlide();
+        }
+
+        focusSlide(slideId) {
+            const element = document.getElementById(slideId);
+
+            element.focus();
         }
 
         snap() {
@@ -1067,6 +1074,22 @@
         }
     }
 
+    class DocumentComponentView {
+        hasElementWithGivenSelector(selector) {
+            try {
+                const element = document.querySelector(selector);
+
+                if (element) {
+                    return true;
+                }
+
+                return false;
+            } catch (e) {
+                return false;
+            }
+        }
+    }
+
     class HeaderComponentView {
         constructor(headerId) {
             this.ids = {
@@ -1422,7 +1445,7 @@
     }
 
     class CardsComponentViewModel {
-        constructor(state, navigatorView, deviceService) {
+        constructor(documentView, state, navigatorView, deviceService) {
             this.viewModelState = {
                 snap: {
                     debounceTimeout: 0,
@@ -1433,7 +1456,8 @@
             this.deviceService = deviceService;
             this.views = {
                 cards: null,
-                navigator: navigatorView
+                navigator: navigatorView,
+                document: documentView
             }
         }
 
@@ -1477,18 +1501,16 @@
             this.views.cards.mount();
         }
 
-        async onClickSlide(href) {
-            let delayStrategy = 'default';
+        async onClickSlide(slideId, href) {
+            let focusStrategy = 'default';
 
             if (this.state.device.isTouch) {
-                delayStrategy = 'touch'
+                focusStrategy = 'touch';
             }
 
-            switch (delayStrategy) {
+            switch (focusStrategy) {
                 case 'touch': {
-                    await new Promise((resolve) => {
-                        setTimeout(resolve, 300);
-                    });
+                    this.views.cards.focusSlide(slideId);
 
                     break;
                 }
@@ -1497,7 +1519,9 @@
                 }
             }
 
-            const isPageSection = href.startsWith('#');
+            const isPageSection =
+                href.startsWith('#') &&
+                this.views.document.hasElementWithGivenSelector(href);
 
             let strategy = 'null';
             const toUsePageSectionStrategy = isPageSection;
@@ -1918,7 +1942,9 @@
             this.viewModels.faq = new FAQComponentViewModel();
             this.viewModels.faq.model();
 
-            this.viewModels.cards = new CardsComponentViewModel(this.state, this.views.nagivator, this.services.device);
+
+            this.views.document = new DocumentComponentView();
+            this.viewModels.cards = new CardsComponentViewModel(this.views.document, this.state, this.views.nagivator, this.services.device);
             this.viewModels.cards.model();
 
             this.viewModels.infoList = new InfoListComponentViewModel();

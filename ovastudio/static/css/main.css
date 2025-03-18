@@ -544,6 +544,14 @@ html {
         color: white;
         border-color: rgba(52, 129, 245, 1);
     }
+
+    .cards-c__card:focus .cards-c__card-info {
+        background-color: rgba(227, 239, 255, 1);
+    }
+
+    .cards-c__card:focus {
+        box-shadow: 0 2px 3px 0px rgba(9, 25, 103, 0.05);
+    }
 }
 
 .list-c__items-action-section {
