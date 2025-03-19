@@ -514,6 +514,10 @@ html {
 }
 
 @media screen and (pointer:coarse) {
+    .menu-c__anchor-item:focus {
+        background-color: rgba(233, 240, 254, 1);
+    }
+
     .list-c__action:focus {
         background-color: rgba(0, 26, 63, 1);
     }
@@ -1453,10 +1457,6 @@ html {
     padding: .93em 1.8em;
     line-height: 1;
     letter-spacing: -0.04em;
-}
-
-.menu-c__anchor-item.--highlighted {
-    background-color: rgba(233, 240, 254, 1);
 }
 
 .menu-c__anchor-item {

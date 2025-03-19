@@ -249,21 +249,6 @@
                 this.listeners.clickRightArrow.forEach((listener) => listener());
             });
 
-            this.elements.box.addEventListener('scroll', (event) => {
-                if (this.state.scrollBlocked) {
-                    return;
-                }
-
-                this.state.scrollBlocked = true;
-                requestAnimationFrame(() => {
-                    this.listeners.scroll.forEach((listener) => {
-                        listener(this.elements.box.scrollLeft);
-                    })
-
-                    this.state.scrollBlocked = false;
-                });
-            });
-
             this.slides.forEach((elementId, key) => {
                 this.slideIdSlideNumber.set(elementId, key);
 
@@ -298,46 +283,6 @@
             const element = document.getElementById(slideId);
 
             element.focus();
-        }
-
-        snap() {
-            const scrollLeft = this.elements.box.scrollLeft;
-
-            let snapDescriptor = {
-                type: 'null'
-            };
-
-            for (const [elementId, elementOffsetLeft] of this.slidesOffsetLeft) {
-                const toSnap = elementOffsetLeft >= scrollLeft;
-                const toContinue = ! toSnap;
-
-                if (toContinue) {
-                    continue;
-                }
-
-                snapDescriptor = {
-                    type: 'slide',
-                    data: {
-                        id: elementId,
-                        offsetLeft: elementOffsetLeft
-                    }
-                }
-
-                break;
-            }
-
-            switch(snapDescriptor.type) {
-                case 'slide': {
-                    this.state.slide = this.slideIdSlideNumber.get(snapDescriptor.data.id);
-                    if (this.state.slide === 1) {
-                        this.elements.box.scrollLeft = 0;
-                    } else {
-                        this.elements.box.scrollLeft = snapDescriptor.data.offsetLeft;
-                    }
-
-                    break;
-                }
-            }
         }
     }
 
@@ -758,9 +703,10 @@
     }
 
     class MenuComponentView {
-        constructor(menuId) {
+        constructor(menuId, menuItemsIds) {
             this.ids = {
-                menu: menuId
+                menu: menuId,
+                menuItems: menuItemsIds
             }
             this.elements = {
                 menu: null
@@ -774,28 +720,16 @@
             this.listeners[event].push(listener);
         }
 
-        highlightItem(identifier) {
-            const menuItem = document.querySelector(`[data-related-component="${this.ids.menu}"][data-menu-item="${identifier}"]`);
-            menuItem.classList.add('--highlighted');
-        }
-
-        unHighlightAllItems() {
-            const elements = document.querySelectorAll(`[data-related-component="${this.ids.menu}"][data-menu-item]`);
-            Array.from(elements).forEach((element) => {
-                element.classList.remove('--highlighted');
-            });
-        }
-
         mount() {
             this.elements.menu = document.getElementById(this.ids.menu);
 
-            const menuItemsElements = document.querySelectorAll(`[data-related-component="${this.ids.menu}"][data-menu-item]`);
-            Array.from(menuItemsElements).forEach((menutItemElement) => {
-                menutItemElement.addEventListener('click', (event) => {
+            this.ids.menuItems.forEach((menuItemId) => {
+                const element = document.getElementById(menuItemId);
+                element.addEventListener('click', (event) => {
                     event.preventDefault();
 
                     const menuItemElement = event.currentTarget;
-                    const identifier = menutItemElement.getAttribute('data-menu-item');
+                    const identifier = menuItemElement.id;
 
                     let eventData = {
                         type: 'null'
@@ -813,8 +747,14 @@
                     }
 
                     this.listeners.clickMenuItem.forEach((listener) => listener(eventData))
-                })
-            });
+                });
+            })
+        }
+
+        focusMenuItem(menuItemId) {
+            const element = document.getElementById(menuItemId);
+
+            element.focus();
         }
 
         show() {
@@ -991,6 +931,39 @@
 
         }
 
+        navigateInstantlyHavingOffsetElement(id, offsetElementId) {
+            switch (this.browser) {
+                case 'firefox': {
+                    const offsetElement = document.getElementById(offsetElementId);
+                    const element = document.getElementById(id);
+
+                    const endY = window.scrollY + element.getBoundingClientRect().top - offsetElement.offsetHeight;
+
+                    const nextY = endY;
+
+                    window.scrollTo({
+                        top: nextY,
+                        behavior: "instant"
+                    });
+
+                    break;
+                }
+                default: {
+                    const offsetElement = document.getElementById(offsetElementId);
+                    const element = document.getElementById(id);
+
+                    const y = window.scrollY + element.getBoundingClientRect().top - offsetElement.offsetHeight;
+
+                    window.scroll({
+                        top: y,
+                        behavior: 'instant'
+                    });
+
+                    break;
+                }
+            }
+        }
+
         navigate(id) {
             switch (this.browser) {
                 case 'firefox': {
@@ -1037,6 +1010,36 @@
                     window.scroll({
                         top: y,
                         behavior: 'smooth'
+                    });
+
+                    break;
+                }
+            }
+        }
+
+        navigateInstantly(id) {
+            switch (this.browser) {
+                case 'firefox': {
+                    const element = document.getElementById(id);
+
+                    const endY = window.scrollY + element.getBoundingClientRect().top;
+                    const nextY = endY;
+
+                    window.scrollTo({
+                        top: nextY,
+                        behavior: "instant"
+                    });
+
+                    break;
+                }
+                default: {
+                    const element = document.getElementById(id);
+
+                    const y = window.scrollY + element.getBoundingClientRect().top;
+
+                    window.scrollTo({
+                        top: y,
+                        behavior: "instant"
                     });
 
                     break;
@@ -1455,10 +1458,7 @@
     class CardsComponentViewModel {
         constructor(documentView, state, navigatorView, deviceService) {
             this.viewModelState = {
-                snap: {
-                    debounceTimeout: 0,
-                    delay: 200
-                }
+
             }
             this.state = state;
             this.deviceService = deviceService;
@@ -1504,7 +1504,6 @@
             this.views.cards.addEventListener('clickLeftArrow', this.onClickLeftArrow.bind(this));
             this.views.cards.addEventListener('clickRightArrow', this.onClickRightArrow.bind(this));
             this.views.cards.addEventListener('clickSlide', this.onClickSlide.bind(this));
-            this.views.cards.addEventListener('scroll', this.onScroll.bind(this));
 
             this.views.cards.mount();
         }
@@ -1555,13 +1554,6 @@
                     break;
                 }
             }
-        }
-
-        onScroll() {
-            clearTimeout(this.viewModelState.snap.debounceTimeout);
-            this.viewModelState.snap.debounceTimeout = setTimeout(() => {
-                this.views.cards.snap();
-            }, this.viewModelState.snap.delay);
         }
 
         onClickLeftArrow() {
@@ -1924,8 +1916,14 @@
             this.views.modalForm.addEventListener('inputInputField', this.onModalFormViewInputInputField.bind(this));
 
 
-
-            this.views.menu = new MenuComponentView('menu');
+            const menuViewItemsIds = [
+                'menu-item-1',
+                'menu-item-2',
+                'menu-item-3',
+                'menu-item-4',
+                'menu-item-5',
+            ]
+            this.views.menu = new MenuComponentView('menu', menuViewItemsIds);
             this.views.menu.addEventListener('clickMenuItem', this.onMenuViewClickMenuItem.bind(this));
 
             this.views.hamburgerPluck = new PluckView('hamburger-pluck');
@@ -2445,15 +2443,7 @@
         }
 
         async onMenuViewClickMenuItem(eventData) {
-            this.views.menu.highlightItem(eventData.data.identifier);
-
-            await new Promise((resolve) => {
-                setTimeout(resolve, 350);
-            });
-            const closeMenuPromise = this.closeMenu();
-            this.views.menu.unHighlightAllItems();
-
-            await closeMenuPromise;
+            this.views.menu.focusMenuItem(eventData.data.identifier);
 
             switch (eventData.type) {
                 case 'anchor': {
@@ -2472,13 +2462,13 @@
 
                             if (isHeaderStick) {
                                 const idToNavigate = anchorData.href.slice(1);
-                                this.views.nagivator.navigateHavingOffsetElement(
+                                this.views.nagivator.navigateInstantlyHavingOffsetElement(
                                     idToNavigate,
                                     this.state.header.id
                                 );
                             } else {
                                 const idToNavigate = anchorData.href.slice(1);
-                                this.views.nagivator.navigate(idToNavigate);
+                                this.views.nagivator.navigateInstantly(idToNavigate);
                             }
 
                             break;
@@ -2488,6 +2478,8 @@
                     break;
                 }
             }
+
+            this.closeMenu();
 
             this.tryWatchUnstick();
         }
