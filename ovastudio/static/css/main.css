@@ -3507,62 +3507,62 @@ html {
 }
 
 
-@media screen and (hover: hover) {
-    .cards-c__card:hover .cards-c__card-info {
+@media screen {
+    .body-c_is-hover .cards-c__card:hover .cards-c__card-info {
         background-color: rgba(227, 239, 255, 1);
     }
 
-    .cards-c__card:hover {
+    .body-c_is-hover .cards-c__card:hover {
         box-shadow: 0 2px 3px 0px rgba(9, 25, 103, 0.05);
     }
 
-    .cards-c__arrow:hover {
+    .body-c_is-hover .cards-c__arrow:hover {
         background-color: rgba(221, 234, 254, 0.82);
     }
 
-    .list-c__item:hover .list-c__label:after {
+    .body-c_is-hover .list-c__item:hover .list-c__label:after {
         transform: scaleX(1);
     }
 
-    .list-c__item:hover .list-c__label {
+    .body-c_is-hover .list-c__item:hover .list-c__label {
         color: rgba(52, 129, 245, 1);
     }
 
-    .list-c__item:hover .list-c__hint {
+    .body-c_is-hover .list-c__item:hover .list-c__hint {
         background-color: rgba(52, 129, 245, 1);
         color: white;
     }
 
-    .list-c__action:hover {
+    .body-c_is-hover .list-c__action:hover {
         animation: spring 500ms linear forwards;
     }
 
-    .list-c__action_has-reverse-animation {
+    .body-c_is-hover .list-c__action_has-reverse-animation {
         animation: spring-reverse 500ms linear forwards;
     }
 
-    .form-c-form__submit-field:hover {
+    .body-c_is-hover .form-c-form__submit-field:hover {
         background-color: rgba(0, 26, 63, 1);
     }
 
-    .faq-c__item:hover .faq-c__label {
+    .body-c_is-hover .faq-c__item:hover .faq-c__label {
         box-shadow: 0 2px 3px 0 rgba(9, 25, 103, 0.05);
         background-color: #f5f5f8;
     }
 
-    .header-c-menu__item:hover {
+    .body-c_is-hover .header-c-menu__item:hover {
         color: rgba(52, 129, 245, 1);
     }
 
-    .header-c-menu__item:hover:after {
+    .body-c_is-hover .header-c-menu__item:hover:after {
         transform: scaleX(1);
     }
 
-    .hero-c__action:hover {
+    .body-c_is-hover .hero-c__action:hover {
         background-color: rgba(0, 26, 63, 1);
     }
 
-    .form-2-c__submit:hover {
+    .body-c_is-hover .form-2-c__submit:hover {
         background-color: rgba(0, 26, 63, 1);
     }
 }

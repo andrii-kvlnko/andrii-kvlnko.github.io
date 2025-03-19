@@ -1099,6 +1099,10 @@
                 return false;
             }
         }
+
+        makeHover() {
+            document.body.classList.add('body-c_is-hover');
+        }
     }
 
     class HeaderComponentView {
@@ -1951,8 +1955,12 @@
             this.viewModels.faq = new FAQComponentViewModel();
             this.viewModels.faq.model();
 
-
             this.views.document = new DocumentComponentView();
+            const toMarkDocumentViewAsHover = ! this.state.device.isTouch;
+            if (toMarkDocumentViewAsHover) {
+                this.views.document.makeHover();
+            }
+
             this.viewModels.cards = new CardsComponentViewModel(this.views.document, this.state, this.views.nagivator, this.services.device);
             this.viewModels.cards.model();
 
