@@ -13,9 +13,6 @@
 
             const pageVM = new PageViewModel(applicationService, deviceService);
             pageVM.model();
-
-
-            document.getElementById('projects-section').scrollIntoView();
         }
     }
 
