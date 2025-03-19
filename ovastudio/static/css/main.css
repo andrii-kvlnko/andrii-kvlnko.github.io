@@ -44,7 +44,6 @@
 }
 
 
-
 :root {
     --accent-color-1: #286CFF;
     --accent-color-2: #3481F5;
@@ -1426,7 +1425,7 @@ html {
     padding-top: 26vw;
     z-index: 12;
 
-    transition: transform 250ms ease;
+    transition: transform 150ms ease;
 }
 
 .body-c__menu_expanded {
@@ -2281,7 +2280,7 @@ html {
     }
 
     .cards-c__box {
-        padding-left: 2.2%;
+        padding-left: 2.2vw;
         margin-top: .8em;
         font-size: 3.89vw;
         padding-bottom: 0;
@@ -2356,6 +2355,7 @@ html {
 
     .cards-c__cards {
         padding-bottom: .2em;
+        gap: 2.2vw;
     }
 
     .body-c__faq-section {

@@ -13,6 +13,9 @@
 
             const pageVM = new PageViewModel(applicationService, deviceService);
             pageVM.model();
+
+
+            document.getElementById('projects-section').scrollIntoView();
         }
     }
 
@@ -205,7 +208,7 @@
     }
 
     class CardsComponentView {
-        constructor(boxId, leftArrowId, rightArrowId, slides) {
+        constructor(boxId, leftArrowId, rightArrowId, indexSlides) {
             this.elements = {
                 box: null,
                 leftArrow: null,
@@ -222,14 +225,18 @@
                 clickSlide: [],
                 scroll: []
             };
-            this.slides = slides;
+            this.indexSlides = indexSlides;
+            this.slidesIndexes = new Map();
             this.state = {
                 slide: 1,
 
                 scrollBlocked: false
             }
-            this.slidesOffsetLeft = new Map();
             this.slideIdSlideNumber = new Map();
+            this.slidesBoundaries = new Map();
+
+            this.boxLeftPadding = 0;
+            this.boxWidth = 0;
         }
 
         setMoveHandler(handler) {
@@ -238,6 +245,12 @@
 
         mount() {
             this.elements.box = document.getElementById(this.ids.box);
+
+            this.indexSlides.forEach((id, index) => {
+                this.slidesIndexes.set(id, index);
+            } );
+
+            this.update();
 
             this.elements.leftArrow = document.getElementById(this.ids.leftArrow);
             this.elements.leftArrow.addEventListener('click', () => {
@@ -248,35 +261,196 @@
             this.elements.rightArrow.addEventListener('click', () => {
                 this.listeners.clickRightArrow.forEach((listener) => listener());
             });
+        }
 
-            this.slides.forEach((elementId, key) => {
-                this.slideIdSlideNumber.set(elementId, key);
+        update() {
+            this.boxLeftPadding = window
+                .getComputedStyle(this.elements.box, null)
+                .getPropertyValue('padding-left');
+            this.boxLeftPadding = parseFloat(this.boxLeftPadding);
+            this.boxLeftPadding = Math.ceil(this.boxLeftPadding);
 
-                const element = document.getElementById(elementId);
-                element.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    const href = event.currentTarget.getAttribute('href');
-                    const id = event.currentTarget.id;
+            this.boxWidth = this.elements.box.offsetWidth;
 
-                    this.listeners.clickSlide.forEach((listener) => {
-                        listener(id, href);
-                    } )
-                } );
+            this.indexSlides.forEach((id, index) => {
+                const element = document.getElementById(id);
 
-                this.slidesOffsetLeft.set(elementId, element.offsetLeft);
-            });
+                this.slidesBoundaries.set(id, {
+                    startOffset: element.offsetLeft,
+                    endOffset: element.offsetLeft + element.offsetWidth
+                })
+            } );
         }
 
         addEventListener(event, listener) {
             this.listeners[event].push(listener);
         }
 
-        moveToNextSlide() {
-            this.moveHandler.moveToNextSlide();
+        moveNext() {
+            const scrollLeft = this.elements.box.scrollLeft;
+
+            for (const [slideElementId, slideBoundaries] of this.slidesBoundaries) {
+                let hasVisiblePart =
+                    (scrollLeft > slideBoundaries.startOffset) &&
+                    (slideBoundaries.endOffset > scrollLeft);
+
+                const toContinue = ! hasVisiblePart
+                if (toContinue) {
+                    continue;
+                }
+
+                const slideIndex = this.slidesIndexes.get(slideElementId);
+
+                const nextAfterOneHasVisiblePartIndex = slideIndex + 1;
+                const hasNextAfterOneHasVisiblePart = this.indexSlides.has(nextAfterOneHasVisiblePartIndex);
+                if (hasNextAfterOneHasVisiblePart) {
+                    const nextAfterOneHasVisiblePartSlideElementId = this.indexSlides.get(nextAfterOneHasVisiblePartIndex);
+                    const nextAfterOneHasVisiblePartBoundaries = this.slidesBoundaries.get(nextAfterOneHasVisiblePartSlideElementId);
+                    const distanceBetweenOneHavingVisiblePartAndNext =  nextAfterOneHasVisiblePartBoundaries.startOffset - slideBoundaries.endOffset;
+                    const shouldIgnore = distanceBetweenOneHavingVisiblePartAndNext <= this.boxLeftPadding;
+                    if (shouldIgnore) {
+                        continue;
+                    }
+                }
+
+
+
+
+
+
+                const relatedSlideIndex = this.slidesIndexes.get(slideElementId);
+                const nextSlideIndex = relatedSlideIndex + 1;
+                const hasNextSlide = this.indexSlides.has(nextSlideIndex);
+                const toReturn = ! hasNextSlide;
+                if (toReturn) {
+                    return;
+                }
+
+                const nextSlideElementId = this.indexSlides.get(nextSlideIndex);
+                const nextSlideElement = document.getElementById(nextSlideElementId);
+
+                const correction = this.boxLeftPadding;
+                this.elements.box.scrollLeft = nextSlideElement.offsetLeft - correction;
+
+                return;
+            }
+
+
+            let relatedSlide;
+            for (const [slideElementId, slideBoundaries] of this.slidesBoundaries) {
+                const toContinue = slideBoundaries.startOffset < scrollLeft;
+                if (toContinue) {
+                    continue;
+                }
+
+                if (relatedSlide) {
+                    const hasSmallerStartOffset = slideBoundaries.startOffset < relatedSlide.boundaries.startOffset;
+                    const toContinue = ! hasSmallerStartOffset;
+                    if (toContinue) {
+                        continue;
+                    }
+
+                    relatedSlide = {
+                        elementId: slideElementId,
+                        boundaries: slideBoundaries
+                    }
+                } else {
+                    relatedSlide = {
+                        elementId: slideElementId,
+                        boundaries: slideBoundaries
+                    }
+                }
+            }
+
+            if (relatedSlide) {
+                const slideIndex = this.slidesIndexes.get(relatedSlide.elementId);
+                const nextSlideIndex = slideIndex + 1;
+                const hasNextSlide = this.indexSlides.has(nextSlideIndex);
+
+                if (hasNextSlide) {
+                    const nextSlideElementId = this.indexSlides.get(nextSlideIndex);
+                    const nextSlideElement = document.getElementById(nextSlideElementId);
+
+                    const correction = this.boxLeftPadding;
+
+                    this.elements.box.scrollLeft = nextSlideElement.offsetLeft - correction;
+                }
+
+                return;
+            }
         }
 
-        moveToPrevSlide() {
-            this.moveHandler.moveToPrevSlide();
+        movePrev() {
+            const scrollLeft = this.elements.box.scrollLeft;
+
+            const shouldMoveToStart = scrollLeft <= this.boxLeftPadding;
+            if (shouldMoveToStart) {
+                this.elements.box.scrollLeft = 0;
+
+                return;
+            }
+
+            for (const [slideElementId, slideBoundaries] of this.slidesBoundaries) {
+                const hasVisiblePart =
+                    (slideBoundaries.startOffset < scrollLeft) &&
+                    (slideBoundaries.endOffset > scrollLeft);
+
+                const toContinue = ! hasVisiblePart;
+                if (toContinue) {
+                    continue;
+                }
+
+                const slideElement = document.getElementById(slideElementId);
+                const correction = this.boxLeftPadding;
+
+                this.elements.box.scrollLeft = slideElement.offsetLeft - correction;
+
+                return;
+            }
+
+            let relatedSlide;
+
+            for (const [slideElementId, slideBoundaries] of this.slidesBoundaries) {
+                const isRightSlide = slideBoundaries.startOffset > scrollLeft;
+                const toContinue = ! isRightSlide;
+                if (toContinue) {
+                    continue;
+                }
+
+                if (relatedSlide) {
+                    const toMakeRelated = slideBoundaries.startOffset < relatedSlide.boundaries.startOffset;
+                    if (toMakeRelated) {
+                        relatedSlide = {
+                            elementId: slideElementId,
+                            boundaries: slideBoundaries
+                        }
+                    }
+                } else {
+                    relatedSlide = {
+                        elementId: slideElementId,
+                        boundaries: slideBoundaries
+                    }
+                }
+            }
+
+            if (!relatedSlide) {
+                return;
+            }
+
+            const relatedSlideIndex = this.slidesIndexes.get(relatedSlide.elementId);
+            const prevSlideIndex = relatedSlideIndex - 1;
+            const hasSlide = prevSlideIndex > 0;
+
+            const toReturn = ! hasSlide;
+            if (toReturn) {
+                return;
+            }
+
+            const slideElementId = this.indexSlides.get(prevSlideIndex);
+            const slideElement = document.getElementById(slideElementId);
+            const correction = this.boxLeftPadding;
+
+            this.elements.box.scrollLeft = slideElement.offsetLeft - correction;
         }
 
         focusSlide(slideId) {
@@ -1460,13 +1634,14 @@
     }
 
     class CardsComponentViewModel {
-        constructor(documentView, state, navigatorView, deviceService) {
+        constructor(windowView, documentView, state, navigatorView, deviceService) {
             this.viewModelState = {
 
             }
             this.state = state;
             this.deviceService = deviceService;
             this.views = {
+                window: windowView,
                 cards: null,
                 navigator: navigatorView,
                 document: documentView
@@ -1508,8 +1683,13 @@
             this.views.cards.addEventListener('clickLeftArrow', this.onClickLeftArrow.bind(this));
             this.views.cards.addEventListener('clickRightArrow', this.onClickRightArrow.bind(this));
             this.views.cards.addEventListener('clickSlide', this.onClickSlide.bind(this));
+            this.views.window.addEventListener('resize', this.onWindowViewResize.bind(this));
 
             this.views.cards.mount();
+        }
+
+        onWindowViewResize() {
+            this.views.cards.update();
         }
 
         async onClickSlide(slideId, href) {
@@ -1561,11 +1741,11 @@
         }
 
         onClickLeftArrow() {
-            this.views.cards.moveToPrevSlide();
+            this.views.cards.movePrev();
         }
 
         onClickRightArrow() {
-            this.views.cards.moveToNextSlide();
+            this.views.cards.moveNext();
         }
     }
 
@@ -1961,7 +2141,7 @@
                 this.views.document.makeHover();
             }
 
-            this.viewModels.cards = new CardsComponentViewModel(this.views.document, this.state, this.views.nagivator, this.services.device);
+            this.viewModels.cards = new CardsComponentViewModel(this.views.window, this.views.document, this.state, this.views.nagivator, this.services.device);
             this.viewModels.cards.model();
 
             this.viewModels.infoList = new InfoListComponentViewModel();
