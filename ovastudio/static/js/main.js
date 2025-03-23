@@ -16,6 +16,333 @@
         }
     }
 
+    class MaskFieldView {
+        constructor(containerId, inputId, maskId, maskSymbols, classes) {
+            this.classes = {
+                error: classes.error,
+                inputError: classes.inputError,
+                maskError: classes.maskError,
+                hiddenMaskSymbol: classes.hiddenMaskSymbol,
+                solidCaret: classes.solidCaret
+            }
+            this.ids = {
+                container: containerId,
+                input: inputId,
+                mask: maskId
+            }
+            this.elements = {
+                input: null,
+                maskSymbols: new Map()
+            }
+            this.listeners = {
+                input: [],
+                keydown: [],
+                keyup: [],
+                focus: [],
+                blur: [],
+                updated: []
+            }
+            this.maskSymbolsIndexElementId = maskSymbols;
+            this.maskSymbolsArrayOrderedByIndex = []
+        }
+
+        addEventListener(event, listener) {
+            this.listeners[event].push(listener);
+        }
+
+        mount() {
+            this.elements.mask = document.getElementById(this.ids.mask);
+            this.elements.container = document.getElementById(this.ids.container);
+
+            this.elements.input = document.getElementById(this.ids.input);
+
+            this.elements.input.addEventListener('input', (event) => {
+                const eventData = {
+                    value: this.elements.input.value
+                };
+
+                this.listeners.input.forEach((listener) => listener(event, eventData))
+            });
+            this.elements.input.addEventListener('keydown', (event) => {
+                const eventData = {
+                    selectionStart: event.currentTarget.selectionStart,
+                    selectionEnd: event.currentTarget.selectionEnd,
+                    value: this.elements.input.value
+                }
+
+                this.listeners.keydown.forEach((listener) => listener(event, eventData));
+            });
+
+            this.elements.input.addEventListener('keyup', (event) => {
+                const eventData = {
+                    selectionStart: event.currentTarget.selectionStart,
+                    selectionEnd: event.currentTarget.selectionEnd
+                }
+
+                this.listeners.keyup.forEach((listener) => listener(event, eventData));
+            });
+
+            this.elements.input.addEventListener('focus', (event) => {
+                this.listeners.focus.forEach((listener) => listener());
+            });
+
+            this.elements.input.addEventListener('blur', (event) => {
+                this.listeners.blur.forEach((listener) => listener());
+            });
+
+            const maskSymbolsArray = [];
+            this.maskSymbolsIndexElementId.forEach((symbolElementId, symbolIndex) => {
+                const record = {
+                    elementId: symbolElementId,
+                    index: symbolIndex
+                }
+                maskSymbolsArray.push(record);
+
+                const symbolElement = document.getElementById(symbolElementId);
+                this.elements.maskSymbols.set(symbolElementId, symbolElement);
+            });
+            maskSymbolsArray.sort((left, right) => {
+                return left.index - right.index
+            });
+            this.maskSymbolsArrayOrderedByIndex = maskSymbolsArray;
+        }
+
+        showError(errorMessage) {
+            this.elements.mask.classList.add(this.classes.maskError);
+
+            const id = this.ids.container;
+
+            const containerElement = this.elements.container;
+
+            this.elements.input.classList.add(this.classes.inputError);
+
+            const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
+            Array.from(prevErrorElements).forEach((prevErrorElement) => {
+                prevErrorElement.parentNode.removeChild(prevErrorElement);
+            });
+
+            const errorElement = document.createElement('div');
+            errorElement.setAttribute('data-field-error', id);
+            errorElement.classList.add(this.classes.error);
+            errorElement.textContent = errorMessage;
+
+            containerElement.append(errorElement);
+        }
+
+        clearErrors() {
+            this.elements.mask.classList.remove(this.classes.maskError);
+
+            const id = this.ids.container;
+
+            const containerElement = this.elements.container;
+
+            this.elements.input.classList.remove(this.classes.inputError);
+
+            const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
+            Array.from(prevErrorElements).forEach((prevErrorElement) => {
+                prevErrorElement.parentNode.removeChild(prevErrorElement);
+            });
+
+        }
+
+        focus() {
+            this.elements.input.focus();
+        }
+
+        reset() {
+            this.elements.input.value = '';
+        }
+
+        collect() {
+            const fieldElement = this.elements.input;
+
+            return {
+                type: 'name.value',
+                data: {
+                    name: this.elements.input.name,
+                    value: this.elements.input.value
+                }
+            }
+        }
+
+        updateValue(value) {
+            this.elements.input.value = value;
+
+            this.listeners.updated.forEach((listener) => {
+                listener(value);
+            })
+        }
+
+        getValue() {
+            return this.elements.input.value;
+        }
+
+        getSelectionStart() {
+            return this.elements.input.selectionStart;
+        }
+
+        getSelectionEnd() {
+            return this.elements.input.selectionEnd;
+        }
+
+        replaceMaskSymbolAtPositionWith(position, replacement) {
+            const elementId = this.maskSymbolsIndexElementId.get(position);
+            const element = this.elements.maskSymbols.get(elementId);
+
+            element.textContent = replacement;
+        }
+
+        moveCaretToPosition(position) {
+            this.elements.input.selectionStart = position;
+            this.elements.input.selectionEnd = position;
+        }
+
+        showCaret() {
+            this.elements.input.classList.add(this.classes.solidCaret);
+        }
+
+        hideCaret() {
+            this.elements.input.classList.remove(this.classes.solidCaret);
+        }
+
+        moveCaretToEnd() {
+            const value = this.elements.input.value;
+
+            this.elements.input.selectionStart =
+                this.elements.input.selectionEnd =
+                    this.elements.input.value.length;
+        }
+
+        hideFirstNMaskSymbols(n) {
+            for (let index = 1; index <= n; index++) {
+                const symbolElementId = this.maskSymbolsIndexElementId.get(index);
+                const symbolElement = this.elements.maskSymbols.get(symbolElementId);
+
+                symbolElement.classList.add(this.classes.hiddenMaskSymbol);
+            }
+        }
+
+        hideMaskSymbolAt(position) {
+            const symbolElementId = this.maskSymbolsIndexElementId.get(position);
+            const symbolElement = this.elements.maskSymbols.get(symbolElementId);
+
+            symbolElement.classList.add(this.classes.hiddenMaskSymbol);
+        }
+
+        showMaskSymbolAt(position) {
+            const symbolElementId = this.maskSymbolsIndexElementId.get(position);
+            const symbolElement = this.elements.maskSymbols.get(symbolElementId);
+
+            symbolElement.classList.remove(this.classes.hiddenMaskSymbol);
+        }
+
+        showMaskSymbolAtIndex(index) {
+            const symbolElementId = this.maskSymbolsIndexElementId.get(index);
+            const symbolElement = this.elements.maskSymbols.get(symbolElementId);
+
+            symbolElement.classList.remove(this.classes.hiddenMaskSymbol);
+        }
+    }
+
+    class InputFieldView {
+        constructor(containerId, inputId, classes) {
+            this.ids = {
+                container: containerId,
+                input: inputId
+            }
+            this.listeners = {
+                focus: [],
+                input: [],
+                blur: []
+            };
+            this.classes = {
+                inputError: classes.inputError,
+                error: classes.error
+            }
+            this.elements = {
+                input: null,
+                container: null
+            }
+        }
+
+        mount() {
+            this.elements.input = document.getElementById(this.ids.input);
+            this.elements.container = document.getElementById(this.ids.container);
+
+            this.elements.input.addEventListener('input', (event) => {
+                const eventData = {
+                    value: this.elements.input.value
+                }
+
+                this.listeners.input.forEach((listener) => {
+                    listener(eventData);
+                })
+            })
+        }
+
+        getValue() {
+            return this.elements.input.value;
+        }
+
+        collect() {
+            const fieldElement = this.elements.input;
+
+            return {
+                type: 'name.value',
+                data: {
+                    name: this.elements.input.name,
+                    value: this.elements.input.value
+                }
+            }
+        }
+
+        focus() {
+            this.elements.input.focus();
+        }
+
+        reset() {
+            this.elements.input.value = '';
+        }
+
+        showError(errorMessage) {
+            const id = this.ids.container;
+
+            const containerElement = this.elements.container;
+
+            this.elements.input.classList.add(this.classes.inputError);
+
+            const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
+            Array.from(prevErrorElements).forEach((prevErrorElement) => {
+                prevErrorElement.parentNode.removeChild(prevErrorElement);
+            });
+
+            const errorElement = document.createElement('div');
+            errorElement.setAttribute('data-field-error', id);
+            errorElement.classList.add(this.classes.error);
+            errorElement.textContent = errorMessage;
+
+            containerElement.append(errorElement);
+        }
+
+        clearErrors() {
+            const id = this.ids.container;
+
+            const containerElement = this.elements.container;
+
+            this.elements.input.classList.remove(this.classes.inputError);
+
+            const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
+            Array.from(prevErrorElements).forEach((prevErrorElement) => {
+                prevErrorElement.parentNode.removeChild(prevErrorElement);
+            });
+
+        }
+
+        addEventListener(event, listener) {
+            this.listeners[event].push(listener);
+        }
+    }
+
     class MetaView {
         updateContent(id, content) {
             const element = document.getElementById(id);
@@ -458,9 +785,7 @@
     }
 
     class FormView {
-        constructor(formId, fields, classes) {
-            this.fields = fields;
-            this.fieldsMap = new Map();
+        constructor(formId) {
             this.ids = {
                 form: formId
             }
@@ -469,14 +794,7 @@
             };
             this.listeners = {
                 submit: [],
-                focusInputField: [],
-                inputInputField: [],
-                blurInputField: []
             };
-            this.classes = {
-                inputFieldError: classes.inputFieldError,
-                inputFieldInputError: classes.inputFieldInputError
-            }
         }
 
         addEventListener(event, listener) {
@@ -484,159 +802,14 @@
         }
 
         mount() {
-            for (let field of this.fields) {
-                this.fieldsMap.set(field.name, field);
-            }
-
             this.elements.form = document.getElementById(this.ids.form);
             this.elements.form.addEventListener('submit', (event) => {
                 event.preventDefault();
 
-                const eventData = {
-                    fields: this.collectFields()
-                }
-
                 this.listeners.submit.forEach((listener) => {
-                    listener(eventData);
+                    listener();
                 });
             });
-
-            for (let field of this.fields) {
-                switch (field.type) {
-                    case 'input': {
-                        const fieldElement = this.elements.form.elements[field.name];
-                        fieldElement.addEventListener('focus', (event) => {
-                            const fieldElement = event.target;
-                            const eventData = {
-                                name: fieldElement.name
-                            }
-
-                            this.listeners.focusInputField.forEach((listener) => {
-                                listener(eventData)
-                            })
-                        });
-                        fieldElement.addEventListener('input', (event) => {
-                            const fieldElement = event.target;
-                            const eventData = {
-                                name: fieldElement.name
-                            }
-
-                            this.listeners.inputInputField.forEach((listener) => {
-                                listener(eventData)
-                            });
-                        });
-                        fieldElement.addEventListener('blur', (event) => {
-                            const fieldElement = event.target;
-                            const eventData = {
-                                name: fieldElement.name
-                            }
-
-                            this.listeners.blurInputField.forEach((listener) => {
-                                listener(eventData)
-                            });
-                        } )
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        reset() {
-            for (let field of this.fields) {
-                switch (field.type) {
-                    case 'input': {
-                        const fieldElement = this.elements.form.elements[field.name];
-                        fieldElement.value = '';
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        disable() {
-
-        }
-
-        focusField(fieldName) {
-            const fieldElement = this.elements.form.elements[fieldName];
-
-            fieldElement.focus();
-        }
-
-        markFieldAsHavingError(fieldName, errorMessage) {
-            const field = this.fieldsMap.get(fieldName);
-
-            switch (field.type) {
-                case 'input': {
-                    const fieldElement = this.elements.form.elements[fieldName];
-                    const fieldId = fieldElement.id;
-                    const containerElement = document.querySelector(`[data-field-container="${fieldId}"]`);
-
-                    fieldElement.classList.add(this.classes.inputFieldInputError);
-
-                    const prevErrorElements = document.querySelectorAll(`[data-field-error="${fieldId}"]`);
-                    Array.from(prevErrorElements).forEach((prevErrorElement) => {
-                        prevErrorElement.parentNode.removeChild(prevErrorElement);
-                    });
-
-                    const errorElement = document.createElement('div');
-                    errorElement.setAttribute('data-field-error', fieldId);
-                    errorElement.classList.add(this.classes.inputFieldError);
-                    errorElement.textContent = errorMessage;
-
-                    containerElement.append(errorElement);
-
-                    break;
-                }
-            }
-        }
-
-        clearFieldErrors(fieldName) {
-            const field = this.fieldsMap.get(fieldName);
-
-            switch (field.type) {
-                case 'input': {
-                    const fieldElement = this.elements.form.elements[fieldName];
-                    const fieldId = fieldElement.id;
-                    const containerElement = document.querySelector(`[data-field-container="${fieldId}"]`);
-
-                    fieldElement.classList.remove(this.classes.inputFieldInputError);
-
-                    const prevErrorElements = document.querySelectorAll(`[data-field-error="${fieldId}"]`);
-                    Array.from(prevErrorElements).forEach((prevErrorElement) => {
-                        prevErrorElement.parentNode.removeChild(prevErrorElement);
-                    });
-
-                    break;
-                }
-            }
-        }
-
-        collectFields() {
-            const collectedFields = new Map();
-
-            for (let field of this.fields) {
-                switch (field.type) {
-                    case 'input': {
-                        const fieldElement = this.elements.form.elements[field.name];
-
-                        const collectedField = {
-                            type: 'input',
-                            data: {
-                                name: fieldElement.name,
-                                value: fieldElement.value
-                            }
-                        }
-                        collectedFields.set(field.name, collectedField);
-
-                        break;
-                    }
-                }
-            }
-
-            return collectedFields;
         }
     }
 
@@ -1802,6 +1975,768 @@
         }
     }
 
+    class FormViewModel {
+        constructor(applicationService, eventBus) {
+            this.services = {
+                application: applicationService
+            }
+            this.eventBus = eventBus;
+            this.state = {
+                fields: {
+                    name: {
+                        validateOnTheFly: false
+                    },
+                    phone: {
+                        validateOnTheFly: false
+                    }
+                }
+            };
+            this.views = {
+                form: null,
+                fields: {
+                    phone: null,
+                    name: null
+                }
+            };
+            this.viewModels = {
+                fields: {
+                    phone: null
+                }
+            }
+        }
+
+        model() {
+            this.eventBus.addEventListener('contact-form-is-submitted', this.onContactFormSubmitted.bind(this));
+
+            const phoneFieldViewMaskSymbols = new Map();
+            const symbolsCount = 18;
+            for (let symbolIndex = 1; symbolIndex <= 18; symbolIndex++) {
+                phoneFieldViewMaskSymbols.set(symbolIndex, `form-phone-mask-symbol-${symbolIndex}`);
+            }
+
+            this.views.fields.phone = new MaskFieldView(
+                'phone-form-field',
+                'phone-form-field-input',
+                'phone-form-field-mask',
+                phoneFieldViewMaskSymbols,
+                {
+                    hiddenMaskSymbol: 'form-c-form__mask-field-mask-symbol_hidden',
+                    solidCaret: 'form-c-form__mask-field-input_caret-solid',
+                    error: 'form-c-form__mask-field-error',
+                    inputError: 'form-c-form__mask-field-input_invalid',
+                    maskError: 'form-c-form__mask-field-mask_error'
+                }
+            );
+            this.views.fields.phone.addEventListener('updated', this.onPhoneFieldViewUpdated.bind(this));
+
+            this.viewModels.fields.phone = new PhoneMaskFieldViewModel(
+                this.views.fields.phone,
+                this.eventBus
+            );
+            this.viewModels.fields.phone.model();
+
+            this.views.fields.name = new InputFieldView(
+                'name-form-field',
+                'name-form-field-input',
+                {
+                    error: 'form-c-form__text-field-error',
+                    inputError: 'form-c-form__text-field-input_invalid'
+                }
+            )
+            this.views.fields.name.addEventListener('input', this.onNameFieldViewInput.bind(this));
+            this.views.fields.name.mount();
+
+            this.views.form = new FormView('form');
+            this.views.form.addEventListener('submit', this.onFormViewSubmit.bind(this));
+            this.views.form.mount();
+        }
+
+        onContactFormSubmitted() {
+            for (let fieldName in this.views.fields) {
+                switch(fieldName) {
+                    case 'name': {
+                        const fieldView = this.views.fields[fieldName];
+                        fieldView.reset();
+
+                        break;
+                    }
+                    case 'phone': {
+                        this.viewModels.fields.phone.reset();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        onPhoneFieldViewUpdated(value) {
+            if (this.state.fields.phone.validateOnTheFly) {
+                const pattern = /\+38\(0\d{2}\)\s\d{3}\s\d{2}\s\d{2}/;
+                const isValid = pattern.test(value);
+
+                if (isValid) {
+                    this.state.fields.phone.validateOnTheFly = false;
+                    this.views.fields.phone.clearErrors();
+                }
+            }
+        }
+
+        onNameFieldViewInput() {
+            if (this.state.fields.name.validateOnTheFly) {
+                const value = this.views.fields.name.getValue();
+                const isValid = value.length > 0;
+
+                if (isValid) {
+                    this.state.fields.name.validateOnTheFly = false;
+                    this.views.fields.name.clearErrors();
+                }
+            }
+        }
+
+        async onFormViewSubmit() {
+            for (let fieldName in this.views.fields) {
+                const fieldView = this.views.fields[fieldName];
+
+                fieldView.clearErrors();
+            }
+
+            const viewNameField = this.views.fields.name.collect();
+            const viewPhoneField = this.views.fields.phone.collect();
+
+            const serviceFields = {
+                name: viewNameField.data.value,
+                phone: viewPhoneField.data.value
+            }
+
+            const serviceApplication = {
+                name: 'application',
+                fields: serviceFields
+            }
+
+            try {
+                await this.services.application.submit(serviceApplication);
+
+                this.eventBus.notify('contact-form-is-submitted');
+            } catch (error) {
+                let strategy = 'null';
+
+                if (error instanceof InvalidFieldsException) {
+                    strategy = 'invalid-fields';
+                }
+
+                switch (strategy) {
+                    case 'invalid-fields': {
+                        const invalidFields = error.fields;
+
+                        const fieldToFocusPriority = {
+                            name: 1,
+                            phone: 2
+                        };
+
+                        let fieldToFocus = {
+                            type: 'null'
+                        };
+
+                        invalidFields.forEach((invalidField, invalidFieldIndex) => {
+                            const viewFieldName = invalidField.name;
+                            const invalidFieldName = invalidField.name;
+                            const stateFieldName = invalidField.name;
+                            const reason = invalidField.reason;
+
+                            switch (reason.type) {
+                                case 'text': {
+                                    const reasonText = reason.data.text;
+
+                                    this.views.fields[viewFieldName].showError(reasonText);
+                                    this.state.fields[stateFieldName].validateOnTheFly = true;
+
+                                    break;
+                                }
+                            }
+
+                            const fieldPriority = fieldToFocusPriority[invalidField.name];
+                            const toMakeFieldFocused =
+                                fieldToFocus['type'] === 'null' ||
+                                fieldPriority < fieldToFocus.priority;
+
+                            if (toMakeFieldFocused) {
+                                fieldToFocus = {
+                                    type: 'field',
+                                    name: invalidField.name,
+                                    priority: fieldPriority
+                                };
+                            }
+                        });
+
+                        switch (fieldToFocus.type) {
+                            case 'field': {
+                                const viewFieldName = fieldToFocus.name;
+
+                                this.views.fields[viewFieldName].focus();
+
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    class ModalFormViewModel {
+        constructor(applicationService, eventBus) {
+            this.services = {
+                application: applicationService
+            }
+            this.eventBus = eventBus;
+            this.state = {
+                fields: {
+                    name: {
+                        validateOnTheFly: false
+                    },
+                    phone: {
+                        validateOnTheFly: false
+                    }
+                }
+            };
+            this.views = {
+                form: null,
+                fields: {
+                    phone: null,
+                    name: null
+                }
+            };
+            this.viewModels = {
+                fields: {
+                    phone: null
+                }
+            }
+        }
+
+        model() {
+            return;
+
+            this.eventBus.addEventListener('modal-form-is-submitted', this.onBusModalFormSubmitted.bind(this));
+
+            const phoneFieldViewMaskSymbols = new Map();
+            const symbolsCount = 18;
+            for (let symbolIndex = 1; symbolIndex <= symbolsCount; symbolIndex++) {
+                phoneFieldViewMaskSymbols.set(symbolIndex, `modal-form-phone-mask-symbol-${symbolIndex}`);
+            }
+
+            this.views.fields.phone = new MaskFieldView(
+                'phone-modal-form-field',
+                'phone-modal-form-field-input',
+                'phone-modal-form-field-mask',
+                phoneFieldViewMaskSymbols,
+                {
+                    hiddenMaskSymbol: 'form-2-c__mask-field-mask-symbol_hidden',
+
+                    solidCaret: 'form-c-form__mask-field-input_caret-solid',
+
+                    error: 'form-c-form__mask-field-error',
+                    inputError: 'form-2-c__mask-field-input_invalid',
+                    maskError: 'form-c-form__mask-field-mask_error'
+                }
+            );
+            this.views.fields.phone.addEventListener('updated', this.onPhoneFieldViewUpdated.bind(this));
+
+
+
+
+            let modalFormViewFields = [
+                {
+                    type: 'input',
+                    name: 'name'
+                },
+                {
+                    type: 'input',
+                    name: 'phone',
+                },
+                {
+                    type: 'submit',
+                    name: 'submit',
+                },
+            ]
+            let modalFormViewClasses = {
+                inputFieldError: 'form-2-c__label-field-error',
+                inputFieldInputError: 'form-2-c__input_invalid'
+            }
+
+            this.views.form = new FormView('modal-form', modalFormViewFields, modalFormViewClasses);
+            this.views.form.addEventListener('submit', this.onModalFormViewSubmit.bind(this));
+            this.views.form.addEventListener('focusInputField', this.onModalFormViewFocusInputField.bind(this));
+            this.views.form.addEventListener('blurInputField', this.onModalFormViewBlurInputField.bind(this));
+            this.views.form.addEventListener('inputInputField', this.onModalFormViewInputInputField.bind(this));
+        }
+
+        onModalFormViewFocusInputField(eventData) {
+            const name = eventData.name;
+
+            let shouldClearErrors = true;
+
+            if (this.state.modalForm.stopToClearErrorsOnInputFocus[name]) {
+                shouldClearErrors = false;
+            }
+
+            if(shouldClearErrors) {
+                this.views.modalForm.clearFieldErrors(eventData.name);
+            }
+        }
+
+        onModalFormViewBlurInputField(eventData) {
+            const name = eventData.name;
+
+            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
+        }
+
+        onModalFormViewInputInputField(eventData) {
+            const name = eventData.name;
+
+            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
+            this.views.modalForm.clearFieldErrors(eventData.name);
+        }
+
+        async onModalFormViewSubmit(eventData) {
+            this.state.modalForm.submittingStatus = 'submitting';
+            this.views.modalForm.disable();
+
+            const viewFields = eventData.fields;
+
+            const viewNameField = viewFields.get('name');
+            const viewPhoneField = viewFields.get('phone');
+
+            const serviceFields = {
+                name: viewNameField.data.value,
+                phone: viewPhoneField.data.value
+            }
+
+            const serviceApplication = {
+                name: 'application',
+                fields: serviceFields
+            }
+
+            try {
+                await this.services.application.submit(serviceApplication);
+
+                this.eventBus.notify('modal-form-is-submitted');
+            } catch (error) {
+                let strategy = 'null';
+
+                if (error instanceof InvalidFieldsException) {
+                    strategy = 'invalid-fields';
+                }
+
+                switch (strategy) {
+                    case 'invalid-fields': {
+                        const invalidFields = error.fields;
+
+                        const fieldToFocusPriority = {
+                            name: 1,
+                            phone: 2
+                        };
+
+                        let fieldToFocus = {
+                            type: 'null'
+                        };
+
+                        invalidFields.forEach((invalidField) => {
+                            const invalidFieldName = invalidField.name;
+                            const reason = invalidField.reason;
+
+                            switch (reason.type) {
+                                case 'text': {
+                                    const reasonText = reason.data.text;
+
+                                    this.views.modalForm.markFieldAsHavingError(invalidFieldName, reasonText);
+
+                                    break;
+                                }
+                            }
+
+                            const fieldPriority = fieldToFocusPriority[invalidField.name];
+                            const toMakeFieldFocused =
+                                fieldToFocus['type'] === 'null' ||
+                                fieldPriority < fieldToFocus.priority;
+
+                            if (toMakeFieldFocused) {
+                                fieldToFocus = {
+                                    type: 'field',
+                                    name: invalidField.name,
+                                    priority: fieldPriority
+                                };
+                            }
+                        });
+
+                        switch (fieldToFocus.type) {
+                            case 'field': {
+                                this.state.modalForm.stopToClearErrorsOnInputFocus[fieldToFocus.name] = true;
+
+                                const viewFieldName = fieldToFocus.name;
+
+                                this.views.modalForm.focusField(viewFieldName);
+
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        onBusModalFormSubmitted() {
+            for (let fieldName in this.views.fields) {
+                switch(fieldName) {
+                    case 'name': {
+                        const fieldView = this.views.fields[fieldName];
+                        fieldView.reset();
+
+                        break;
+                    }
+                    case 'phone': {
+                        this.viewModels.fields.phone.reset();
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    class PhoneMaskFieldViewModel {
+        constructor(maskFieldView, eventBus) {
+            this.state = {
+                fields: {
+                    phone: {
+                        basicMask: new Map(),
+
+                        activeSymbolsCount: 5,
+                        value: '+38(0',
+                        basicValue: '+38(0',
+                        length: 18,
+                        selectionStart: 5,
+                        selectionEnd: 5,
+
+                        prevValue: '+38(0',
+                        nextValue: '+38(0',
+                        prevSelectionStart: 5,
+                        nextSelectionStart: 5,
+                        initialValue: '+38(0',
+                        maxValueLength: 18
+                    }
+                }
+            }
+            this.eventBus = eventBus;
+            this.views = {
+                phone: maskFieldView
+            }
+        }
+
+        model() {
+            this.state.fields.phone.basicMask.set(1, {
+                value: '+',
+                visibility: 'hidden'
+            });
+            this.state.fields.phone.basicMask.set(2, {
+                value: '3',
+                visibility: 'hidden'
+            });
+            this.state.fields.phone.basicMask.set(3, {
+                value: '8',
+                visibility: 'hidden'
+            });
+            this.state.fields.phone.basicMask.set(4, {
+                value: '(',
+                visibility: 'hidden'
+            });
+            this.state.fields.phone.basicMask.set(5, {
+                value: '0',
+                visibility: 'hidden'
+            });
+            this.state.fields.phone.basicMask.set(6, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(7, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(8, {
+                value: ')',
+                visibility: 'visible'
+            });this.state.fields.phone.basicMask.set(9, {
+                value: ' ',
+                visibility: 'visible'
+            });this.state.fields.phone.basicMask.set(10, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(11, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(12, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(13, {
+                value: ' ',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(14, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(15, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(16, {
+                value: ' ',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(17, {
+                value: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.basicMask.set(18, {
+                value: '_',
+                visibility: 'visible'
+            });
+
+
+
+
+
+
+
+            this.views.phone.addEventListener('input', this.onPhoneFieldViewInput.bind(this));
+            this.views.phone.addEventListener('keydown', this.onPhoneFieldViewKeyDown.bind(this));
+            this.views.phone.addEventListener('keyup', this.onPhoneFieldViewKeyUp.bind(this));
+            this.views.phone.addEventListener('focus', this.onPhoneFieldViewFocus.bind(this));
+            this.views.phone.addEventListener('blur', this.onPhoneFieldViewBlur.bind(this));
+
+            this.views.phone.mount();
+        }
+
+        onPhoneFieldViewKeyDown(event, eventData) {
+            this.state.fields.phone.prevValue = eventData.value;
+            this.state.fields.phone.prevSelectionStart = this.views.phone.getSelectionStart();
+        }
+
+        reset() {
+            const nextValue = this.state.fields.phone.basicValue;
+            this.views.phone.updateValue(nextValue);
+
+            this.state.fields.phone.basicMask.forEach((descriptor, index) => {
+                switch (descriptor.visibility) {
+                    case 'hidden': {
+                        const position = index;
+                        this.views.phone.hideMaskSymbolAt(position);
+
+                        break;
+                    }
+                    case 'visible': {
+                        const position = index;
+                        this.views.phone.showMaskSymbolAt(position);
+
+
+                        break;
+                    }
+                }
+
+                const position = index;
+                this.views.phone.replaceMaskSymbolAtPositionWith(position, descriptor.value);
+            })
+        }
+
+        onPhoneFieldViewKeyUp(event, eventData) {
+        }
+
+        onPhoneFieldViewInput(event, eventData) {
+            const prevValue = this.state.fields.phone.prevValue;
+            let nextValue = eventData.value;
+
+            console.log(`Input. Prev: ${prevValue}. Next: ${nextValue}`);
+
+            const nextSelectionStart = this.views.phone.getSelectionStart();
+            const prevSelectionStart = this.state.fields.phone.prevSelectionStart;
+
+            console.log(`Prev selection start: ${prevSelectionStart}. Next selection start: ${nextSelectionStart}`);
+
+
+            const strategyDescriptor = {
+                nextValue: nextValue,
+                prevValue: prevValue,
+                prevSelectionStart: prevSelectionStart,
+                nextSelectionStart: nextSelectionStart
+            }
+            const nextValueStrategy = this.defineNextValueStrategy(strategyDescriptor);
+
+            console.log(nextValueStrategy);
+
+
+            switch(nextValueStrategy) {
+                case 'set-initial-value': {
+                    console.log('Set initial value');
+
+                    nextValue = this.state.fields.phone.basicValue;
+
+                    nextValue = this.testNormalizePhoneField(nextValue);
+                    console.log(`Normalized value: ${nextValue}`);
+
+                    break;
+                }
+                case 'has-no-place': {
+                    nextValue = prevValue;
+
+                    nextValue = this.testNormalizePhoneField(nextValue);
+                    console.log(`Normalized value: ${nextValue}`);
+
+                    break;
+                }
+                case 'remove-symbol': {
+                    console.log('Remove symbol');
+
+                    const indexToShowMaskSymbolAt = prevSelectionStart;
+                    this.views.phone.showMaskSymbolAtIndex(indexToShowMaskSymbolAt);
+                    this.views.phone.replaceMaskSymbolAtPositionWith(indexToShowMaskSymbolAt, '_');
+
+                    switch(nextSelectionStart) {
+                        case 16: {
+                            this.views.phone.moveCaretToPosition(15);
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                case 'append-symbol': {
+                    console.log('Append symbol');
+
+                    const allowedSymbols = new Map();
+
+                    allowedSymbols.set("0", true);
+                    allowedSymbols.set("1", true);
+                    allowedSymbols.set("2", true);
+                    allowedSymbols.set("3", true);
+                    allowedSymbols.set("4", true);
+                    allowedSymbols.set("5", true);
+                    allowedSymbols.set("6", true);
+                    allowedSymbols.set("7", true);
+                    allowedSymbols.set("8", true);
+                    allowedSymbols.set("9", true);
+                    allowedSymbols.set("0", true);
+
+                    // const prevValueLength = prevValue.length;
+                    // const nextValueLength = nextValue.length;
+                    // const symbolsToAppendCount = nextValueLength - prevValueLength;
+                    // const newSymbols = nextValue.substring(nextValue.length - symbolsToAppendCount);
+
+                    const symbolPosition = nextValue.length - 1;
+                    const symbol = nextValue.charAt(symbolPosition);
+                    const allowed = allowedSymbols.has(symbol);
+
+                    const toRemove = ! allowed;
+                    if (toRemove) {
+                        console.log('Append.Remove symbol');
+                        nextValue = nextValue.substring(0, nextValue.length - 1);
+                    }
+
+                    nextValue = this.testNormalizePhoneField(nextValue);
+                    console.log(`Normalized value: ${nextValue}`);
+
+                    break;
+                }
+            }
+
+
+            this.views.phone.updateValue(nextValue);
+
+            for (let index = 0; index < nextValue.length; index++) {
+                const replacement = nextValue.charAt(index);
+                const position = index + 1;
+                this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
+            }
+
+            const symbolsToHideCount = nextValue.length;
+            this.views.phone.hideFirstNMaskSymbols(symbolsToHideCount);
+        }
+
+
+        testNormalizePhoneField(nextValue) {
+            let normalizedValue;
+
+            if (nextValue.length === 7) {
+                return `${nextValue}) `;
+            }
+
+            if(nextValue.length === 12) {
+                return `${nextValue} `
+            }
+
+            if(nextValue.length === 15) {
+                return `${nextValue} `
+            }
+
+            return nextValue;
+        }
+
+        defineNextValueStrategy(descriptor) {
+            const toSetInitialValueStrategy =
+                descriptor.nextValue.length < this.state.fields.phone.basicValue.length;
+            if (toSetInitialValueStrategy) {
+                return 'set-initial-value';
+            }
+
+            const hasNoPlace = descriptor.nextValue.length > this.state.fields.phone.maxValueLength;
+            if (hasNoPlace) {
+                return 'has-no-place';
+            }
+
+            const toRemove = (descriptor.nextSelectionStart - descriptor.prevSelectionStart) === -1;
+            if (toRemove) {
+                return 'remove-symbol';
+            }
+
+            const toAppend = (descriptor.nextSelectionStart - descriptor.prevSelectionStart) === 1;
+            if (toAppend) {
+                return 'append-symbol';
+            }
+        }
+
+        onPhoneFieldViewBlur() {
+            console.log('Hide caret');
+
+            this.views.phone.hideCaret();
+        }
+
+        onPhoneFieldViewFocus() {
+            setTimeout(() => {
+                const minSelectionStart = this.state.fields.phone.basicValue.length;
+                const selectionStart = this.views.phone.getSelectionStart();
+
+                const toMoveToMinPosition = selectionStart < minSelectionStart;
+                if (toMoveToMinPosition) {
+                    console.log(`Move caret to position ${selectionStart}`);
+
+                    const caretPosition = minSelectionStart;
+                    this.views.phone.moveCaretToPosition(caretPosition);
+                }
+
+                setTimeout(() => {
+                    this.views.phone.showCaret();
+                }, 0);
+
+            }, 0);
+        }
+    }
+
     class ListComponentView {
         constructor(actionId, listItemsIds) {
             this.ids = {
@@ -1870,7 +2805,9 @@
             const phone = application.fields.phone;
 
             const isValidName = name.length > 0;
-            const isValidPhone = phone.length > 0;
+
+            const phonePattern = /\+38\(0\d{2}\)\s\d{3}\s\d{2}\s\d{2}/;
+            const isValidPhone = (phonePattern.test(phone));
 
             const invalidFields = [];
             const toAddNameToInvalidFields = !isValidName;
@@ -1970,6 +2907,25 @@
         }
     }
 
+    class EventBus {
+        constructor() {
+            this.listeners = {
+                'contact-form-is-submitted': [],
+                'modal-form-is-submitted': []
+            }
+        }
+
+        addEventListener(event, listener) {
+            this.listeners[event].push(listener)
+        }
+
+        notify(event) {
+            this.listeners[event].forEach((listener) => {
+                listener();
+            });
+        }
+    }
+
     class PageViewModel {
         constructor(applicationService, deviceService) {
             this.services = {
@@ -2025,7 +2981,8 @@
             };
             this.listeners = {
                 scrollHandleStick: 0
-            }
+            };
+            this.eventBus = new EventBus()
         }
 
         model() {
@@ -2034,6 +2991,9 @@
 
                 loadingPluckView.remove();
             });
+
+            this.eventBus.addEventListener('contact-form-is-submitted', this.onEventBusContactFormSubmitted.bind(this));
+            this.eventBus.addEventListener('modal-form-is-submitted', this.onEventBusModalFormSubmitted.bind(this));
 
             this.views.meta = new MetaView();
             this.views.meta.updateContent('viewport-meta-tag', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
@@ -2047,54 +3007,11 @@
             this.views.window = new WindowComponentView();
             this.views.window.addEventListener('resize', this.onWindowViewResize.bind(this));
 
-            const formViewFields = [
-                {
-                    type: 'input',
-                    name: 'name'
-                },
-                {
-                    type: 'input',
-                    name: 'phone',
-                },
-                {
-                    type: 'submit',
-                    name: 'submit',
-                },
-            ]
-            const formViewClasses = {
-                inputFieldError: 'form-c-form__text-field-error',
-                inputFieldInputError: 'form-c-form__text-field-input_invalid'
-            }
-            this.views.form = new FormView('form', formViewFields, formViewClasses);
-            this.views.form.addEventListener('submit', this.onFormViewSubmit.bind(this));
-            this.views.form.addEventListener('focusInputField', this.onFormViewFocusInputField.bind(this));
-            this.views.form.addEventListener('blurInputField', this.onFormViewBlurInputField.bind(this));
-            this.views.form.addEventListener('inputInputField', this.onFormViewInputInputField.bind(this));
+            this.viewModels.form = new FormViewModel(this.services.application, this.eventBus);
+            this.viewModels.form.model();
 
-
-            let modalFormViewFields = [
-                {
-                    type: 'input',
-                    name: 'name'
-                },
-                {
-                    type: 'input',
-                    name: 'phone',
-                },
-                {
-                    type: 'submit',
-                    name: 'submit',
-                },
-            ]
-            let modalFormViewClasses = {
-                inputFieldError: 'form-2-c__label-field-error',
-                inputFieldInputError: 'form-2-c__input_invalid'
-            }
-            this.views.modalForm = new FormView('modal-form', modalFormViewFields, modalFormViewClasses);
-            this.views.modalForm.addEventListener('submit', this.onModalFormViewSubmit.bind(this));
-            this.views.modalForm.addEventListener('focusInputField', this.onModalFormViewFocusInputField.bind(this));
-            this.views.modalForm.addEventListener('blurInputField', this.onModalFormViewBlurInputField.bind(this));
-            this.views.modalForm.addEventListener('inputInputField', this.onModalFormViewInputInputField.bind(this));
+            this.viewModels.modalForm = new ModalFormViewModel(this.services.application, this.eventBus);
+            this.viewModels.modalForm.model();
 
 
             const menuViewItemsIds = [
@@ -2168,11 +3085,25 @@
             this.views.formModal.mount();
             this.views.thanksModal.mount();
             this.views.thanksPluck.mount();
-            this.views.form.mount();
-            this.views.modalForm.mount();
+            // this.views.modalForm.mount();
             this.views.window.mount();
 
             this.initStick();
+        }
+
+        onEventBusContactFormSubmitted() {
+            this.stopToWatchUnstick();
+            this.views.html.lockScrolling();
+            this.views.thanksPluck.activate();
+            this.views.thanksModal.show();
+        }
+
+        onEventBusModalFormSubmitted() {
+            this.views.formModal.hide();
+            this.views.formPluck.deactivate();
+            this.views.html.lockScrolling();
+            this.views.thanksPluck.activate();
+            this.views.thanksModal.show();
         }
 
         onWindowViewResize() {
@@ -2288,248 +3219,6 @@
             } else {
                 this.state.header.isSolid = false;
                 this.views.header.makeNotSolid();
-            }
-        }
-
-        onModalFormViewFocusInputField(eventData) {
-            const name = eventData.name;
-
-            let shouldClearErrors = true;
-
-            if (this.state.modalForm.stopToClearErrorsOnInputFocus[name]) {
-                shouldClearErrors = false;
-            }
-
-            if(shouldClearErrors) {
-                this.views.modalForm.clearFieldErrors(eventData.name);
-            }
-        }
-
-        onModalFormViewBlurInputField(eventData) {
-            const name = eventData.name;
-
-            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
-        }
-
-        onModalFormViewInputInputField(eventData) {
-            const name = eventData.name;
-
-            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
-            this.views.modalForm.clearFieldErrors(eventData.name);
-        }
-
-        async onModalFormViewSubmit(eventData) {
-            this.state.modalForm.submittingStatus = 'submitting';
-            this.views.modalForm.disable();
-
-            const viewFields = eventData.fields;
-
-            const viewNameField = viewFields.get('name');
-            const viewPhoneField = viewFields.get('phone');
-
-            const serviceFields = {
-                name: viewNameField.data.value,
-                phone: viewPhoneField.data.value
-            }
-
-            const serviceApplication = {
-                name: 'application',
-                fields: serviceFields
-            }
-
-            try {
-                await this.services.application.submit(serviceApplication);
-
-                this.views.formModal.hide();
-                this.views.formPluck.deactivate();
-                this.views.modalForm.reset();
-                this.views.html.lockScrolling();
-                this.views.thanksPluck.activate();
-                this.views.thanksModal.show();
-            } catch (error) {
-                let strategy = 'null';
-
-                if (error instanceof InvalidFieldsException) {
-                    strategy = 'invalid-fields';
-                }
-
-                switch (strategy) {
-                    case 'invalid-fields': {
-                        const invalidFields = error.fields;
-
-                        const fieldToFocusPriority = {
-                            name: 1,
-                            phone: 2
-                        };
-
-                        let fieldToFocus = {
-                            type: 'null'
-                        };
-
-                        invalidFields.forEach((invalidField) => {
-                            const invalidFieldName = invalidField.name;
-                            const reason = invalidField.reason;
-
-                            switch (reason.type) {
-                                case 'text': {
-                                    const reasonText = reason.data.text;
-
-                                    this.views.modalForm.markFieldAsHavingError(invalidFieldName, reasonText);
-
-                                    break;
-                                }
-                            }
-
-                            const fieldPriority = fieldToFocusPriority[invalidField.name];
-                            const toMakeFieldFocused =
-                                fieldToFocus['type'] === 'null' ||
-                                fieldPriority < fieldToFocus.priority;
-
-                            if (toMakeFieldFocused) {
-                                fieldToFocus = {
-                                    type: 'field',
-                                    name: invalidField.name,
-                                    priority: fieldPriority
-                                };
-                            }
-                        });
-
-                        switch (fieldToFocus.type) {
-                            case 'field': {
-                                this.state.modalForm.stopToClearErrorsOnInputFocus[fieldToFocus.name] = true;
-
-                                const viewFieldName = fieldToFocus.name;
-
-                                this.views.modalForm.focusField(viewFieldName);
-
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        onFormViewInputInputField(eventData) {
-            const name = eventData.name;
-
-            this.state.form.stopToClearErrorsOnInputFocus[name] = false;
-            this.views.form.clearFieldErrors(eventData.name);
-        }
-
-        onFormViewBlurInputField(eventData) {
-            const name = eventData.name;
-
-            this.state.form.stopToClearErrorsOnInputFocus[name] = false;
-        }
-
-        onFormViewFocusInputField(eventData) {
-            const name = eventData.name;
-
-            let shouldClearErrors = true;
-
-            if (this.state.form.stopToClearErrorsOnInputFocus[name]) {
-                shouldClearErrors = false;
-            }
-
-            if(shouldClearErrors) {
-                this.views.form.clearFieldErrors(eventData.name);
-            }
-        }
-
-        async onFormViewSubmit(eventData) {
-            this.state.form.submittingStatus = 'submitting';
-            this.views.form.disable();
-
-            const viewFields = eventData.fields;
-
-            const viewNameField = viewFields.get('name');
-            const viewPhoneField = viewFields.get('phone');
-
-            const serviceFields = {
-                name: viewNameField.data.value,
-                phone: viewPhoneField.data.value
-            }
-
-            const serviceApplication = {
-                name: 'application',
-                fields: serviceFields
-            }
-
-            try {
-                await this.services.application.submit(serviceApplication);
-
-                this.stopToWatchUnstick();
-                this.views.form.reset();
-                this.views.html.lockScrolling();
-                this.views.thanksPluck.activate();
-                this.views.thanksModal.show();
-            } catch (error) {
-                let strategy = 'null';
-
-                if (error instanceof InvalidFieldsException) {
-                    strategy = 'invalid-fields';
-                }
-
-                switch (strategy) {
-                    case 'invalid-fields': {
-                        const invalidFields = error.fields;
-
-                        const fieldToFocusPriority = {
-                            name: 1,
-                            phone: 2
-                        };
-
-                        let fieldToFocus = {
-                            type: 'null'
-                        };
-
-                        invalidFields.forEach((invalidField, invalidFieldIndex) => {
-                            const invalidFieldName = invalidField.name;
-                            const reason = invalidField.reason;
-
-                            switch (reason.type) {
-                                case 'text': {
-                                    const reasonText = reason.data.text;
-
-                                    this.views.form.markFieldAsHavingError(invalidFieldName, reasonText);
-
-                                    break;
-                                }
-                            }
-
-                            const fieldPriority = fieldToFocusPriority[invalidField.name];
-                            const toMakeFieldFocused =
-                                fieldToFocus['type'] === 'null' ||
-                                fieldPriority < fieldToFocus.priority;
-
-                            if (toMakeFieldFocused) {
-                                fieldToFocus = {
-                                    type: 'field',
-                                    name: invalidField.name,
-                                    priority: fieldPriority
-                                };
-                            }
-                        });
-
-                        switch (fieldToFocus.type) {
-                            case 'field': {
-                                this.state.form.stopToClearErrorsOnInputFocus[fieldToFocus.name] = true;
-
-                                const viewFieldName = fieldToFocus.name;
-
-                                this.views.form.focusField(viewFieldName);
-
-
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
             }
         }
 

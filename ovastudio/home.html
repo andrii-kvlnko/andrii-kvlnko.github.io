@@ -31,9 +31,9 @@
             }
         </style>
 
-        <link rel="stylesheet" href="static/css/reset.css?v=121">
-        <link rel="stylesheet" href="static/css/fonts.css?v=121">
-        <link rel="stylesheet" href="static/css/main.css?v=121">
+        <link rel="stylesheet" href="static/css/reset.css?v=140">
+        <link rel="stylesheet" href="static/css/fonts.css?v=140">
+        <link rel="stylesheet" href="static/css/main.css?v=140">
 
         <meta name="robots" content="noindex">
     </head>
@@ -1550,7 +1550,7 @@
                             </div>
                             <div class="form-c-form__fields">
                                 <label class="form-c-form__text-field"
-                                       data-field-container="name-form-field-input"
+                                       id="name-form-field"
                                        for="name-form-field-input">
                                     <span class="form-c-form__text-field-label">Ваше ім’я</span>
                                     <input class="form-c-form__text-field-input"
@@ -1558,14 +1558,18 @@
                                            id="name-form-field-input"
                                            placeholder="Іван">
                                 </label>
-                                <label class="form-c-form__phone-field"
-                                       data-field-container="phone-form-field-input"
+                                <label class="form-c-form__mask-field"
+                                       id="phone-form-field"
                                        for="phone-form-field-input">
-                                    <span class="form-c-form__phone-field-label">Номер телефону</span>
-                                    <input class="form-c-form__text-field-input"
-                                           name="phone"
-                                           id="phone-form-field-input"
-                                           placeholder="Введіть ваш номер">
+                                    <span class="form-c-form__mask-field-label">Номер телефону</span>
+                                    <span class="form-c-form__mask-field-section">
+                                        <input class="form-c-form__mask-field-input"
+                                               autocomplete="off"
+                                               name="phone"
+                                               value="+38(0"
+                                               id="phone-form-field-input">
+                                        <span class="form-c-form__mask-field-mask" id="phone-form-field-mask"><span class="form-c-form__mask-field-mask-symbol form-c-form__mask-field-mask-symbol_hidden" id="form-phone-mask-symbol-1" data-symbol="1">+</span><span class="form-c-form__mask-field-mask-symbol form-c-form__mask-field-mask-symbol_hidden" id="form-phone-mask-symbol-2" data-symbol="2">3</span><span class="form-c-form__mask-field-mask-symbol form-c-form__mask-field-mask-symbol_hidden" id="form-phone-mask-symbol-3" data-symbol="3">8</span><span class="form-c-form__mask-field-mask-symbol form-c-form__mask-field-mask-symbol_hidden" id="form-phone-mask-symbol-4" data-symbol="4">(</span><span class="form-c-form__mask-field-mask-symbol form-c-form__mask-field-mask-symbol_hidden" id="form-phone-mask-symbol-5" data-symbol="5">0</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-6" data-symbol="6">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-7" data-symbol="7">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-8" data-symbol="8">)</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-9" data-symbol="9"> </span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-10" data-symbol="10">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-11" data-symbol="11">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-12" data-symbol="12">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-13" data-symbol="13"> </span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-14" data-symbol="14">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-15" data-symbol="15">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-16" data-symbol="16"> </span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-17" data-symbol="17">_</span><span class="form-c-form__mask-field-mask-symbol" id="form-phone-mask-symbol-18" data-symbol="18">_</span></span>
+                                    </span>
                                 </label>
                                 <button class="form-c-form__submit-field"
                                         type="submit"
@@ -1686,23 +1690,29 @@
                         <div class="form-2-c__content">
                             <div class="form-2-c__fields-section">
                                 <label class="form-2-c__label"
-                                       data-field-container="form-2-name-input"
-                                       for="form-2-name-input">
+                                       id="name-modal-form-field"
+                                       for="name-modal-form-field-input">
                                     <span class="form-2-c__label-text">Ваше ім'я</span>
                                     <input name="name"
                                            class="form-2-c__input"
-                                           id="form-2-name-input"
+                                           id="name-modal-form-field-input"
                                            placeholder="Іван">
                                 </label>
-                                <label class="form-2-c__label"
-                                       data-field-container="form-2-phone-input"
-                                       for="form-2-phone-input">
-                                    <span class="form-2-c__label-text">Номер телефону</span>
-                                    <input name="phone"
-                                           class="form-2-c__input"
-                                           id="form-2-phone-input"
-                                           placeholder="Введіть ваш номер">
+
+                                <label class="form-2-c__mask-field"
+                                       id="phone-modal-form-field"
+                                       for="phone-modal-form-field-input">
+                                    <span class="form-2-c__mask-field-label">Номер телефону</span>
+                                    <span class="form-2-c___mask-field-section">
+                                        <input class="form-2-c__mask-field-input"
+                                               autocomplete="off"
+                                               name="phone"
+                                               value="+38(0"
+                                               id="phone-modal-form-field-input">
+                                        <span class="form-2-c__mask-field-mask" id="phone-modal-form-field-mask"><span class="form-2-c__mask-field-mask-symbol form-2-c__mask-field-mask-symbol_hidden" id="modal-form-phone-mask-symbol-1" data-symbol="1">+</span><span class="form-2-c__mask-field-mask-symbol form-2-c__mask-field-mask-symbol_hidden" id="modal-form-phone-mask-symbol-2" data-symbol="2">3</span><span class="form-2-c__mask-field-mask-symbol form-2-c__mask-field-mask-symbol_hidden" id="modal-form-phone-mask-symbol-3" data-symbol="3">8</span><span class="form-2-c__mask-field-mask-symbol form-2-c__mask-field-mask-symbol_hidden" id="modal-form-phone-mask-symbol-4" data-symbol="4">(</span><span class="form-2-c__mask-field-mask-symbol form-2-c__mask-field-mask-symbol_hidden" id="modal-form-phone-mask-symbol-5" data-symbol="5">0</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-6" data-symbol="6">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-7" data-symbol="7">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-8" data-symbol="8">)</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-9" data-symbol="9"> </span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-10" data-symbol="10">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-11" data-symbol="11">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-12" data-symbol="12">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-13" data-symbol="13"> </span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-14" data-symbol="14">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-15" data-symbol="15">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-16" data-symbol="16"> </span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-17" data-symbol="17">_</span><span class="form-2-c__mask-field-mask-symbol" id="modal-form-phone-mask-symbol-18" data-symbol="18">_</span></span>
+                                    </span>
                                 </label>
+
                             </div>
                             <div class="form-2-c__submit-section">
                                 <button class="form-2-c__submit" name="submit" type="submit">Надіслати</button>
@@ -1725,6 +1735,6 @@
         <div class="body-c__pluck pluck-c body-c__pluck_type-hamburger" id="hamburger-pluck"></div>
         <div class="body-c__pluck pluck-c" id="form-pluck"></div>
 
-        <script src="static/js/main.js?v=121"></script>
+        <script src="static/js/main.js?v=140"></script>
     </body>
 </html>
