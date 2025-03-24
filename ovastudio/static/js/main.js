@@ -1,11 +1,22 @@
 (function () {
+    function dev() {
+        const formElement = document.getElementById('contacts-section');
+
+        const y = window.scrollY + formElement.getBoundingClientRect().top + 500;
+
+        window.scroll({
+            top: y,
+            behavior: 'instant'
+        });
+    }
+
     class App {
         async run() {
             await new Promise((resolve) => {
                 document.addEventListener('DOMContentLoaded', function () {
                     resolve();
                 }, false);
-            } );
+            });
 
             const applicationRepository = new MockApplicationRepository();
             const applicationService = new ApplicationService(applicationRepository);
@@ -13,6 +24,8 @@
 
             const pageVM = new PageViewModel(applicationService, deviceService);
             pageVM.model();
+
+            // dev();
         }
     }
 
@@ -40,7 +53,9 @@
                 keyup: [],
                 focus: [],
                 blur: [],
-                updated: []
+                updated: [],
+                select: [],
+                paste: []
             }
             this.maskSymbolsIndexElementId = maskSymbols;
             this.maskSymbolsArrayOrderedByIndex = []
@@ -72,6 +87,19 @@
 
                 this.listeners.keydown.forEach((listener) => listener(event, eventData));
             });
+            this.elements.input.addEventListener('select', (event) => {
+                this.listeners.select.forEach((listener) => listener(event));
+            });
+            this.elements.input.addEventListener('paste', (event) => {
+                event.preventDefault();
+
+                const data = {
+                    text: (event.clipboardData || window.clipboardData).getData("text")
+                }
+
+                this.listeners.paste.forEach((listener) => listener(data));
+            });
+
 
             this.elements.input.addEventListener('keyup', (event) => {
                 const eventData = {
@@ -373,7 +401,7 @@
             const slideIndex = this.view.state.slide;
             const nextSlideIndex = slideIndex + 1;
 
-            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            const toReturn = !this.view.slides.has(nextSlideIndex);
             if (toReturn) {
                 return;
             }
@@ -400,7 +428,7 @@
             let self = this;
 
             function animate(timestamp) {
-                if (!startTimestamp){
+                if (!startTimestamp) {
                     startTimestamp = timestamp;
                 }
 
@@ -426,7 +454,7 @@
             const slideIndex = this.view.state.slide;
             const nextSlideIndex = slideIndex - 1;
 
-            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            const toReturn = !this.view.slides.has(nextSlideIndex);
             if (toReturn) {
                 return;
             }
@@ -455,7 +483,7 @@
             let self = this;
 
             function animate(timestamp) {
-                if (!startTimestamp){
+                if (!startTimestamp) {
                     startTimestamp = timestamp;
                 }
 
@@ -489,7 +517,7 @@
             const slideIndex = this.view.state.slide;
             const nextSlideIndex = slideIndex + 1;
 
-            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            const toReturn = !this.view.slides.has(nextSlideIndex);
             if (toReturn) {
                 return;
             }
@@ -512,7 +540,7 @@
             const slideIndex = this.view.state.slide;
             const nextSlideIndex = slideIndex - 1;
 
-            const toReturn = ! this.view.slides.has(nextSlideIndex);
+            const toReturn = !this.view.slides.has(nextSlideIndex);
             if (toReturn) {
                 return;
             }
@@ -572,7 +600,7 @@
 
             this.indexSlides.forEach((id, index) => {
                 this.slidesIndexes.set(id, index);
-            } );
+            });
 
             this.update();
 
@@ -603,7 +631,7 @@
                     startOffset: element.offsetLeft,
                     endOffset: element.offsetLeft + element.offsetWidth
                 })
-            } );
+            });
         }
 
         addEventListener(event, listener) {
@@ -618,7 +646,7 @@
                     (scrollLeft > slideBoundaries.startOffset) &&
                     (slideBoundaries.endOffset > scrollLeft);
 
-                const toContinue = ! hasVisiblePart
+                const toContinue = !hasVisiblePart
                 if (toContinue) {
                     continue;
                 }
@@ -630,7 +658,7 @@
                 if (hasNextAfterOneHasVisiblePart) {
                     const nextAfterOneHasVisiblePartSlideElementId = this.indexSlides.get(nextAfterOneHasVisiblePartIndex);
                     const nextAfterOneHasVisiblePartBoundaries = this.slidesBoundaries.get(nextAfterOneHasVisiblePartSlideElementId);
-                    const distanceBetweenOneHavingVisiblePartAndNext =  nextAfterOneHasVisiblePartBoundaries.startOffset - slideBoundaries.endOffset;
+                    const distanceBetweenOneHavingVisiblePartAndNext = nextAfterOneHasVisiblePartBoundaries.startOffset - slideBoundaries.endOffset;
                     const shouldIgnore = distanceBetweenOneHavingVisiblePartAndNext <= this.boxLeftPadding;
                     if (shouldIgnore) {
                         continue;
@@ -638,14 +666,10 @@
                 }
 
 
-
-
-
-
                 const relatedSlideIndex = this.slidesIndexes.get(slideElementId);
                 const nextSlideIndex = relatedSlideIndex + 1;
                 const hasNextSlide = this.indexSlides.has(nextSlideIndex);
-                const toReturn = ! hasNextSlide;
+                const toReturn = !hasNextSlide;
                 if (toReturn) {
                     return;
                 }
@@ -669,7 +693,7 @@
 
                 if (relatedSlide) {
                     const hasSmallerStartOffset = slideBoundaries.startOffset < relatedSlide.boundaries.startOffset;
-                    const toContinue = ! hasSmallerStartOffset;
+                    const toContinue = !hasSmallerStartOffset;
                     if (toContinue) {
                         continue;
                     }
@@ -719,7 +743,7 @@
                     (slideBoundaries.startOffset < scrollLeft) &&
                     (slideBoundaries.endOffset > scrollLeft);
 
-                const toContinue = ! hasVisiblePart;
+                const toContinue = !hasVisiblePart;
                 if (toContinue) {
                     continue;
                 }
@@ -736,7 +760,7 @@
 
             for (const [slideElementId, slideBoundaries] of this.slidesBoundaries) {
                 const isRightSlide = slideBoundaries.startOffset > scrollLeft;
-                const toContinue = ! isRightSlide;
+                const toContinue = !isRightSlide;
                 if (toContinue) {
                     continue;
                 }
@@ -765,7 +789,7 @@
             const prevSlideIndex = relatedSlideIndex - 1;
             const hasSlide = prevSlideIndex > 0;
 
-            const toReturn = ! hasSlide;
+            const toReturn = !hasSlide;
             if (toReturn) {
                 return;
             }
@@ -963,7 +987,6 @@
             this.updateShapesCount();
             this.updateAdditionalSize();
             this.updateShapes();
-
 
 
             this.animate();
@@ -1235,7 +1258,7 @@
                     let timeSpent;
 
                     function animate(timestamp) {
-                        if (!start){
+                        if (!start) {
                             start = timestamp;
                         }
 
@@ -1323,7 +1346,7 @@
                     let timeSpent;
 
                     function animate(timestamp) {
-                        if (!start){
+                        if (!start) {
                             start = timestamp;
                         }
 
@@ -1409,7 +1432,7 @@
 
             window.addEventListener('resize', (event) => {
                 this.listeners.resize.forEach((listener, id) => listener());
-            } )
+            })
         }
 
         getScrollY() {
@@ -1450,9 +1473,10 @@
     }
 
     class HeaderComponentView {
-        constructor(headerId) {
+        constructor(headerId, surfaceId) {
             this.ids = {
-                header: headerId
+                header: headerId,
+                surface: surfaceId
             }
             this.listeners = {
                 clickMenuItem: [],
@@ -1465,6 +1489,7 @@
         }
 
         mount() {
+            this.elements.surface = document.getElementById(this.ids.surface);
             this.elements.header = document.getElementById(this.ids.header);
 
             const menuItemsElements = document.querySelectorAll(`[data-related-component="${this.ids.header}"][data-menu-item]`);
@@ -1525,6 +1550,10 @@
 
         getOffsetHeight() {
             return this.elements.header.offsetHeight;
+        }
+
+        makeSurfaceHavingTransition() {
+            this.elements.surface.classList.add('header-c__surface_transition');
         }
     }
 
@@ -1805,9 +1834,7 @@
 
     class CardsComponentViewModel {
         constructor(windowView, documentView, state, navigatorView, deviceService) {
-            this.viewModelState = {
-
-            }
+            this.viewModelState = {}
             this.state = state;
             this.deviceService = deviceService;
             this.views = {
@@ -2053,7 +2080,7 @@
 
         onContactFormSubmitted() {
             for (let fieldName in this.views.fields) {
-                switch(fieldName) {
+                switch (fieldName) {
                     case 'name': {
                         const fieldView = this.views.fields[fieldName];
                         fieldView.reset();
@@ -2216,8 +2243,6 @@
         }
 
         model() {
-            return;
-
             this.eventBus.addEventListener('modal-form-is-submitted', this.onBusModalFormSubmitted.bind(this));
 
             const phoneFieldViewMaskSymbols = new Map();
@@ -2232,81 +2257,71 @@
                 'phone-modal-form-field-mask',
                 phoneFieldViewMaskSymbols,
                 {
+                    solidCaret: 'form-2-c__mask-field-input_caret-solid',
                     hiddenMaskSymbol: 'form-2-c__mask-field-mask-symbol_hidden',
-
-                    solidCaret: 'form-c-form__mask-field-input_caret-solid',
-
-                    error: 'form-c-form__mask-field-error',
+                    error: 'form-2-c-form__mask-field-error',
                     inputError: 'form-2-c__mask-field-input_invalid',
-                    maskError: 'form-c-form__mask-field-mask_error'
+                    maskError: 'form-2-c__mask-field-mask_error'
                 }
             );
             this.views.fields.phone.addEventListener('updated', this.onPhoneFieldViewUpdated.bind(this));
 
+            this.viewModels.fields.phone = new PhoneMaskFieldViewModel(
+                this.views.fields.phone,
+                this.eventBus
+            );
+            this.viewModels.fields.phone.model();
 
-
-
-            let modalFormViewFields = [
+            this.views.fields.name = new InputFieldView(
+                'name-modal-form-field',
+                'name-modal-form-field-input',
                 {
-                    type: 'input',
-                    name: 'name'
-                },
-                {
-                    type: 'input',
-                    name: 'phone',
-                },
-                {
-                    type: 'submit',
-                    name: 'submit',
-                },
-            ]
-            let modalFormViewClasses = {
-                inputFieldError: 'form-2-c__label-field-error',
-                inputFieldInputError: 'form-2-c__input_invalid'
-            }
+                    error: 'form-2-c__label-field-error',
+                    inputError: 'form-2-c__input_invalid',
+                }
+            )
+            this.views.fields.name.addEventListener('input', this.onNameFieldViewInput.bind(this));
+            this.views.fields.name.mount();
 
-            this.views.form = new FormView('modal-form', modalFormViewFields, modalFormViewClasses);
-            this.views.form.addEventListener('submit', this.onModalFormViewSubmit.bind(this));
-            this.views.form.addEventListener('focusInputField', this.onModalFormViewFocusInputField.bind(this));
-            this.views.form.addEventListener('blurInputField', this.onModalFormViewBlurInputField.bind(this));
-            this.views.form.addEventListener('inputInputField', this.onModalFormViewInputInputField.bind(this));
+
+            this.views.form = new FormView('modal-form');
+            this.views.form.addEventListener('submit', this.onFormViewSubmit.bind(this));
+            this.views.form.mount();
         }
 
-        onModalFormViewFocusInputField(eventData) {
-            const name = eventData.name;
+        onNameFieldViewInput() {
+            if (this.state.fields.name.validateOnTheFly) {
+                const value = this.views.fields.name.getValue();
+                const isValid = value.length > 0;
 
-            let shouldClearErrors = true;
-
-            if (this.state.modalForm.stopToClearErrorsOnInputFocus[name]) {
-                shouldClearErrors = false;
-            }
-
-            if(shouldClearErrors) {
-                this.views.modalForm.clearFieldErrors(eventData.name);
+                if (isValid) {
+                    this.state.fields.name.validateOnTheFly = false;
+                    this.views.fields.name.clearErrors();
+                }
             }
         }
 
-        onModalFormViewBlurInputField(eventData) {
-            const name = eventData.name;
+        onPhoneFieldViewUpdated(value) {
+            if (this.state.fields.phone.validateOnTheFly) {
+                const pattern = /\+38\(0\d{2}\)\s\d{3}\s\d{2}\s\d{2}/;
+                const isValid = pattern.test(value);
 
-            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
+                if (isValid) {
+                    this.state.fields.phone.validateOnTheFly = false;
+                    this.views.fields.phone.clearErrors();
+                }
+            }
         }
 
-        onModalFormViewInputInputField(eventData) {
-            const name = eventData.name;
+        async onFormViewSubmit() {
+            for (let fieldName in this.views.fields) {
+                const fieldView = this.views.fields[fieldName];
 
-            this.state.modalForm.stopToClearErrorsOnInputFocus[name] = false;
-            this.views.modalForm.clearFieldErrors(eventData.name);
-        }
+                fieldView.clearErrors();
+            }
 
-        async onModalFormViewSubmit(eventData) {
-            this.state.modalForm.submittingStatus = 'submitting';
-            this.views.modalForm.disable();
-
-            const viewFields = eventData.fields;
-
-            const viewNameField = viewFields.get('name');
-            const viewPhoneField = viewFields.get('phone');
+            const viewNameField = this.views.fields.name.collect();
+            const viewPhoneField = this.views.fields.phone.collect();
 
             const serviceFields = {
                 name: viewNameField.data.value,
@@ -2343,14 +2358,17 @@
                         };
 
                         invalidFields.forEach((invalidField) => {
+                            const viewFieldName = invalidField.name;
                             const invalidFieldName = invalidField.name;
+                            const stateFieldName = invalidField.name;
                             const reason = invalidField.reason;
 
                             switch (reason.type) {
                                 case 'text': {
                                     const reasonText = reason.data.text;
 
-                                    this.views.modalForm.markFieldAsHavingError(invalidFieldName, reasonText);
+                                    this.views.fields[viewFieldName].showError(reasonText);
+                                    this.state.fields[stateFieldName].validateOnTheFly = true;
 
                                     break;
                                 }
@@ -2372,11 +2390,9 @@
 
                         switch (fieldToFocus.type) {
                             case 'field': {
-                                this.state.modalForm.stopToClearErrorsOnInputFocus[fieldToFocus.name] = true;
-
                                 const viewFieldName = fieldToFocus.name;
 
-                                this.views.modalForm.focusField(viewFieldName);
+                                this.views.fields[viewFieldName].focus();
 
                                 break;
                             }
@@ -2390,7 +2406,7 @@
 
         onBusModalFormSubmitted() {
             for (let fieldName in this.views.fields) {
-                switch(fieldName) {
+                switch (fieldName) {
                     case 'name': {
                         const fieldView = this.views.fields[fieldName];
                         fieldView.reset();
@@ -2412,21 +2428,18 @@
             this.state = {
                 fields: {
                     phone: {
-                        basicMask: new Map(),
+                        maskSymbols: new Map(),
 
                         activeSymbolsCount: 5,
+
+                        initialValue: '+38(0',
                         value: '+38(0',
-                        basicValue: '+38(0',
-                        length: 18,
+
+                        maskLength: 18,
+                        maxValueLength: 18,
+
                         selectionStart: 5,
                         selectionEnd: 5,
-
-                        prevValue: '+38(0',
-                        nextValue: '+38(0',
-                        prevSelectionStart: 5,
-                        nextSelectionStart: 5,
-                        initialValue: '+38(0',
-                        maxValueLength: 18
                     }
                 }
             }
@@ -2437,150 +2450,406 @@
         }
 
         model() {
-            this.state.fields.phone.basicMask.set(1, {
+            this.state.fields.phone.maskSymbols.set(1, {
                 value: '+',
+                initialValue: '+',
                 visibility: 'hidden'
             });
-            this.state.fields.phone.basicMask.set(2, {
+            this.state.fields.phone.maskSymbols.set(2, {
                 value: '3',
+                initialValue: '3',
                 visibility: 'hidden'
             });
-            this.state.fields.phone.basicMask.set(3, {
+            this.state.fields.phone.maskSymbols.set(3, {
                 value: '8',
+                initialValue: '8',
                 visibility: 'hidden'
             });
-            this.state.fields.phone.basicMask.set(4, {
+            this.state.fields.phone.maskSymbols.set(4, {
                 value: '(',
+                initialValue: '(',
                 visibility: 'hidden'
             });
-            this.state.fields.phone.basicMask.set(5, {
+            this.state.fields.phone.maskSymbols.set(5, {
                 value: '0',
+                initialValue: '0',
                 visibility: 'hidden'
             });
-            this.state.fields.phone.basicMask.set(6, {
+            this.state.fields.phone.maskSymbols.set(6, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(7, {
+            this.state.fields.phone.maskSymbols.set(7, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(8, {
+            this.state.fields.phone.maskSymbols.set(8, {
                 value: ')',
+                initialValue: ')',
                 visibility: 'visible'
-            });this.state.fields.phone.basicMask.set(9, {
+            });
+            this.state.fields.phone.maskSymbols.set(9, {
                 value: ' ',
-                visibility: 'visible'
-            });this.state.fields.phone.basicMask.set(10, {
-                value: '_',
+                initialValue: ' ',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(11, {
+            this.state.fields.phone.maskSymbols.set(10, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(12, {
+            this.state.fields.phone.maskSymbols.set(11, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(13, {
+            this.state.fields.phone.maskSymbols.set(12, {
+                value: '_',
+                initialValue: '_',
+                visibility: 'visible'
+            });
+            this.state.fields.phone.maskSymbols.set(13, {
                 value: ' ',
+                initialValue: ' ',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(14, {
+            this.state.fields.phone.maskSymbols.set(14, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(15, {
+            this.state.fields.phone.maskSymbols.set(15, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(16, {
+            this.state.fields.phone.maskSymbols.set(16, {
                 value: ' ',
+                initialValue: ' ',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(17, {
+            this.state.fields.phone.maskSymbols.set(17, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
-            this.state.fields.phone.basicMask.set(18, {
+            this.state.fields.phone.maskSymbols.set(18, {
                 value: '_',
+                initialValue: '_',
                 visibility: 'visible'
             });
 
 
-
-
-
-
-
-            this.views.phone.addEventListener('input', this.onPhoneFieldViewInput.bind(this));
             this.views.phone.addEventListener('keydown', this.onPhoneFieldViewKeyDown.bind(this));
-            this.views.phone.addEventListener('keyup', this.onPhoneFieldViewKeyUp.bind(this));
-            this.views.phone.addEventListener('focus', this.onPhoneFieldViewFocus.bind(this));
-            this.views.phone.addEventListener('blur', this.onPhoneFieldViewBlur.bind(this));
+            this.views.phone.addEventListener('input', this.onPhoneFieldViewInput.bind(this));
+            this.views.phone.addEventListener('select', this.onPhoneFieldViewSelect.bind(this));
+            this.views.phone.addEventListener('paste', this.onPhoneFieldViewPaste.bind(this));
+
+            // this.views.phone.addEventListener('keyup', this.onPhoneFieldViewKeyUp.bind(this));
+            // this.views.phone.addEventListener('focus', this.onPhoneFieldViewFocus.bind(this));
+            // this.views.phone.addEventListener('blur', this.onPhoneFieldViewBlur.bind(this));
 
             this.views.phone.mount();
         }
 
         onPhoneFieldViewKeyDown(event, eventData) {
-            this.state.fields.phone.prevValue = eventData.value;
-            this.state.fields.phone.prevSelectionStart = this.views.phone.getSelectionStart();
+            this.state.fields.phone.value = eventData.value;
+            this.state.fields.phone.selectionStart = this.views.phone.getSelectionStart();
+            this.state.fields.phone.selectionEnd = this.views.phone.getSelectionEnd();
+
+            console.log(`Key down. Value: ${this.state.fields.phone.value}. Selection start: ${this.state.fields.phone.selectionStart}. Selection end: ${this.state.fields.phone.selectionEnd}`);
         }
 
-        reset() {
-            const nextValue = this.state.fields.phone.basicValue;
-            this.views.phone.updateValue(nextValue);
+        onPhoneFieldViewSelect(event) {
+            this.state.fields.phone.value = this.views.phone.getValue();
+            this.state.fields.phone.selectionStart = this.views.phone.getSelectionStart();
+            this.state.fields.phone.selectionEnd = this.views.phone.getSelectionEnd();
 
-            this.state.fields.phone.basicMask.forEach((descriptor, index) => {
-                switch (descriptor.visibility) {
-                    case 'hidden': {
-                        const position = index;
+            console.log(`Select. Value: ${this.state.fields.phone.value}. Selection start: ${this.state.fields.phone.selectionStart}. Selection end: ${this.state.fields.phone.selectionEnd}`);
+        }
+
+        onPhoneFieldViewPaste(eventData) {
+            const text = eventData.text;
+
+            console.log(`Paste: ${text}`);
+        }
+
+        onPhoneFieldViewInput(event, eventData) {
+            console.log(`Input. value: ${eventData.value}`);
+
+            let inputValue = eventData.value;
+            const inputSymbols = inputValue.split('');
+
+            let nextValue = this.state.fields.phone.initialValue;
+
+            for(let index = 0; index < inputSymbols.length; index++) {
+                const toContinue = index < this.state.fields.phone.initialValue.length;
+                if (toContinue) {
+                    continue;
+                }
+
+                const symbolPosition = index + 1;
+                const symbol = inputSymbols[index];
+
+                nextValue = `${nextValue}${symbol}`;
+
+                const position = index + 1;
+                const replacement = symbol;
+                this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
+                this.views.phone.hideMaskSymbolAt(position);
+            }
+
+            switch(nextValue.length) {
+                case 7: {
+                    nextValue = `${nextValue}) `;
+
+                    break;
+                }
+                case 12: {
+                    nextValue = `${nextValue} `;
+
+                    break;
+                }
+                case 15: {
+                    nextValue = `${nextValue} `;
+
+                    break;
+                }
+            }
+
+            this.views.phone.updateValue(nextValue);
+        }
+
+        onPhoneFieldViewInput3() {
+            let inputValue = eventData.value;
+            const inputValueSymbols = inputValue.split('');
+
+
+
+            let valueSymbols = [];
+            for(let index = 0; index < inputValueSymbols.length; index++) {
+                const position = index + 1;
+            }
+
+            return;
+
+
+
+            let nextValue = this.state.fields.phone.initialValue;
+
+            for(let index = 0; index < valueSymbols.length; index++) {
+                const toContinue = index < this.state.fields.phone.initialValue.length;
+                if (toContinue) {
+                    continue;
+                }
+
+                const symbolPosition = index + 1;
+                const symbol = valueSymbols[index];
+
+                nextValue = `${nextValue}${symbol}`;
+
+                const position = index + 1;
+                const replacement = symbol;
+                this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
+                this.views.phone.hideMaskSymbolAt(position);
+            }
+
+
+
+
+            console.log(`Input. Next value: ${nextValue}. Input value: ${eventData.value}`);
+
+            this.views.phone.updateValue(nextValue);
+        }
+
+        onPhoneFieldViewInput2(event, eventData) {
+            const prevValue = this.state.fields.phone.value;
+            let nextValue = eventData.value;
+
+            console.log(`Input. Prev value: ${prevValue}. Next value: ${nextValue}`);
+
+            const prevSelectionStart = this.state.fields.phone.selectionStart;
+            const nextSelectionStart = this.views.phone.getSelectionStart();
+
+            console.log(`Prev selection start: ${prevSelectionStart}. Next selection start: ${nextSelectionStart}`);
+
+            const prevSelectionEnd = this.state.fields.phone.selectionEnd;
+            const nextSelectionEnd = this.views.phone.getSelectionEnd();
+
+            console.log(`Prev selection end: ${prevSelectionEnd}. Next selection end: ${nextSelectionEnd}`);
+            console.log('--------------------');
+
+
+            const difference = new Map();
+
+            const prevValueLength = prevValue.length;
+            const nextValueLength = nextValue.length;
+            const maxSymbolIndex = Math.max(prevValueLength, nextValueLength) - 1;
+
+            for (let index = 0; index <= maxSymbolIndex ; index++) {
+                const hasPrevSymbolAtIndex = index <= prevValueLength - 1;
+                const hasNextSymbolAtIndex = index <= nextValueLength - 1;
+
+                const hasBothAtIndex = hasPrevSymbolAtIndex && hasNextSymbolAtIndex;
+                if (hasBothAtIndex) {
+                    const prevSymbol = prevValue.charAt(index);
+                    const nextSymbol = nextValue.charAt(index);
+
+                    const isUnchanged = prevSymbol === nextSymbol;
+                    if (isUnchanged) {
+                        difference.set(index, {
+                            type: 'unchanged',
+                            symbol: prevSymbol
+                        });
+
+                        continue;
+                    }
+
+                    difference.set(index, {
+                        type: 'different',
+                        prevSymbol: prevSymbol,
+                        nextSymbol: nextSymbol
+                    })
+
+                    continue;
+                }
+
+                const hasOnlyPrevAtIndex = hasPrevSymbolAtIndex;
+                if (hasOnlyPrevAtIndex) {
+                    const prevSymbol = prevValue.charAt(index);
+
+                    difference.set(index, {
+                        type: 'only-prev',
+                        prevSymbol: prevSymbol,
+                    })
+
+                    continue;
+                }
+
+
+                const hasOnlyNextAtIndex = hasNextSymbolAtIndex;
+                if (hasOnlyNextAtIndex) {
+                    const nextSymbol = nextValue.charAt(index);
+
+                    difference.set(index, {
+                        type: 'only-next',
+                        nextSymbol: nextSymbol,
+                    })
+
+                    continue;
+                }
+            }
+
+            console.log('Difference');
+            console.log(difference);
+
+            let newValue = this.state.fields.phone.initialValue;
+
+            for (const [index, record] of difference) {
+                const toContinue = index < newValue.length;
+                if (toContinue) {
+                    continue;
+                }
+
+                switch(record.type) {
+                    case 'unchanged': {
+                        const position = index + 1;
+                        const replacement = record.symbol;
+
+                        newValue = `${newValue}${record.symbol}`;
                         this.views.phone.hideMaskSymbolAt(position);
+                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
 
                         break;
                     }
-                    case 'visible': {
-                        const position = index;
-                        this.views.phone.showMaskSymbolAt(position);
+                    case 'only-next': {
+                        const position = index + 1;
+                        const replacement = record.nextSymbol;
 
+                        newValue = `${newValue}${record.nextSymbol}`;
+                        this.views.phone.hideMaskSymbolAt(position);
+                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
 
                         break;
                     }
                 }
 
-                const position = index;
-                this.views.phone.replaceMaskSymbolAtPositionWith(position, descriptor.value);
-            })
+                switch(index) {
+                    case 6: {
+                        newValue = `${newValue} `
+
+                        break;
+                    }
+                }
+            }
+
+
+
+
+            this.views.phone.updateValue(newValue);
         }
 
-        onPhoneFieldViewKeyUp(event, eventData) {
+        test3() {
+            for (const [index, record] of difference) {
+                const toContinue = index < newValue.length;
+                if (toContinue) {
+                    continue;
+                }
+
+                switch(record.type) {
+                    case 'unchanged': {
+                        const position = index + 1;
+                        const replacement = record.symbol;
+
+                        newValue = `${newValue}${record.symbol}`;
+                        this.views.phone.hideMaskSymbolAt(position);
+                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
+
+                        break;
+                    }
+                    case 'only-next': {
+                        const position = index + 1;
+                        const replacement = record.nextSymbol;
+
+                        newValue = `${newValue}${record.nextSymbol}`;
+                        this.views.phone.hideMaskSymbolAt(position);
+                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
+
+                        break;
+                    }
+                    case 'only-prev': {
+                        const position = index + 1;
+                        const replacement = record.nextSymbol;
+
+                        newValue = `${newValue}_`;
+                        this.views.phone.showMaskSymbolAt(position);
+                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
+
+                        break
+                    }
+                }
+            }
         }
 
-        onPhoneFieldViewInput(event, eventData) {
-            const prevValue = this.state.fields.phone.prevValue;
-            let nextValue = eventData.value;
-
-            console.log(`Input. Prev: ${prevValue}. Next: ${nextValue}`);
-
-            const nextSelectionStart = this.views.phone.getSelectionStart();
-            const prevSelectionStart = this.state.fields.phone.prevSelectionStart;
-
-            console.log(`Prev selection start: ${prevSelectionStart}. Next selection start: ${nextSelectionStart}`);
-
-
+        test2() {
             const strategyDescriptor = {
                 nextValue: nextValue,
                 prevValue: prevValue,
+
                 prevSelectionStart: prevSelectionStart,
-                nextSelectionStart: nextSelectionStart
+                nextSelectionStart: nextSelectionStart,
+
+                prevSelectionEnd: prevSelectionEnd,
+                nextSelectionEnd: nextSelectionEnd
             }
             const nextValueStrategy = this.defineNextValueStrategy(strategyDescriptor);
-
             console.log(nextValueStrategy);
 
 
-            switch(nextValueStrategy) {
+
+            switch (nextValueStrategy) {
                 case 'set-initial-value': {
                     console.log('Set initial value');
 
@@ -2606,7 +2875,7 @@
                     this.views.phone.showMaskSymbolAtIndex(indexToShowMaskSymbolAt);
                     this.views.phone.replaceMaskSymbolAtPositionWith(indexToShowMaskSymbolAt, '_');
 
-                    switch(nextSelectionStart) {
+                    switch (nextSelectionStart) {
                         case 16: {
                             this.views.phone.moveCaretToPosition(15);
 
@@ -2642,7 +2911,7 @@
                     const symbol = nextValue.charAt(symbolPosition);
                     const allowed = allowedSymbols.has(symbol);
 
-                    const toRemove = ! allowed;
+                    const toRemove = !allowed;
                     if (toRemove) {
                         console.log('Append.Remove symbol');
                         nextValue = nextValue.substring(0, nextValue.length - 1);
@@ -2669,6 +2938,9 @@
         }
 
 
+        onPhoneFieldViewKeyUp(event, eventData) {
+        }
+
         testNormalizePhoneField(nextValue) {
             let normalizedValue;
 
@@ -2676,11 +2948,11 @@
                 return `${nextValue}) `;
             }
 
-            if(nextValue.length === 12) {
+            if (nextValue.length === 12) {
                 return `${nextValue} `
             }
 
-            if(nextValue.length === 15) {
+            if (nextValue.length === 15) {
                 return `${nextValue} `
             }
 
@@ -2689,7 +2961,7 @@
 
         defineNextValueStrategy(descriptor) {
             const toSetInitialValueStrategy =
-                descriptor.nextValue.length < this.state.fields.phone.basicValue.length;
+                descriptor.nextValue.length < this.state.fields.phone.initialValue.length;
             if (toSetInitialValueStrategy) {
                 return 'set-initial-value';
             }
@@ -2735,6 +3007,36 @@
 
             }, 0);
         }
+
+        reset() {
+            this.state.fields.phone.value = this.state.fields.phone.initialValue;
+            this.views.phone.updateValue(this.state.fields.phone.value);
+
+            const coveredMaskSymbolsCount = this.state.fields.phone.value.length;
+
+            this.state.fields.phone.maskSymbols.forEach((descriptor, index) => {
+                const toCover = index <= coveredMaskSymbolsCount;
+
+                if (toCover) {
+                    const valueIndex = index - 1;
+                    descriptor.value = this.state.fields.phone.value.charAt(valueIndex);
+                    descriptor.visibility = 'hidden';
+
+                    const position = index;
+
+                    this.views.phone.hideMaskSymbolAt(position);
+                    this.views.phone.replaceMaskSymbolAtPositionWith(position, descriptor.value);
+                } else {
+                    descriptor.value = descriptor.initialValue;
+                    descriptor.visibility = 'visible';
+
+                    const position = index;
+
+                    this.views.phone.replaceMaskSymbolAtPositionWith(position, descriptor.value);
+                    this.views.phone.showMaskSymbolAt(position);
+                }
+            })
+        }
     }
 
     class ListComponentView {
@@ -2772,7 +3074,7 @@
                     this.listeners.clickListItem.forEach((listener) => {
                         listener(event, id, url);
                     })
-                } )
+                })
             });
 
             this.nodes.action = document.getElementById(this.ids.action);
@@ -2888,7 +3190,7 @@
                 (navigator.msMaxTouchPoints > 0));
         }
 
-        detectBrowser(){
+        detectBrowser() {
             let browser = "";
             let c = navigator.userAgent.search("Chrome");
             let f = navigator.userAgent.search("Firefox");
@@ -2899,9 +3201,9 @@
             } else if (f > -1) {
                 browser = "firefox";
             } else if (m9 > -1) {
-                browser ="MSIE 9.0";
+                browser = "MSIE 9.0";
             } else if (m8 > -1) {
-                browser ="MSIE 8.0";
+                browser = "MSIE 8.0";
             }
             return browser;
         }
@@ -2947,7 +3249,7 @@
                 },
                 stick: {
                     unstickTimeout: 0,
-                    timeToUnstick: 1500,
+                    timeToUnstick: 2500,
                     isStick: true,
                 },
                 header: {
@@ -3041,7 +3343,7 @@
             const serviceBrowser = this.services.device.detectBrowser();
             this.views.nagivator = new NavigatorComponentView(serviceBrowser);
 
-            this.views.header = new HeaderComponentView('header');
+            this.views.header = new HeaderComponentView('header', 'header-surface');
             this.views.header.addEventListener('clickMenuItem', this.onHeaderViewClickMenuItem.bind(this));
             this.views.header.addEventListener('mouseenter', this.onHeaderViewMouseEnter.bind(this));
             this.views.header.addEventListener('mouseleave', this.onHeaderViewMouseLeave.bind(this));
@@ -3050,7 +3352,7 @@
             this.viewModels.faq.model();
 
             this.views.document = new DocumentComponentView();
-            const toMarkDocumentViewAsHover = ! this.state.device.isTouch;
+            const toMarkDocumentViewAsHover = !this.state.device.isTouch;
             if (toMarkDocumentViewAsHover) {
                 this.views.document.makeHover();
             }
@@ -3085,7 +3387,6 @@
             this.views.formModal.mount();
             this.views.thanksModal.mount();
             this.views.thanksPluck.mount();
-            // this.views.modalForm.mount();
             this.views.window.mount();
 
             this.initStick();
@@ -3122,6 +3423,10 @@
 
             this.state.header.offsetHeight = this.views.header.getOffsetHeight();
             this.state.window.scrollY = window.scrollY;
+
+            setTimeout(() => {
+                this.views.header.makeSurfaceHavingTransition();
+            }, 0);
 
             this.tryWatchUnstick();
 
