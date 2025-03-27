@@ -1,15 +1,4 @@
 (function () {
-    function dev() {
-        const formElement = document.getElementById('contacts-section');
-
-        const y = window.scrollY + formElement.getBoundingClientRect().top + 500;
-
-        window.scroll({
-            top: y,
-            behavior: 'instant'
-        });
-    }
-
     class App {
         async run() {
             await new Promise((resolve) => {
@@ -24,251 +13,6 @@
 
             const pageVM = new PageViewModel(applicationService, deviceService);
             pageVM.model();
-
-            // dev();
-        }
-    }
-
-    class MaskFieldView {
-        constructor(containerId, inputId, maskId, maskSymbols, classes) {
-            this.classes = {
-                error: classes.error,
-                inputError: classes.inputError,
-                maskError: classes.maskError,
-                hiddenMaskSymbol: classes.hiddenMaskSymbol,
-                solidCaret: classes.solidCaret
-            }
-            this.ids = {
-                container: containerId,
-                input: inputId,
-                mask: maskId
-            }
-            this.elements = {
-                input: null,
-                maskSymbols: new Map()
-            }
-            this.listeners = {
-                input: [],
-                keydown: [],
-                keyup: [],
-                focus: [],
-                blur: [],
-                updated: [],
-                select: [],
-                paste: []
-            }
-            this.maskSymbolsIndexElementId = maskSymbols;
-            this.maskSymbolsArrayOrderedByIndex = []
-        }
-
-        addEventListener(event, listener) {
-            this.listeners[event].push(listener);
-        }
-
-        mount() {
-            this.elements.mask = document.getElementById(this.ids.mask);
-            this.elements.container = document.getElementById(this.ids.container);
-
-            this.elements.input = document.getElementById(this.ids.input);
-
-            this.elements.input.addEventListener('input', (event) => {
-                const eventData = {
-                    value: this.elements.input.value
-                };
-
-                this.listeners.input.forEach((listener) => listener(event, eventData))
-            });
-            this.elements.input.addEventListener('keydown', (event) => {
-                const eventData = {
-                    selectionStart: event.currentTarget.selectionStart,
-                    selectionEnd: event.currentTarget.selectionEnd,
-                    value: this.elements.input.value
-                }
-
-                this.listeners.keydown.forEach((listener) => listener(event, eventData));
-            });
-            this.elements.input.addEventListener('select', (event) => {
-                this.listeners.select.forEach((listener) => listener(event));
-            });
-            this.elements.input.addEventListener('paste', (event) => {
-                event.preventDefault();
-
-                const data = {
-                    text: (event.clipboardData || window.clipboardData).getData("text")
-                }
-
-                this.listeners.paste.forEach((listener) => listener(data));
-            });
-
-
-            this.elements.input.addEventListener('keyup', (event) => {
-                const eventData = {
-                    selectionStart: event.currentTarget.selectionStart,
-                    selectionEnd: event.currentTarget.selectionEnd
-                }
-
-                this.listeners.keyup.forEach((listener) => listener(event, eventData));
-            });
-
-            this.elements.input.addEventListener('focus', (event) => {
-                this.listeners.focus.forEach((listener) => listener());
-            });
-
-            this.elements.input.addEventListener('blur', (event) => {
-                this.listeners.blur.forEach((listener) => listener());
-            });
-
-            const maskSymbolsArray = [];
-            this.maskSymbolsIndexElementId.forEach((symbolElementId, symbolIndex) => {
-                const record = {
-                    elementId: symbolElementId,
-                    index: symbolIndex
-                }
-                maskSymbolsArray.push(record);
-
-                const symbolElement = document.getElementById(symbolElementId);
-                this.elements.maskSymbols.set(symbolElementId, symbolElement);
-            });
-            maskSymbolsArray.sort((left, right) => {
-                return left.index - right.index
-            });
-            this.maskSymbolsArrayOrderedByIndex = maskSymbolsArray;
-        }
-
-        showError(errorMessage) {
-            this.elements.mask.classList.add(this.classes.maskError);
-
-            const id = this.ids.container;
-
-            const containerElement = this.elements.container;
-
-            this.elements.input.classList.add(this.classes.inputError);
-
-            const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
-            Array.from(prevErrorElements).forEach((prevErrorElement) => {
-                prevErrorElement.parentNode.removeChild(prevErrorElement);
-            });
-
-            const errorElement = document.createElement('div');
-            errorElement.setAttribute('data-field-error', id);
-            errorElement.classList.add(this.classes.error);
-            errorElement.textContent = errorMessage;
-
-            containerElement.append(errorElement);
-        }
-
-        clearErrors() {
-            this.elements.mask.classList.remove(this.classes.maskError);
-
-            const id = this.ids.container;
-
-            const containerElement = this.elements.container;
-
-            this.elements.input.classList.remove(this.classes.inputError);
-
-            const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
-            Array.from(prevErrorElements).forEach((prevErrorElement) => {
-                prevErrorElement.parentNode.removeChild(prevErrorElement);
-            });
-
-        }
-
-        focus() {
-            this.elements.input.focus();
-        }
-
-        reset() {
-            this.elements.input.value = '';
-        }
-
-        collect() {
-            const fieldElement = this.elements.input;
-
-            return {
-                type: 'name.value',
-                data: {
-                    name: this.elements.input.name,
-                    value: this.elements.input.value
-                }
-            }
-        }
-
-        updateValue(value) {
-            this.elements.input.value = value;
-
-            this.listeners.updated.forEach((listener) => {
-                listener(value);
-            })
-        }
-
-        getValue() {
-            return this.elements.input.value;
-        }
-
-        getSelectionStart() {
-            return this.elements.input.selectionStart;
-        }
-
-        getSelectionEnd() {
-            return this.elements.input.selectionEnd;
-        }
-
-        replaceMaskSymbolAtPositionWith(position, replacement) {
-            const elementId = this.maskSymbolsIndexElementId.get(position);
-            const element = this.elements.maskSymbols.get(elementId);
-
-            element.textContent = replacement;
-        }
-
-        moveCaretToPosition(position) {
-            this.elements.input.selectionStart = position;
-            this.elements.input.selectionEnd = position;
-        }
-
-        showCaret() {
-            this.elements.input.classList.add(this.classes.solidCaret);
-        }
-
-        hideCaret() {
-            this.elements.input.classList.remove(this.classes.solidCaret);
-        }
-
-        moveCaretToEnd() {
-            const value = this.elements.input.value;
-
-            this.elements.input.selectionStart =
-                this.elements.input.selectionEnd =
-                    this.elements.input.value.length;
-        }
-
-        hideFirstNMaskSymbols(n) {
-            for (let index = 1; index <= n; index++) {
-                const symbolElementId = this.maskSymbolsIndexElementId.get(index);
-                const symbolElement = this.elements.maskSymbols.get(symbolElementId);
-
-                symbolElement.classList.add(this.classes.hiddenMaskSymbol);
-            }
-        }
-
-        hideMaskSymbolAt(position) {
-            const symbolElementId = this.maskSymbolsIndexElementId.get(position);
-            const symbolElement = this.elements.maskSymbols.get(symbolElementId);
-
-            symbolElement.classList.add(this.classes.hiddenMaskSymbol);
-        }
-
-        showMaskSymbolAt(position) {
-            const symbolElementId = this.maskSymbolsIndexElementId.get(position);
-            const symbolElement = this.elements.maskSymbols.get(symbolElementId);
-
-            symbolElement.classList.remove(this.classes.hiddenMaskSymbol);
-        }
-
-        showMaskSymbolAtIndex(index) {
-            const symbolElementId = this.maskSymbolsIndexElementId.get(index);
-            const symbolElement = this.elements.maskSymbols.get(symbolElementId);
-
-            symbolElement.classList.remove(this.classes.hiddenMaskSymbol);
         }
     }
 
@@ -281,7 +25,8 @@
             this.listeners = {
                 focus: [],
                 input: [],
-                blur: []
+                blur: [],
+                updated: []
             };
             this.classes = {
                 inputError: classes.inputError,
@@ -297,7 +42,7 @@
             this.elements.input = document.getElementById(this.ids.input);
             this.elements.container = document.getElementById(this.ids.container);
 
-            this.elements.input.addEventListener('input', (event) => {
+            this.elements.input.addEventListener('input', () => {
                 const eventData = {
                     value: this.elements.input.value
                 }
@@ -313,8 +58,6 @@
         }
 
         collect() {
-            const fieldElement = this.elements.input;
-
             return {
                 type: 'name.value',
                 data: {
@@ -355,15 +98,18 @@
         clearErrors() {
             const id = this.ids.container;
 
-            const containerElement = this.elements.container;
-
             this.elements.input.classList.remove(this.classes.inputError);
 
             const prevErrorElements = document.querySelectorAll(`[data-field-error="${id}"]`);
             Array.from(prevErrorElements).forEach((prevErrorElement) => {
                 prevErrorElement.parentNode.removeChild(prevErrorElement);
             });
+        }
 
+        updateValue(value) {
+            this.elements.input.value = value;
+
+            this.listeners.updated.forEach((listener) => listener(value) );
         }
 
         addEventListener(event, listener) {
@@ -388,174 +134,6 @@
             const element = document.getElementById(this.id);
 
             element.parentNode.removeChild(element);
-        }
-    }
-
-    class CardsComponentViewFirefoxMoveHandler {
-        constructor(view) {
-            this.view = view;
-            this.animationTime = 250;
-        }
-
-        moveToNextSlide() {
-            const slideIndex = this.view.state.slide;
-            const nextSlideIndex = slideIndex + 1;
-
-            const toReturn = !this.view.slides.has(nextSlideIndex);
-            if (toReturn) {
-                return;
-            }
-
-            this.view.state.slide = nextSlideIndex;
-
-            const nextSlideId = this.view.slides.get(nextSlideIndex);
-            const nextSlideElement = document.getElementById(nextSlideId);
-
-            const boxLeftPadding = window
-                .getComputedStyle(this.view.elements.box, null)
-                .getPropertyValue('padding-left');
-
-            const correction = parseFloat(boxLeftPadding);
-
-            const startScrollLeft = this.view.elements.box.scrollLeft;
-            const endScrollLeft = nextSlideElement.offsetLeft - correction;
-            const delta = endScrollLeft - startScrollLeft;
-
-            let startTimestamp;
-            let progress;
-            let animationTime = this.animationTime;
-            let timePast;
-            let self = this;
-
-            function animate(timestamp) {
-                if (!startTimestamp) {
-                    startTimestamp = timestamp;
-                }
-
-                timePast = timestamp - startTimestamp;
-
-                let progress = timePast / animationTime;
-                progress = Math.min(1, progress);
-
-                const nextScrollLeft = startScrollLeft + delta * progress;
-
-                self.view.elements.box.scrollLeft = nextScrollLeft;
-
-                const toAnimateNext = progress < 1;
-                if (toAnimateNext) {
-                    window.requestAnimationFrame(animate);
-                }
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        moveToPrevSlide() {
-            const slideIndex = this.view.state.slide;
-            const nextSlideIndex = slideIndex - 1;
-
-            const toReturn = !this.view.slides.has(nextSlideIndex);
-            if (toReturn) {
-                return;
-            }
-
-            this.view.state.slide = nextSlideIndex;
-
-            const nextSlideId = this.view.slides.get(nextSlideIndex);
-            const nextSlideElement = document.getElementById(nextSlideId);
-
-            let endScrollLeft;
-
-            const isFirst = nextSlideIndex === 1;
-            if (isFirst) {
-                endScrollLeft = 0;
-            } else {
-                endScrollLeft = nextSlideElement.offsetLeft;
-            }
-
-            const startScrollLeft = this.view.elements.box.scrollLeft;
-            const delta = endScrollLeft - startScrollLeft;
-
-            let startTimestamp;
-            let progress;
-            let animationTime = this.animationTime;
-            let timePast;
-            let self = this;
-
-            function animate(timestamp) {
-                if (!startTimestamp) {
-                    startTimestamp = timestamp;
-                }
-
-                timePast = timestamp - startTimestamp;
-
-                let progress = timePast / animationTime;
-                progress = Math.min(1, progress);
-
-                const nextScrollLeft = startScrollLeft + delta * progress;
-
-                self.view.elements.box.scrollLeft = nextScrollLeft;
-
-                const toAnimateNext = progress < 1;
-                if (toAnimateNext) {
-                    window.requestAnimationFrame(animate);
-                }
-            }
-
-            requestAnimationFrame(animate);
-
-
-        }
-    }
-
-    class CardsComponentViewDefaultMoveHandler {
-        constructor(view) {
-            this.view = view;
-        }
-
-        moveToNextSlide() {
-            const slideIndex = this.view.state.slide;
-            const nextSlideIndex = slideIndex + 1;
-
-            const toReturn = !this.view.slides.has(nextSlideIndex);
-            if (toReturn) {
-                return;
-            }
-
-            this.view.state.slide = nextSlideIndex;
-
-            const nextSlideId = this.view.slides.get(nextSlideIndex);
-            const nextSlideElement = document.getElementById(nextSlideId);
-
-            const boxLeftPadding = window
-                .getComputedStyle(this.view.elements.box, null)
-                .getPropertyValue('padding-left');
-
-            const correction = parseFloat(boxLeftPadding);
-
-            this.view.elements.box.scrollLeft = nextSlideElement.offsetLeft - correction;
-        }
-
-        moveToPrevSlide() {
-            const slideIndex = this.view.state.slide;
-            const nextSlideIndex = slideIndex - 1;
-
-            const toReturn = !this.view.slides.has(nextSlideIndex);
-            if (toReturn) {
-                return;
-            }
-
-            this.view.state.slide = nextSlideIndex;
-
-            const nextSlideId = this.view.slides.get(nextSlideIndex);
-            const nextSlideElement = document.getElementById(nextSlideId);
-
-            const isFirst = nextSlideIndex === 1;
-            if (isFirst) {
-                this.view.elements.box.scrollLeft = 0;
-            } else {
-                this.view.elements.box.scrollLeft = nextSlideElement.offsetLeft;
-            }
         }
     }
 
@@ -584,15 +162,9 @@
 
                 scrollBlocked: false
             }
-            this.slideIdSlideNumber = new Map();
             this.slidesBoundaries = new Map();
 
             this.boxLeftPadding = 0;
-            this.boxWidth = 0;
-        }
-
-        setMoveHandler(handler) {
-            this.moveHandler = handler;
         }
 
         mount() {
@@ -621,8 +193,6 @@
                 .getPropertyValue('padding-left');
             this.boxLeftPadding = parseFloat(this.boxLeftPadding);
             this.boxLeftPadding = Math.ceil(this.boxLeftPadding);
-
-            this.boxWidth = this.elements.box.offsetWidth;
 
             this.indexSlides.forEach((id, index) => {
                 const element = document.getElementById(id);
@@ -886,7 +456,7 @@
         mount() {
             this.elements.modal = document.getElementById(this.ids.modal);
             this.elements.action = document.getElementById(this.ids.action);
-            this.elements.action.addEventListener('click', (event) => {
+            this.elements.action.addEventListener('click', () => {
                 this.listeners.clickAction.forEach((listener) => listener());
             })
         }
@@ -945,7 +515,6 @@
     class HeroComponentView {
         constructor(canvasId, actionId, action2Id) {
             this.shapeCount = 8;
-            this.color = '#286cff';
             this.ids = {
                 canvas: canvasId,
                 action: actionId,
@@ -1417,7 +986,6 @@
 
     class WindowComponentView {
         constructor() {
-            this.elements = {};
             this.listeners = {
                 scroll: new Map(),
                 resize: new Map()
@@ -1426,11 +994,11 @@
         }
 
         mount() {
-            document.addEventListener('scroll', (event) => {
+            document.addEventListener('scroll', () => {
                 this.listeners.scroll.forEach((listener, id) => listener());
             }, {passive: true});
 
-            window.addEventListener('resize', (event) => {
+            window.addEventListener('resize', () => {
                 this.listeners.resize.forEach((listener, id) => listener());
             })
         }
@@ -1493,12 +1061,12 @@
             this.elements.header = document.getElementById(this.ids.header);
 
             const menuItemsElements = document.querySelectorAll(`[data-related-component="${this.ids.header}"][data-menu-item]`);
-            Array.from(menuItemsElements).forEach((menutItemElement) => {
-                menutItemElement.addEventListener('click', (event) => {
+            Array.from(menuItemsElements).forEach((menuItemElement) => {
+                menuItemElement.addEventListener('click', (event) => {
                     event.preventDefault();
 
                     const menuItemElement = event.currentTarget;
-                    const identifier = menutItemElement.getAttribute('data-menu-item');
+                    const identifier = menuItemElement.getAttribute('data-menu-item');
 
                     let eventData = {
                         type: 'null'
@@ -1861,22 +1429,6 @@
                 viewSlides,
             );
 
-            let viewMoveHandler;
-            const serviceBrowser = this.deviceService.detectBrowser();
-            switch (serviceBrowser) {
-                case 'firefox': {
-                    viewMoveHandler = new CardsComponentViewFirefoxMoveHandler(this.views.cards);
-
-                    break;
-                }
-                default: {
-                    viewMoveHandler = new CardsComponentViewDefaultMoveHandler(this.views.cards);
-
-                    break;
-                }
-            }
-            this.views.cards.setMoveHandler(viewMoveHandler);
-
             this.views.cards.addEventListener('clickLeftArrow', this.onClickLeftArrow.bind(this));
             this.views.cards.addEventListener('clickRightArrow', this.onClickRightArrow.bind(this));
             this.views.cards.addEventListener('clickSlide', this.onClickSlide.bind(this));
@@ -2035,32 +1587,21 @@
         model() {
             this.eventBus.addEventListener('contact-form-is-submitted', this.onContactFormSubmitted.bind(this));
 
-            const phoneFieldViewMaskSymbols = new Map();
-            const symbolsCount = 18;
-            for (let symbolIndex = 1; symbolIndex <= 18; symbolIndex++) {
-                phoneFieldViewMaskSymbols.set(symbolIndex, `form-phone-mask-symbol-${symbolIndex}`);
-            }
-
-            this.views.fields.phone = new MaskFieldView(
+            this.views.fields.phone = new InputFieldView(
                 'phone-form-field',
                 'phone-form-field-input',
-                'phone-form-field-mask',
-                phoneFieldViewMaskSymbols,
                 {
-                    hiddenMaskSymbol: 'form-c-form__mask-field-mask-symbol_hidden',
-                    solidCaret: 'form-c-form__mask-field-input_caret-solid',
-                    error: 'form-c-form__mask-field-error',
-                    inputError: 'form-c-form__mask-field-input_invalid',
-                    maskError: 'form-c-form__mask-field-mask_error'
+                    error: 'form-c-form__text-field-error',
+                    inputError: 'form-c-form__text-field-input_invalid'
                 }
-            );
+            )
             this.views.fields.phone.addEventListener('updated', this.onPhoneFieldViewUpdated.bind(this));
 
-            this.viewModels.fields.phone = new PhoneMaskFieldViewModel(
+            this.viewModels.fields.phone = new PhoneFieldViewModel(
                 this.views.fields.phone,
-                this.eventBus
             );
             this.viewModels.fields.phone.model();
+
 
             this.views.fields.name = new InputFieldView(
                 'name-form-field',
@@ -2080,26 +1621,15 @@
 
         onContactFormSubmitted() {
             for (let fieldName in this.views.fields) {
-                switch (fieldName) {
-                    case 'name': {
-                        const fieldView = this.views.fields[fieldName];
-                        fieldView.reset();
-
-                        break;
-                    }
-                    case 'phone': {
-                        this.viewModels.fields.phone.reset();
-
-                        break;
-                    }
-                }
+                const fieldView = this.views.fields[fieldName];
+                fieldView.reset();
             }
         }
 
         onPhoneFieldViewUpdated(value) {
             if (this.state.fields.phone.validateOnTheFly) {
-                const pattern = /\+38\(0\d{2}\)\s\d{3}\s\d{2}\s\d{2}/;
-                const isValid = pattern.test(value);
+                const value = this.views.fields.phone.getValue();
+                const isValid = value.length > 0;
 
                 if (isValid) {
                     this.state.fields.phone.validateOnTheFly = false;
@@ -2166,7 +1696,6 @@
 
                         invalidFields.forEach((invalidField, invalidFieldIndex) => {
                             const viewFieldName = invalidField.name;
-                            const invalidFieldName = invalidField.name;
                             const stateFieldName = invalidField.name;
                             const reason = invalidField.reason;
 
@@ -2245,30 +1774,19 @@
         model() {
             this.eventBus.addEventListener('modal-form-is-submitted', this.onBusModalFormSubmitted.bind(this));
 
-            const phoneFieldViewMaskSymbols = new Map();
-            const symbolsCount = 18;
-            for (let symbolIndex = 1; symbolIndex <= symbolsCount; symbolIndex++) {
-                phoneFieldViewMaskSymbols.set(symbolIndex, `modal-form-phone-mask-symbol-${symbolIndex}`);
-            }
-
-            this.views.fields.phone = new MaskFieldView(
+            this.views.fields.phone = new InputFieldView(
                 'phone-modal-form-field',
                 'phone-modal-form-field-input',
-                'phone-modal-form-field-mask',
-                phoneFieldViewMaskSymbols,
                 {
-                    solidCaret: 'form-2-c__mask-field-input_caret-solid',
-                    hiddenMaskSymbol: 'form-2-c__mask-field-mask-symbol_hidden',
-                    error: 'form-2-c-form__mask-field-error',
-                    inputError: 'form-2-c__mask-field-input_invalid',
-                    maskError: 'form-2-c__mask-field-mask_error'
+                    error: 'form-2-c__label-field-error',
+                    inputError: 'form-2-c__input_invalid',
                 }
-            );
+            )
             this.views.fields.phone.addEventListener('updated', this.onPhoneFieldViewUpdated.bind(this));
 
-            this.viewModels.fields.phone = new PhoneMaskFieldViewModel(
+
+            this.viewModels.fields.phone = new PhoneFieldViewModel(
                 this.views.fields.phone,
-                this.eventBus
             );
             this.viewModels.fields.phone.model();
 
@@ -2303,8 +1821,8 @@
 
         onPhoneFieldViewUpdated(value) {
             if (this.state.fields.phone.validateOnTheFly) {
-                const pattern = /\+38\(0\d{2}\)\s\d{3}\s\d{2}\s\d{2}/;
-                const isValid = pattern.test(value);
+                const value = this.views.fields.phone.getValue();
+                const isValid = value.length > 0;
 
                 if (isValid) {
                     this.state.fields.phone.validateOnTheFly = false;
@@ -2359,7 +1877,6 @@
 
                         invalidFields.forEach((invalidField) => {
                             const viewFieldName = invalidField.name;
-                            const invalidFieldName = invalidField.name;
                             const stateFieldName = invalidField.name;
                             const reason = invalidField.reason;
 
@@ -2406,636 +1923,63 @@
 
         onBusModalFormSubmitted() {
             for (let fieldName in this.views.fields) {
-                switch (fieldName) {
-                    case 'name': {
-                        const fieldView = this.views.fields[fieldName];
-                        fieldView.reset();
-
-                        break;
-                    }
-                    case 'phone': {
-                        this.viewModels.fields.phone.reset();
-
-                        break;
-                    }
-                }
+                const fieldView = this.views.fields[fieldName];
+                fieldView.reset();
             }
         }
     }
 
-    class PhoneMaskFieldViewModel {
-        constructor(maskFieldView, eventBus) {
+    class PhoneFieldViewModel {
+        constructor(phoneFieldView) {
             this.state = {
                 fields: {
                     phone: {
-                        maskSymbols: new Map(),
-
-                        activeSymbolsCount: 5,
-
-                        initialValue: '+38(0',
-                        value: '+38(0',
-
-                        maskLength: 18,
-                        maxValueLength: 18,
-
-                        selectionStart: 5,
-                        selectionEnd: 5,
                     }
                 }
             }
-            this.eventBus = eventBus;
             this.views = {
-                phone: maskFieldView
+                phone: phoneFieldView
             }
         }
 
         model() {
-            this.state.fields.phone.maskSymbols.set(1, {
-                value: '+',
-                initialValue: '+',
-                visibility: 'hidden'
-            });
-            this.state.fields.phone.maskSymbols.set(2, {
-                value: '3',
-                initialValue: '3',
-                visibility: 'hidden'
-            });
-            this.state.fields.phone.maskSymbols.set(3, {
-                value: '8',
-                initialValue: '8',
-                visibility: 'hidden'
-            });
-            this.state.fields.phone.maskSymbols.set(4, {
-                value: '(',
-                initialValue: '(',
-                visibility: 'hidden'
-            });
-            this.state.fields.phone.maskSymbols.set(5, {
-                value: '0',
-                initialValue: '0',
-                visibility: 'hidden'
-            });
-            this.state.fields.phone.maskSymbols.set(6, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(7, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(8, {
-                value: ')',
-                initialValue: ')',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(9, {
-                value: ' ',
-                initialValue: ' ',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(10, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(11, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(12, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(13, {
-                value: ' ',
-                initialValue: ' ',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(14, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(15, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(16, {
-                value: ' ',
-                initialValue: ' ',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(17, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-            this.state.fields.phone.maskSymbols.set(18, {
-                value: '_',
-                initialValue: '_',
-                visibility: 'visible'
-            });
-
-
-            this.views.phone.addEventListener('keydown', this.onPhoneFieldViewKeyDown.bind(this));
             this.views.phone.addEventListener('input', this.onPhoneFieldViewInput.bind(this));
-            this.views.phone.addEventListener('select', this.onPhoneFieldViewSelect.bind(this));
-            this.views.phone.addEventListener('paste', this.onPhoneFieldViewPaste.bind(this));
-
-            // this.views.phone.addEventListener('keyup', this.onPhoneFieldViewKeyUp.bind(this));
-            // this.views.phone.addEventListener('focus', this.onPhoneFieldViewFocus.bind(this));
-            // this.views.phone.addEventListener('blur', this.onPhoneFieldViewBlur.bind(this));
-
             this.views.phone.mount();
         }
 
-        onPhoneFieldViewKeyDown(event, eventData) {
-            this.state.fields.phone.value = eventData.value;
-            this.state.fields.phone.selectionStart = this.views.phone.getSelectionStart();
-            this.state.fields.phone.selectionEnd = this.views.phone.getSelectionEnd();
+        onPhoneFieldViewInput(eventData) {
+            const value = eventData.value;
 
-            console.log(`Key down. Value: ${this.state.fields.phone.value}. Selection start: ${this.state.fields.phone.selectionStart}. Selection end: ${this.state.fields.phone.selectionEnd}`);
-        }
+            const allowedSymbols = [
+                '+',
+                ' ',
+                ')',
+                '(',
+                '0',
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9',
+            ];
 
-        onPhoneFieldViewSelect(event) {
-            this.state.fields.phone.value = this.views.phone.getValue();
-            this.state.fields.phone.selectionStart = this.views.phone.getSelectionStart();
-            this.state.fields.phone.selectionEnd = this.views.phone.getSelectionEnd();
-
-            console.log(`Select. Value: ${this.state.fields.phone.value}. Selection start: ${this.state.fields.phone.selectionStart}. Selection end: ${this.state.fields.phone.selectionEnd}`);
-        }
-
-        onPhoneFieldViewPaste(eventData) {
-            const text = eventData.text;
-
-            console.log(`Paste: ${text}`);
-        }
-
-        onPhoneFieldViewInput(event, eventData) {
-            console.log(`Input. value: ${eventData.value}`);
-
-            let inputValue = eventData.value;
-            const inputSymbols = inputValue.split('');
-
-            let nextValue = this.state.fields.phone.initialValue;
-
-            for(let index = 0; index < inputSymbols.length; index++) {
-                const toContinue = index < this.state.fields.phone.initialValue.length;
+            let nextValue = '';
+            for (let index = 0; index < value.length; index++) {
+                const symbol = value.charAt(index);
+                const isAllowed = allowedSymbols.includes(symbol);
+                const toContinue = ! isAllowed;
                 if (toContinue) {
                     continue;
                 }
 
-                const symbolPosition = index + 1;
-                const symbol = inputSymbols[index];
-
-                nextValue = `${nextValue}${symbol}`;
-
-                const position = index + 1;
-                const replacement = symbol;
-                this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-                this.views.phone.hideMaskSymbolAt(position);
-            }
-
-            switch(nextValue.length) {
-                case 7: {
-                    nextValue = `${nextValue}) `;
-
-                    break;
-                }
-                case 12: {
-                    nextValue = `${nextValue} `;
-
-                    break;
-                }
-                case 15: {
-                    nextValue = `${nextValue} `;
-
-                    break;
-                }
+                nextValue = `${nextValue}${symbol}`
             }
 
             this.views.phone.updateValue(nextValue);
-        }
-
-        onPhoneFieldViewInput3() {
-            let inputValue = eventData.value;
-            const inputValueSymbols = inputValue.split('');
-
-
-
-            let valueSymbols = [];
-            for(let index = 0; index < inputValueSymbols.length; index++) {
-                const position = index + 1;
-            }
-
-            return;
-
-
-
-            let nextValue = this.state.fields.phone.initialValue;
-
-            for(let index = 0; index < valueSymbols.length; index++) {
-                const toContinue = index < this.state.fields.phone.initialValue.length;
-                if (toContinue) {
-                    continue;
-                }
-
-                const symbolPosition = index + 1;
-                const symbol = valueSymbols[index];
-
-                nextValue = `${nextValue}${symbol}`;
-
-                const position = index + 1;
-                const replacement = symbol;
-                this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-                this.views.phone.hideMaskSymbolAt(position);
-            }
-
-
-
-
-            console.log(`Input. Next value: ${nextValue}. Input value: ${eventData.value}`);
-
-            this.views.phone.updateValue(nextValue);
-        }
-
-        onPhoneFieldViewInput2(event, eventData) {
-            const prevValue = this.state.fields.phone.value;
-            let nextValue = eventData.value;
-
-            console.log(`Input. Prev value: ${prevValue}. Next value: ${nextValue}`);
-
-            const prevSelectionStart = this.state.fields.phone.selectionStart;
-            const nextSelectionStart = this.views.phone.getSelectionStart();
-
-            console.log(`Prev selection start: ${prevSelectionStart}. Next selection start: ${nextSelectionStart}`);
-
-            const prevSelectionEnd = this.state.fields.phone.selectionEnd;
-            const nextSelectionEnd = this.views.phone.getSelectionEnd();
-
-            console.log(`Prev selection end: ${prevSelectionEnd}. Next selection end: ${nextSelectionEnd}`);
-            console.log('--------------------');
-
-
-            const difference = new Map();
-
-            const prevValueLength = prevValue.length;
-            const nextValueLength = nextValue.length;
-            const maxSymbolIndex = Math.max(prevValueLength, nextValueLength) - 1;
-
-            for (let index = 0; index <= maxSymbolIndex ; index++) {
-                const hasPrevSymbolAtIndex = index <= prevValueLength - 1;
-                const hasNextSymbolAtIndex = index <= nextValueLength - 1;
-
-                const hasBothAtIndex = hasPrevSymbolAtIndex && hasNextSymbolAtIndex;
-                if (hasBothAtIndex) {
-                    const prevSymbol = prevValue.charAt(index);
-                    const nextSymbol = nextValue.charAt(index);
-
-                    const isUnchanged = prevSymbol === nextSymbol;
-                    if (isUnchanged) {
-                        difference.set(index, {
-                            type: 'unchanged',
-                            symbol: prevSymbol
-                        });
-
-                        continue;
-                    }
-
-                    difference.set(index, {
-                        type: 'different',
-                        prevSymbol: prevSymbol,
-                        nextSymbol: nextSymbol
-                    })
-
-                    continue;
-                }
-
-                const hasOnlyPrevAtIndex = hasPrevSymbolAtIndex;
-                if (hasOnlyPrevAtIndex) {
-                    const prevSymbol = prevValue.charAt(index);
-
-                    difference.set(index, {
-                        type: 'only-prev',
-                        prevSymbol: prevSymbol,
-                    })
-
-                    continue;
-                }
-
-
-                const hasOnlyNextAtIndex = hasNextSymbolAtIndex;
-                if (hasOnlyNextAtIndex) {
-                    const nextSymbol = nextValue.charAt(index);
-
-                    difference.set(index, {
-                        type: 'only-next',
-                        nextSymbol: nextSymbol,
-                    })
-
-                    continue;
-                }
-            }
-
-            console.log('Difference');
-            console.log(difference);
-
-            let newValue = this.state.fields.phone.initialValue;
-
-            for (const [index, record] of difference) {
-                const toContinue = index < newValue.length;
-                if (toContinue) {
-                    continue;
-                }
-
-                switch(record.type) {
-                    case 'unchanged': {
-                        const position = index + 1;
-                        const replacement = record.symbol;
-
-                        newValue = `${newValue}${record.symbol}`;
-                        this.views.phone.hideMaskSymbolAt(position);
-                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-
-                        break;
-                    }
-                    case 'only-next': {
-                        const position = index + 1;
-                        const replacement = record.nextSymbol;
-
-                        newValue = `${newValue}${record.nextSymbol}`;
-                        this.views.phone.hideMaskSymbolAt(position);
-                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-
-                        break;
-                    }
-                }
-
-                switch(index) {
-                    case 6: {
-                        newValue = `${newValue} `
-
-                        break;
-                    }
-                }
-            }
-
-
-
-
-            this.views.phone.updateValue(newValue);
-        }
-
-        test3() {
-            for (const [index, record] of difference) {
-                const toContinue = index < newValue.length;
-                if (toContinue) {
-                    continue;
-                }
-
-                switch(record.type) {
-                    case 'unchanged': {
-                        const position = index + 1;
-                        const replacement = record.symbol;
-
-                        newValue = `${newValue}${record.symbol}`;
-                        this.views.phone.hideMaskSymbolAt(position);
-                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-
-                        break;
-                    }
-                    case 'only-next': {
-                        const position = index + 1;
-                        const replacement = record.nextSymbol;
-
-                        newValue = `${newValue}${record.nextSymbol}`;
-                        this.views.phone.hideMaskSymbolAt(position);
-                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-
-                        break;
-                    }
-                    case 'only-prev': {
-                        const position = index + 1;
-                        const replacement = record.nextSymbol;
-
-                        newValue = `${newValue}_`;
-                        this.views.phone.showMaskSymbolAt(position);
-                        this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-
-                        break
-                    }
-                }
-            }
-        }
-
-        test2() {
-            const strategyDescriptor = {
-                nextValue: nextValue,
-                prevValue: prevValue,
-
-                prevSelectionStart: prevSelectionStart,
-                nextSelectionStart: nextSelectionStart,
-
-                prevSelectionEnd: prevSelectionEnd,
-                nextSelectionEnd: nextSelectionEnd
-            }
-            const nextValueStrategy = this.defineNextValueStrategy(strategyDescriptor);
-            console.log(nextValueStrategy);
-
-
-
-            switch (nextValueStrategy) {
-                case 'set-initial-value': {
-                    console.log('Set initial value');
-
-                    nextValue = this.state.fields.phone.basicValue;
-
-                    nextValue = this.testNormalizePhoneField(nextValue);
-                    console.log(`Normalized value: ${nextValue}`);
-
-                    break;
-                }
-                case 'has-no-place': {
-                    nextValue = prevValue;
-
-                    nextValue = this.testNormalizePhoneField(nextValue);
-                    console.log(`Normalized value: ${nextValue}`);
-
-                    break;
-                }
-                case 'remove-symbol': {
-                    console.log('Remove symbol');
-
-                    const indexToShowMaskSymbolAt = prevSelectionStart;
-                    this.views.phone.showMaskSymbolAtIndex(indexToShowMaskSymbolAt);
-                    this.views.phone.replaceMaskSymbolAtPositionWith(indexToShowMaskSymbolAt, '_');
-
-                    switch (nextSelectionStart) {
-                        case 16: {
-                            this.views.phone.moveCaretToPosition(15);
-
-                            break;
-                        }
-                    }
-
-                    break;
-                }
-                case 'append-symbol': {
-                    console.log('Append symbol');
-
-                    const allowedSymbols = new Map();
-
-                    allowedSymbols.set("0", true);
-                    allowedSymbols.set("1", true);
-                    allowedSymbols.set("2", true);
-                    allowedSymbols.set("3", true);
-                    allowedSymbols.set("4", true);
-                    allowedSymbols.set("5", true);
-                    allowedSymbols.set("6", true);
-                    allowedSymbols.set("7", true);
-                    allowedSymbols.set("8", true);
-                    allowedSymbols.set("9", true);
-                    allowedSymbols.set("0", true);
-
-                    // const prevValueLength = prevValue.length;
-                    // const nextValueLength = nextValue.length;
-                    // const symbolsToAppendCount = nextValueLength - prevValueLength;
-                    // const newSymbols = nextValue.substring(nextValue.length - symbolsToAppendCount);
-
-                    const symbolPosition = nextValue.length - 1;
-                    const symbol = nextValue.charAt(symbolPosition);
-                    const allowed = allowedSymbols.has(symbol);
-
-                    const toRemove = !allowed;
-                    if (toRemove) {
-                        console.log('Append.Remove symbol');
-                        nextValue = nextValue.substring(0, nextValue.length - 1);
-                    }
-
-                    nextValue = this.testNormalizePhoneField(nextValue);
-                    console.log(`Normalized value: ${nextValue}`);
-
-                    break;
-                }
-            }
-
-
-            this.views.phone.updateValue(nextValue);
-
-            for (let index = 0; index < nextValue.length; index++) {
-                const replacement = nextValue.charAt(index);
-                const position = index + 1;
-                this.views.phone.replaceMaskSymbolAtPositionWith(position, replacement);
-            }
-
-            const symbolsToHideCount = nextValue.length;
-            this.views.phone.hideFirstNMaskSymbols(symbolsToHideCount);
-        }
-
-
-        onPhoneFieldViewKeyUp(event, eventData) {
-        }
-
-        testNormalizePhoneField(nextValue) {
-            let normalizedValue;
-
-            if (nextValue.length === 7) {
-                return `${nextValue}) `;
-            }
-
-            if (nextValue.length === 12) {
-                return `${nextValue} `
-            }
-
-            if (nextValue.length === 15) {
-                return `${nextValue} `
-            }
-
-            return nextValue;
-        }
-
-        defineNextValueStrategy(descriptor) {
-            const toSetInitialValueStrategy =
-                descriptor.nextValue.length < this.state.fields.phone.initialValue.length;
-            if (toSetInitialValueStrategy) {
-                return 'set-initial-value';
-            }
-
-            const hasNoPlace = descriptor.nextValue.length > this.state.fields.phone.maxValueLength;
-            if (hasNoPlace) {
-                return 'has-no-place';
-            }
-
-            const toRemove = (descriptor.nextSelectionStart - descriptor.prevSelectionStart) === -1;
-            if (toRemove) {
-                return 'remove-symbol';
-            }
-
-            const toAppend = (descriptor.nextSelectionStart - descriptor.prevSelectionStart) === 1;
-            if (toAppend) {
-                return 'append-symbol';
-            }
-        }
-
-        onPhoneFieldViewBlur() {
-            console.log('Hide caret');
-
-            this.views.phone.hideCaret();
-        }
-
-        onPhoneFieldViewFocus() {
-            setTimeout(() => {
-                const minSelectionStart = this.state.fields.phone.basicValue.length;
-                const selectionStart = this.views.phone.getSelectionStart();
-
-                const toMoveToMinPosition = selectionStart < minSelectionStart;
-                if (toMoveToMinPosition) {
-                    console.log(`Move caret to position ${selectionStart}`);
-
-                    const caretPosition = minSelectionStart;
-                    this.views.phone.moveCaretToPosition(caretPosition);
-                }
-
-                setTimeout(() => {
-                    this.views.phone.showCaret();
-                }, 0);
-
-            }, 0);
-        }
-
-        reset() {
-            this.state.fields.phone.value = this.state.fields.phone.initialValue;
-            this.views.phone.updateValue(this.state.fields.phone.value);
-
-            const coveredMaskSymbolsCount = this.state.fields.phone.value.length;
-
-            this.state.fields.phone.maskSymbols.forEach((descriptor, index) => {
-                const toCover = index <= coveredMaskSymbolsCount;
-
-                if (toCover) {
-                    const valueIndex = index - 1;
-                    descriptor.value = this.state.fields.phone.value.charAt(valueIndex);
-                    descriptor.visibility = 'hidden';
-
-                    const position = index;
-
-                    this.views.phone.hideMaskSymbolAt(position);
-                    this.views.phone.replaceMaskSymbolAtPositionWith(position, descriptor.value);
-                } else {
-                    descriptor.value = descriptor.initialValue;
-                    descriptor.visibility = 'visible';
-
-                    const position = index;
-
-                    this.views.phone.replaceMaskSymbolAtPositionWith(position, descriptor.value);
-                    this.views.phone.showMaskSymbolAt(position);
-                }
-            })
         }
     }
 
@@ -3078,10 +2022,10 @@
             });
 
             this.nodes.action = document.getElementById(this.ids.action);
-            this.nodes.action.addEventListener('mouseenter', (event) => {
+            this.nodes.action.addEventListener('mouseenter', () => {
                 this.listeners.enterAction.forEach((listener) => listener());
             });
-            this.nodes.action.addEventListener('click', (event) => {
+            this.nodes.action.addEventListener('click', () => {
                 this.listeners.clickAction.forEach((listener) => listener());
             })
         }
@@ -3107,9 +2051,7 @@
             const phone = application.fields.phone;
 
             const isValidName = name.length > 0;
-
-            const phonePattern = /\+38\(0\d{2}\)\s\d{3}\s\d{2}\s\d{2}/;
-            const isValidPhone = (phonePattern.test(phone));
+            const isValidPhone = phone.length > 0;
 
             const invalidFields = [];
             const toAddNameToInvalidFields = !isValidName;
@@ -3315,7 +2257,6 @@
             this.viewModels.modalForm = new ModalFormViewModel(this.services.application, this.eventBus);
             this.viewModels.modalForm.model();
 
-
             const menuViewItemsIds = [
                 'menu-item-1',
                 'menu-item-2',
@@ -3506,7 +2447,7 @@
             }
         }
 
-        onWindowViewScrollHandleSolidHeader(event) {
+        onWindowViewScrollHandleSolidHeader() {
             const scrollY = window.scrollY;
             const toMakeHeaderSolid = scrollY > 0;
 
